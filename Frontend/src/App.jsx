@@ -4,7 +4,7 @@ function App() {
   return (
     <div>
       <Text></Text>
-        
+        Wealth Wise
     </div>
   )
 }
