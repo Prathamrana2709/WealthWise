@@ -1,0 +1,242 @@
+html, body, h1, h2 {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+  color: #f0f0f0;
+  text-align: center;
+}
+
+.h1 {
+  font-size: 2.0em;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  color: #f0f0f0;
+}
+
+h3 {
+  font-weight: 300;
+  font-size: 1.2em;
+  font-family: 'Roboto', sans-serif;
+  color: #f0f0f0;
+  margin: 0.25em;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 200;
+  color: #f0f0f0;
+  margin: 0.75em;
+  padding: 0em;
+  font-size: 1em;
+}
+
+.main-div {
+  display: ruby;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main container to hold both sections */
+.page-container {
+  display: flex;
+  height: 100vh;
+  justify-content: space-between;
+}
+
+/* Left section styling */
+.left-section {
+  width: 40%; /* 40% width */
+  background-color: #f0f0f0; /* Light gray background for differentiation */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-image: url('../assets/login.png');
+  background-size:cover; /* Ensure the image covers the entire section */
+  background-position:center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  padding: 0; /* Remove any padding */
+  margin: 0; /* Remove any margin */
+}
+
+.logo-image {
+  width: 25%;
+}
+
+/* Right section styling */
+.right-section {
+  width: 60%; /* 60% width */
+  background-color: #ffccd5; /* Light pink background for differentiation */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(to bottom right, #ffccd5, #a8e6cf);
+}
+
+img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo {
+  width: 42%;
+}
+
+.back-link {
+  position: absolute;
+  bottom: 2.0em;
+  left: 2.0em;
+  font-size: 1.2em;
+  color: #ffffff; /* Default link color */
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease; /* Transition for hover effect */
+}
+
+.back-link:hover {
+  color: #aba6e0; /* Change to light pink on hover */
+  transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.back-link:active {
+  color: #928fe8; /* Darker pink on click */
+}
+
+.border-box {
+  background-color: white;
+  padding: 50px;
+  border-radius: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+.border-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  z-index: -1;
+  border-radius: 10px;
+}
+
+.right-section h1 {
+  color: #6c23cc;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.input-field input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 40px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Login Button Styling */
+.login-button {
+  background-color: #8c38ff; /* Primary background color */
+  color: white; /* Button text color */
+  padding: 12px 30px;
+  border: none;
+  border-radius: 40px; /* Rounded button */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+  margin-top: 10px;
+  width: 30%;
+  font-size: 1em;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+.login-button:hover {
+  background-color: #732bcf; /* Darker shade of purple on hover */
+  transform: translateY(-3px); /* Slight lift effect on hover */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+}
+
+.login-button:active {
+  background-color: #5d20a3; /* Even darker shade of purple when clicked */
+  transform: translateY(1px); /* Slight depress effect on click */
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.2); /* Shrink shadow */
+}
+
+/* Forgot Password Anchor Styling */
+.forgot-password {
+  color: #8c38ff; /* Purple text color */
+  text-decoration: none;
+  margin-top: 3em;
+  font-size: 0.85em;
+  transition: color 0.3s ease, text-shadow 0.3s ease; /* Smooth transition for color and shadow */
+}
+
+.forgot-password:hover {
+  color: #732bcf; /* Darker purple on hover */
+  text-shadow: 1px 1px 5px rgba(140, 56, 255, 0.5); /* Soft purple glow on hover */
+}
+
+.forgot-password:active {
+  color: #5d20a3; /* Even darker purple when clicked */
+  text-shadow: 1px 1px 8px rgba(93, 32, 163, 0.5); /* Slightly stronger glow on click */
+}
+
+.forget{
+  margin-top: 1em;
+  align-items: end;
+}
+
+.ww-font{
+  color: #7c3aed;
+  font-weight: bold; 
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  margin-bottom: 1em;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .left-section, .right-section {
+    width: 100%;
+    padding: 30px;
+  }
+
+  .border-box {
+    display: ruby;
+    padding: 30px;
+    max-width: 100%;
+  }
+
+  .logo {
+    width: 25%;
+    height: 25%;
+  }
+
+  h1,
+  h2,
+  p {
+    font-size: 1.2rem;
+  }
+
+  .input-field input {
+    font-size: 1rem;
+  }
+
+  .login-button {
+    padding: 10px;
+  }
+}
