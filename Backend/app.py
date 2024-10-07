@@ -4,6 +4,8 @@ from Apis import login  # Import login module where MongoDB connection and logic
 # Create the Flask application
 app = Flask(__name__)
 
+
+
 # Register User Route
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -26,4 +28,4 @@ def login_user():
 
 # Run the Flask app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=5001)
