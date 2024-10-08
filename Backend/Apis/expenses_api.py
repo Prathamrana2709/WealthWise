@@ -79,8 +79,6 @@ def filter_expenses(filters):
     
     if 'Year' in filters:
         query['Year'] = filters['Year']
-    if 'Quarter' in filters:
-        query['Quarter'] = filters['Quarter']
 
     expenses = list(expenses_collection.find(query))
 

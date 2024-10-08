@@ -79,12 +79,6 @@ def filter_liabilities(filters):
     # Dynamically build the query based on provided filters
     if 'Year' in filters:
         query['Year'] = filters['Year']
-    if 'Quarter' in filters:
-        query['Quarter'] = filters['Quarter']
-    if 'Type' in filters:
-        query['Type'] = filters['Type']
-    if 'category' in filters:
-        query['Category'] = filters['Category']
     
     liabilities = list(liabilities_collection.find(query))
     
