@@ -10,7 +10,7 @@ liabilities_collection = db['Liabilities']
 # Add a new liability
 def add_new_liability(new_liability):
     # Ensure all required fields are present
-    required_fields = ['year', 'quarter', 'amount', 'type', 'category']
+    required_fields = ['Year', 'Quarter', 'Amount', 'Type', 'Category']
     for field in required_fields:
         if field not in new_liability:
             return {'error': f'Missing required field: {field}'}, 400
@@ -61,17 +61,39 @@ def delete_liability(year, quarter):
         return {'message': f'Liability for year {year} and quarter {quarter} deleted successfully'}, 200
     else:
         return {'error': 'Liability not found for the given year and quarter'}, 404
-
-# Get an existing liability using year and quarter
-def get_liability(year, quarter):
-    # Find the liability matching the year and quarter
-    liability = liabilities_collection.find_one({'year': year, 'quarter': quarter})
     
-    if liability:
-        liability['_id'] = str(liability['_id'])  # Convert ObjectId to string
-        return liability, 200
-    else:
-        return {'error': 'Liability not found for the given year and quarter'}, 404
+# Get all liabilities
+def get_all_liabilities():
+    liabilities = list(liabilities_collection.find())  # Fetch all liabilities
+    
+    # Convert ObjectId to string for each liability
+    for liability in liabilities:
+        liability['_id'] = str(liability['_id'])
+    
+    return liabilities, 200
+    
+# Get liabilities based on filter criteria
+def filter_liabilities(filters):
+    query = {}
+    
+    # Dynamically build the query based on provided filters
+    if 'Year' in filters:
+        query['Year'] = filters['Year']
+    if 'Quarter' in filters:
+        query['Quarter'] = filters['Quarter']
+    if 'Type' in filters:
+        query['Type'] = filters['Type']
+    if 'category' in filters:
+        query['Category'] = filters['Category']
+    
+    liabilities = list(liabilities_collection.find(query))
+    
+    # Convert ObjectId to string for each liability
+    for liability in liabilities:
+        liability['_id'] = str(liability['_id'])
+    
+    return liabilities, 200
+
 
 
 
