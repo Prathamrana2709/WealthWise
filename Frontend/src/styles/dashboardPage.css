@@ -1,0 +1,201 @@
+/* Main scrollable container */
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Updated font */
+  color: #333;
+  height: 100vh;
+  overflow-y: auto; /* Enable scrolling for the whole page */
+  background-color: #f4f4f4; /* Light background for contrast */
+}
+
+/* Container for top section (cards) and graph */
+.top-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Cards layout */
+.card-container {
+  display: flex;
+  gap: 20px;
+  flex-grow: 1;
+}
+
+/* Card styles */
+.card {
+  background: linear-gradient(135deg, #f0f4f8, #e6e9ef); /* Gradient background */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  width: 30%;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effect */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15); /* Deepen shadow on hover */
+}
+
+.card-title {
+  font-size: 20px; /* Increased size */
+  font-weight: bold; /* Bold title */
+  color: #333;
+}
+
+.card-amount {
+  font-size: 28px; /* Increased size */
+  color: #007bff; /* Blue for emphasis */
+  margin-top: 10px;
+}
+
+/* Revenue Graph section */
+.revenue-graph {
+  flex-grow: 2;
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.revenue-graph h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold; /* Bold heading */
+}
+
+.graph {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 150px;
+  gap: 10px;
+}
+
+.graph-bar {
+  background-color: #007bff; /* Matching color with card */
+  width: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  transition: background-color 0.2s; /* Smooth hover effect */
+}
+
+.graph-bar:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+.graph-bar span {
+  position: absolute;
+  bottom: 100%;
+  font-size: 12px;
+  color: #333;
+}
+
+/* Second row: Cash Flow & Projects section */
+.bottom-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Cash Flow Section */
+.cash-flow {
+  flex: 1;
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.cash-flow h3 {
+  margin-bottom: 20px;
+  font-weight: bold; /* Bold heading */
+}
+
+.cash-flow-card {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.cash-inflow,
+.cash-outflow {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb); /* Gradient background */
+  border-radius: 10px;
+  padding: 20px;
+  width: 45%;
+  text-align: center;
+  transition: transform 0.2s; /* Smooth hover effect */
+}
+
+.cash-inflow:hover,
+.cash-outflow:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.cash-inflow h4,
+.cash-outflow h4 {
+  font-size: 18px; /* Increased size */
+  color: #007bff; /* Blue for emphasis */
+}
+
+.cash-inflow p,
+.cash-outflow p {
+  font-size: 24px; /* Increased size */
+  color: #333;
+}
+
+/* Projects Section */
+.projects-section {
+  flex: 1.5;
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.projects-section h3 {
+  margin-bottom: 20px;
+  font-weight: bold; /* Bold heading */
+}
+
+.projects-section table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.projects-section th,
+.projects-section td {
+  padding: 12px; /* Increased padding */
+  text-align: left;
+}
+
+.projects-section th {
+  background-color: #e3f2fd; /* Light blue for headers */
+  color: #333;
+}
+
+.projects-section td {
+  border-bottom: 1px solid #ddd;
+}
+
+.projects-section tr:hover {
+  background-color: #f1f1f1; /* Light gray on hover */
+}
+
+.projects-section {
+  max-height: 300px; /* Control the height for the projects list */
+  overflow-y: auto; /* Enable scrolling within the projects section if needed */
+}
+
+.title-1 {
+  color: black;
+}

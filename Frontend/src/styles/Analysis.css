@@ -1,0 +1,162 @@
+/* Main container for the analysis page */
+.analysis-page {
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f4f4f4; /* Light background for contrast */
+  }
+  
+  /* Title styles */
+  h1 {
+    margin-bottom: 20px;
+  }
+  
+  /* Top Section */
+  .top-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .chart-container {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .line-chart {
+    height: 200px; /* Set height for line chart */
+    background: #e3f2fd; /* Placeholder color */
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .kpis {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .kpi {
+    text-align: center;
+    flex: 1;
+    padding: 10px;
+    background: #f0f4f8;
+    border-radius: 10px;
+    margin: 0 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Middle Section */
+  .middle-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .profit-loss {
+    flex: 2;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sales-analysis {
+    flex: 1;
+    margin-left: 20px; /* Add space between sections */
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sales-funnel {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .funnel-stage {
+    text-align: center;
+    background-color: #e3f2fd;
+    border-radius: 10px;
+    padding: 10px;
+    flex: 1;
+    margin: 0 5px;
+  }
+  
+  /* Bottom Section */
+  .bottom-section {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .financial-ratios,
+  .customer-segmentation {
+    flex: 1;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  th {
+    background-color: #e3f2fd;
+  }
+  
+  tr:hover {
+    background-color: #f1f1f1; /* Highlight row on hover */
+  }
+  
+  .line-chart {
+    height: 300px; /* Set height for line chart */
+    margin-bottom: 20px;
+  }
+  
+  /* styles/analysis.css */
+
+html, body {
+    height: 100%; /* Set height to 100% to cover the viewport */
+    margin: 0;
+    overflow: hidden; /* Prevent overflow on body */
+  }
+  
+  .analysis-page {
+    height: 100vh; /* Use full viewport height */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 20px; /* Add some padding */
+    box-sizing: border-box; /* Include padding in height calculation */
+  }
+  
+  .top-section, .middle-section, .bottom-section {
+    margin-bottom: 20px; /* Add spacing between sections */
+  }
+  
+  .kpis {
+    display: flex;
+    justify-content: space-around; /* Space KPIs evenly */
+  }
+  
+  .chart-container {
+    margin-bottom: 20px; /* Spacing for chart container */
+  }
+  
+  /* Additional styles as needed for your layout */
+  
+  

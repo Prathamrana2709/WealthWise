@@ -1,34 +1,27 @@
 "use client"
 import React from 'react';
-import '../styles/home.css';
-import { useNavigate } from 'react-router-dom';
-import logo from '../assets/Logo.png';
-import image from '../assets/bg.png';
+import '../styles/home.css'
+import logo from '../assets/Logo.png'
+import bg from '../assets/bg.png'
 
 function home() {
-
-  const navigate = useNavigate(); // Initialize the useNavigate hook
-
-  const handleLoginClick = () => {
-    navigate('/login'); // Navigate to the login page when login button is clicked
-  };
-
   return (
     <div className="container">
       <div className="content">
-        <div className="logo">
-          <img src={logo} className='img-logo'></img>
-          <span color='black'>WealthWise</span>
-        </div>
-        <h1 className='home'>Transforming Data into Smart Financial Decisions</h1>
-        <p className='home'>Our platform provides real-time financial analysis and accurate predictions to help you make smarter decisions.</p>
-        <button className="login-btn" onClick={handleLoginClick}>Login</button>
+      <div class="logo-container">
+        <img src={logo} alt="Company Logo" class="logo"/>
+        <span class="company-name">WealthWise</span>
       </div>
-      <div>
-        <img src={image} />
+
+        <h1>Transforming Data into Smart Financial Decisions</h1>
+        <p>Our platform provides real-time financial analysis and accurate predictions to help you make smarter decisions.</p>
+        <button className="login-button">Login</button>
+      </div>
+      <div className="illustration">
+        <img src={bg} alt="Illustration" />
       </div>
     </div>
   );
 }
 
-export default home;
+export default home;
