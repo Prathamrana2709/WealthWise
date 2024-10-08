@@ -1,8 +1,20 @@
-/* Container to take full page width */
+/* Ensure the body and html take full height and don't scroll */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Disable scrolling for the whole page */
+  font-family: 'Arial', sans-serif;
+}
+
+/* Liabilities container should fill the height of the viewport and be scrollable */
 .liabilities-container {
-  width: 100%; /* Full width */
-  padding: 20px;
-  box-sizing: border-box;
+  height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 /* Filter Section */
@@ -34,7 +46,7 @@
   padding-bottom: 10px;
 }
 
-/* Data Box */
+/* Data Box with max height and scrolling */
 .data-box {
   max-height: 300px; /* Set the max height for scroll */
   overflow-y: auto; /* Vertical scrolling enabled */
@@ -42,15 +54,16 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  width: 100%;
 }
 
 /* Custom scrollbar for better user experience */
 .data-box::-webkit-scrollbar {
-  width: 10px; /* Wider scrollbar for visibility */
+  width: 10px;
 }
 
 .data-box::-webkit-scrollbar-thumb {
-  background-color: #41e0ce; /* Scrollbar color */
+  background-color: #41e0ce;
   border-radius: 10px;
 }
 
@@ -96,7 +109,7 @@
   background-color: #e0f7f7;
 }
 
-/* Make it responsive for smaller screens */
+/* Ensure the page is scrollable on smaller screens */
 @media (max-width: 768px) {
   .data-box {
       max-height: 200px;
