@@ -41,7 +41,7 @@ def update_existing_revenue(original_year, original_quarter, updated_data):
     # Search for the revenue using the original year and quarter
     search_criteria = {'Year': original_year, 'Quarter': original_quarter}
 
-    # Update the asset with the provided data
+    # Update the revenue with the provided data
     result = revenue_collection.update_one(search_criteria, {'$set': update_fields})
 
     if result.matched_count == 1:
@@ -67,11 +67,11 @@ def delete_revenue(year, quarter):
     else:
         return {'error': 'Revenue not found for the given year and quarter'}, 404
     
-# Get all liabilities
+# Get all revenue
 def get_all_revenues():
-    revenues = list(revenue_collection.find())  # Fetch all liabilities
+    revenues = list(revenue_collection.find())  # Fetch all revenue
     
-    # Convert ObjectId to string for each liability
+    # Convert ObjectId to string for each revenue
     for revenue in revenues:
         revenue['_id'] = str(revenue['_id'])
     
