@@ -26,7 +26,7 @@ span {
   align-items: center;
   max-width: 800px; /* Limit the maximum width for larger screens */
   /* margin: 1em; /* Center the content for larger screens */
-  /* background-color: transparent; */ */ */ */
+  /* background-color: transparent; */
   flex: 1;
   padding: 40px;
   color: #333;

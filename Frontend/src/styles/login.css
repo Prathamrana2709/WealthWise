@@ -7,12 +7,12 @@ html, body, h1, h2 {
   color: #f0f0f0;
   text-align: center;
 }
-
 .h1 {
   font-size: 2.0em;
   font-weight: 500;
   font-family: 'Roboto', sans-serif;
   color: #f0f0f0;
+  margin-top: 8px;
 }
 
 h3 {
@@ -20,7 +20,7 @@ h3 {
   font-size: 1.2em;
   font-family: 'Roboto', sans-serif;
   color: #f0f0f0;
-  margin: 0.25em;
+  margin: 0.50em;
 }
 
 p {
@@ -32,11 +32,11 @@ p {
   font-size: 1em;
 }
 
-.main-div {
+/* .main-div {
   display: ruby;
   justify-content: center;
   align-items: center;
-}
+} */
 
 /* Main container to hold both sections */
 .page-container {
@@ -62,7 +62,7 @@ p {
 }
 
 .logo-image {
-  width: 25%;
+  width: 20%;
 }
 
 /* Right section styling */

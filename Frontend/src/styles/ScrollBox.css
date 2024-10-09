@@ -1,0 +1,17 @@
+.scroll-box {
+    max-height: 300px;
+    overflow-y: scroll;
+    scrollbar-width: none; /* For Firefox */
+  }
+  
+  .scroll-box::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+  
+  .box-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f1f4f4; /* Adjust according to your theme */
+  }
+  
