@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
+<<<<<<< HEAD
 from Apis import login, liabilities_api, assets_api, expenses_api
 from flask_cors import CORS
+=======
+from Apis import login, liabilities_api, assets_api, expenses_api, revenues_api
+>>>>>>> efb9913ee26c5692727ce233f9e88c0429e90ab1
 
 # Create the Flask application
 app = Flask(__name__)
@@ -34,7 +38,7 @@ def add_liability():
     response, status_code = liabilities_api.add_new_liability(new_liability)  # Unpack response and status code
     return jsonify(response), status_code  # Return the response with the appropriate status code
 
-@app.route('/api/liabilities/update/<string:year>/<int:quarter>', methods=['PUT'])
+@app.route('/api/liabilities/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
 def update_liability(year, quarter):
     updated_data = request.json  # Get the updated data from the request body
     
@@ -130,14 +134,11 @@ def create_expense():
     new_expense = request.get_json()
     return expenses_api.add_new_expense(new_expense)
 
-@app.route('/api/expenses/update/<string:year>/<int:quarter>', methods=['PUT'])
-def update_expense(year, quarter):
-    updated_data = request.json  # Get the updated data from the request body
-    
-    # Call the function from expenses_api.py to update the asset
-    response, status_code = expenses_api.update_existing_expenses(year, quarter, updated_data)
-    
-    return jsonify(response), status_code
+@app.route('/api/expenses/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
+def update_expenses(original_year, original_quarter):
+    updated_data = request.get_json()
+    return expenses_api.update_existing_expenses(original_year, original_quarter, updated_data)
+
 
 
 @app.route('/api/expenses/delete/<string:year>/<int:quarter>', methods=['DELETE'])
@@ -160,6 +161,36 @@ def fetch_all_expenses():
 def filter_expense():
     filters = request.args
     return expenses_api.filter_expenses(filters)
+
+# Flask route for adding a new revenue record
+@app.route('/api/revenues/add', methods=['POST'])
+def add_revenue():
+    new_revenue = request.get_json()
+    return revenues_api.add_new_revenue(new_revenue)
+
+@app.route('/api/revenues/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
+def update_revenue(original_year, original_quarter):
+    updated_data = request.get_json()
+    return revenues_api.update_existing_revenue(original_year, original_quarter, updated_data)
+
+@app.route('/api/revenues/delete/<string:year>/<int:quarter>', methods=['DELETE'])
+def remove_revenues(year, quarter):
+    # Call the delete function from expenses_api.py
+    response, status_code = revenues_api.delete_revenue(year, quarter)
+    
+    return jsonify(response), status_code
+
+@app.route('/api/revenues/getAll', methods=['GET'])
+def fetch_all_revenues():
+    # Call the function to get all assets
+    response, status_code = revenues_api.get_all_revenues()
+    
+    return jsonify(response), status_code
+
+@app.route('/api/revenues/filter', methods=['GET'])
+def filter_revenue():
+    filters = request.args
+    return revenues_api.filter_revenues(filters)
 
 
 # Run the Flask app

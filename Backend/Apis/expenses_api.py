@@ -2,7 +2,7 @@ from flask import jsonify
 from pymongo import MongoClient
 import certifi
 
-# MongoDB Atlas connection (handled here in liabilities_api.py)
+# MongoDB Atlas connection (handled here in expenses_api.py)
 client = MongoClient("mongodb+srv://chandrgupt553:8iVT4sFaeFTxDbsK@wealthwise.mtgwn.mongodb.net/", tlsCAFile=certifi.where())
 db = client['Data']
 expenses_collection = db['Expenses']
@@ -36,7 +36,7 @@ def update_existing_expenses(original_year, original_quarter, updated_data):
         return {'error': 'No fields to update'}, 400
 
     # Search for the asset using the original year and quarter
-    search_criteria = {'year': original_year, 'quarter': original_quarter}
+    search_criteria = {'Year': original_year, 'Quarter': original_quarter}
 
     # Update the asset with the provided data
     result = expenses_collection.update_one(search_criteria, {'$set': update_fields})
@@ -44,20 +44,20 @@ def update_existing_expenses(original_year, original_quarter, updated_data):
     if result.matched_count == 1:
         # Retrieve the updated document (note: use updated year/quarter if they were changed)
         # If year/quarter were updated, use them for the fetch, otherwise use the original values
-        updated_year = updated_data.get('year', original_year)
-        updated_quarter = updated_data.get('quarter', original_quarter)
+        updated_year = updated_data.get('Year', original_year)
+        updated_quarter = updated_data.get('Quarter', original_quarter)
 
-        updated_expens = expenses_collection.find_one({'year': updated_year, 'quarter': updated_quarter})
+        updated_expens = expenses_collection.find_one({'Year': updated_year, 'Quarter': updated_quarter})
         updated_expens['_id'] = str(updated_expens['_id'])  # Convert ObjectId to string
         
         return updated_expens, 200  # Return the updated asset and status code
     else:
-        return {'error': 'Asset not found for the given year and quarter'}, 404
+        return {'error': 'Expense not found for the given year and quarter'}, 404
     
 # Delete an existing expense using year and quarter
 def delete_expense(year, quarter):
     # Find and delete the expense matching the year and quarter
-    result = expenses_collection.delete_one({'year': year, 'quarter': quarter})
+    result = expenses_collection.delete_one({'Year': year, 'Quarter': quarter})
     
     if result.deleted_count == 1:
         return {'message': f'Expense for year {year} and quarter {quarter} deleted successfully'}, 200
