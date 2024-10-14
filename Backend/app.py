@@ -1,10 +1,8 @@
 from flask import Flask, request, jsonify
-<<<<<<< HEAD
 from Apis import login, liabilities_api, assets_api, expenses_api
 from flask_cors import CORS
-=======
 from Apis import login, liabilities_api, assets_api, expenses_api, revenues_api
->>>>>>> efb9913ee26c5692727ce233f9e88c0429e90ab1
+import os
 
 # Create the Flask application
 app = Flask(__name__)
@@ -191,6 +189,17 @@ def fetch_all_revenues():
 def filter_revenue():
     filters = request.args
     return revenues_api.filter_revenues(filters)
+
+# Set the secret key for session management (use a securely generated key)
+app.secret_key = '9bc74018332a5fc0a00ccc10e41a293601e64a444c6c83097ee59b1aedd97311'
+
+# Optionally, allow overriding the secret key via environment variable in production
+# Replace 'SECRET_KEY' with a better name for the environment variable
+app.secret_key = os.environ.get('SECRET_KEY', '9bc74018332a5fc0a00ccc10e41a293601e64a444c6c83097ee59b1aedd97311')
+# Define the logout route and allow POST method
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    return login.logout_user()
 
 
 # Run the Flask app

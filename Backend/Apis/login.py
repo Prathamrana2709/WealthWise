@@ -94,3 +94,35 @@ def authenticate_user():
         return jsonify({"error": str(e)}), 500
 
 
+# Method to authenticate a user (login)
+def authenticate_user(request):
+    try:
+        Emailid = request.args.get('Email_id')
+        password = request.args.get('password')
+
+        if not Emailid or not password:
+            return jsonify({"error": "Both 'Email_id' and 'password' are required"}), 400
+
+        user = users_collection.find_one({"Email_id": Emailid})
+
+        if user and user['password'] == password:
+             # Return success message along with the userid and role
+            return jsonify({
+                "message": "Authentication successful!",
+                "Email_id": Emailid,
+                "role": user['role']  # Return the role as part of the response
+            }), 200
+        else:
+            return jsonify({"error": "Invalid userid or password"}), 401
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+# Logout function
+def logout_user():
+    try:
+        # Here you can handle session invalidation or token revocation logic
+        # Assuming you are using token-based authentication (like JWT)
+        return jsonify({"message": "Logout successful!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
