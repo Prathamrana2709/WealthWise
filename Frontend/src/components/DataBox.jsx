@@ -7,15 +7,15 @@ const DataBox = ({ data, hideYear }) => {
         <tr>
           <th>Quarter</th>
           <th>Category</th>
-          <th>Amount</th>
+          <th>Amount(In Millions)</th>
         </tr>
       </thead>
       <tbody>
         {data.map((item, index) => (
           <tr key={index}>
-            <td>{item.quarter}</td>
-            <td>{item.category}</td>
-            <td>{item.amount}</td>
+            <td>{item.Quarter}</td>
+            <td>{item.Category}</td>
+            <td>{item.Amount}</td>
           </tr>
         ))}
       </tbody>

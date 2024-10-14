@@ -135,6 +135,7 @@ img {
   flex-direction: column;
   margin-bottom: 30px;
   width: 100%;
+  font-size: 2rem;
 }
 
 .input-field input {
@@ -149,7 +150,7 @@ img {
 .login-button {
   background-color: #8c38ff; /* Primary background color */
   color: white; /* Button text color */
-  padding: 12px 30px;
+  padding: 1rem;
   border: none;
   border-radius: 40px; /* Rounded button */
   cursor: pointer;

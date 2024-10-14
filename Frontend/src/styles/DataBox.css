@@ -15,7 +15,7 @@
 
 .year-filter {
   padding: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #000000;
   border-radius: 4px;
 }
 
@@ -71,7 +71,7 @@
 .data-table td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #000000;
 }
 
 .data-table th {
@@ -88,12 +88,12 @@
 }
 
 .data-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #000000;
 }
 
 /* Hover effect for better interactivity */
 .data-table tr:hover {
-  background-color: #e0f7f7;
+  background-color: #000000;
 }
 
 /* Make it responsive for smaller screens */

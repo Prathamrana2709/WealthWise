@@ -1,4 +1,4 @@
-html, body, h1, h2 , span{
+html, body, p, span {
   margin: 0;
   padding: 0;
   font-family: 'Roboto', sans-serif;
@@ -7,112 +7,102 @@ html, body, h1, h2 , span{
 
 span {
   color: rgb(216, 29, 29);
-
 }
 
 .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(to bottom right, #ffccd5, #a8e6cf);
-    padding: 0 ;
-  }
-
-.content {
-  /* text-align: left; /* Align all content to the left */
-  /* padding: 0%;
+  display: flex;
   height: 100vh;
-  align-items: center;
-  max-width: 800px; /* Limit the maximum width for larger screens */
-  /* margin: 1em; /* Center the content for larger screens */
-  /* background-color: transparent; */
-  flex: 1;
-  padding: 40px;
-  color: #333;
-  background-color: #ecf0f1;
-  width: 100%;
-  object-fit: cover;
-  padding: 1em;
-  background-color: transparent;
-  width: 100vw;
+  overflow: hidden; /* Ensure no overflow */
 }
 
-.logo{
-    display: flex;
-    height: 3rem;
-    width: 3rem;
-    font-weight: bold;
-    font-size: 22px;
-    gap: 0.5rem;
-    align-items: center;
-    padding-top: 1.2em;
-    padding-bottom: 3em;
+.left-section1 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px;
+  background: linear-gradient(to bottom right, #ffccd5, #a8e6cf); /* Gradient only on left section */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  position: absolute; /* Logo aligned to the top-left */
+  top: 20px;
+  left: 20px;
+}
+
+.logo {
+  height: 3rem;
+  width: 3rem;
+  margin-right: 10px;
 }
 
 .company-name {
-  font-size: 25px; 
+  font-size: 25px;
   font-weight: bold;
-  color: #333;  
+  color: #333;
 }
-  
-h1 {
-  font-size: 3rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: black;
+
+.content1{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: left;
 }
 
-h2{
-  margin-top: 10px;
-  color: black;
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
 }
 
 p {
-  padding: 0%;
   font-size: 1.2rem;
-  line-height: 1.5;
-  color:black;
   margin-bottom: 30px;
-  text-align: left;
 }
 
 .login-btn {
-  display: inline-block;
-  padding: 10px 20px;
+  padding: 10px;
   background-color: #8c38ff;
   color: white;
   border: none;
   cursor: pointer;
-  font-size: 1em;
-  text-align: left;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
-  border-radius: 50px;
-  font-size: 0.9em;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border-radius: 30px;
+  font-size: 1rem;
+  width: 110px; /* Medium size */
+  align-self: flex-start; /* Aligns button to the left */
+  margin-left: 15px;
 }
 
 .login-btn:hover {
   background-color: #6a2ecc;
   transform: scale(1.05);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .login-btn:active {
   background-color: #4e2299;
   transform: scale(0.95);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.home {
-  position: relative;
-  z-index: 1;
+.illustration {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ecf0f1; /* Plain background for right section */
+}
+
+.bg-image {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.title-1{
   text-align: left;
-  color: black;
-  padding: 0%;
-  margin: 0%;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-  width: 70%;
+  padding-left: 0.75rem;
+  font-size:30px;
 }

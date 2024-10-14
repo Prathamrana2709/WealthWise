@@ -1,8 +1,14 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadialBarChart, RadialBar } from 'recharts';
 import '../styles/dashboardPage.css';
+import RadialProgressBar from '../components/RadialProgressBar';
 
 const DashboardPage = () => {
+
+  const data = [
+    { name: 'Progress', value: 55, fill: '#8884d8' }  // Single data point, 75% progress
+  ];
+
   // Dummy data for cards, graph, and projects
   const revenueData = [
     { month: 'Q1', value: 10000 },
@@ -27,14 +33,57 @@ const DashboardPage = () => {
           <div className="card">
             <div className="card-title">Income</div>
             <div className="card-amount">INR 35.9K</div>
+            <RadialProgressBar data={data}/>
           </div>
           <div className="card">
-            <div className="card-title">Upcoming</div>
+            <div className="card-title">Revenue</div>
             <div className="card-amount">INR 45.7K</div>
+            <ResponsiveContainer width="100%" height={300}>
+              <RadialBarChart
+                cx="50%"
+                cy="50%"
+                innerRadius="50%"
+                outerRadius="80%"
+                barSize={20}
+                data={data}
+                startAngle={90}
+                endAngle={-270} // Makes it a full circle
+              >
+                <RadialBar
+                  minAngle={15}
+                  background
+                  clockWise
+                  dataKey="value"
+                  label={{ fill: '#fff', position: 'insideStart' }}
+                />
+                <Tooltip />
+              </RadialBarChart>
+            </ResponsiveContainer>
           </div>
           <div className="card">
             <div className="card-title">Expense</div>
             <div className="card-amount">INR 38.5K</div>
+            <ResponsiveContainer width="100%" height={300}>
+              <RadialBarChart
+                cx="50%"
+                cy="50%"
+                innerRadius="50%"
+                outerRadius="80%"
+                barSize={20}
+                data={data}
+                startAngle={90}
+                endAngle={0} // Makes it a full circle
+              >
+                <RadialBar
+                  minAngle={15}
+                  background
+                  clockWise
+                  dataKey="value"
+                  label={{ fill: '#fff', position: 'insideStart' }}
+                />
+                <Tooltip />
+              </RadialBarChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
@@ -59,6 +108,7 @@ const DashboardPage = () => {
         {/* Cash Flow */}
         <div className="cash-flow">
           <h3 className='title-1'>Cash Flow</h3>
+          <h6 className='title-1'>2024-25</h6>
           <div className="cash-flow-card">
             <div className="cash-inflow">
               <h4>Inflow</h4>
@@ -69,7 +119,7 @@ const DashboardPage = () => {
               <p>INR 20,000</p>
             </div>
           </div>
-          <div>2024-25</div>
+          
         </div>
 
         {/* Projects Section */}

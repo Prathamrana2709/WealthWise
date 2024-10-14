@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
 import logo from '../assets/Logo.png';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [Email_id, setEmail] = useState('');  // Changed to 'Email_id'
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();  // For programmatic navigation
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -15,10 +17,33 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
+    console.log(Email_id, password)
+
+    try {
+      const response = await fetch('http://127.0.0.1:5001/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ Email_id: Email_id, password: password }),  // Correct key
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Login Successful:', data);
+        // Redirect to the dashboard or home page upon successful login
+        navigate('/dashboard');
+      } else {
+        console.error('Login failed:', data.error);
+        setError(data.error);  // Display error message to the user
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+      setError('Something went wrong. Please try again later.');
+    }
   };
 
   return (
@@ -26,9 +51,7 @@ const Login = () => {
       <div className="left-section">
         <div className='main-div'>
           <div>
-            <div>
-              <img src={logo} alt="logo" className='logo-image' />
-            </div>
+            <img src={logo} alt="logo" className='logo-image' />
             <h1 className="h1">WealthWise</h1>
           </div>
           <h3>Financial Analysis and Prediction</h3>  
@@ -50,10 +73,10 @@ const Login = () => {
             <div className="input-field">
               <input
                 type="email"
-                id="email"
+                id="Email_id"
                 placeholder="Email"
                 required
-                value={email}
+                value={Email_id}  // Correct value binding
                 onChange={handleEmailChange}
               />
             </div>
@@ -72,6 +95,8 @@ const Login = () => {
               <a href="#" className="forgot-password">Forget Password?</a>
             </div>
           </form>
+
+          {error && <div className="error-message">{error}</div>}  {/* Display error if login fails */}
         </div>
       </div>
     </div>

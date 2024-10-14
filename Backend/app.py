@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from Apis import login, liabilities_api, assets_api, expenses_api
+from flask_cors import CORS
 
 # Create the Flask application
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Register User Route
 @app.route('/api/register', methods=['POST'])
@@ -20,9 +22,9 @@ def delete_user(userid):
     return login.delete_user(userid)
 
 # Login (Authentication) Route
-@app.route('/api/login', methods=['GET'])
+@app.route('/api/login', methods=['POST'])
 def login_user():
-    return login.authenticate_user(request)
+    return login.authenticate_user()
 
 @app.route('/api/liabilities/add', methods=['POST'])
 def add_liability():
@@ -48,17 +50,20 @@ def remove_liability(year, quarter):
     
     return jsonify(response), status_code
 
-@app.route('/api/liabilities/getAll', methods=['GET'])
+@app.route('/api/liabilities/getAll', methods=['GET', 'OPTIONS'])
 def fetch_all_liabilities():
+    if request.method == 'OPTIONS':
+        # Handle preflight request here
+        return jsonify({"message": "CORS preflight success"}), 200
     # Call the function to get all liabilities
     response, status_code = liabilities_api.get_all_liabilities()
-    
     return jsonify(response), status_code
 
-@app.route('/api/liabilities/get/<string:year>/<int:quarter>', methods=['GET'])
-def retrieve_liability(year, quarter):
+
+@app.route('/api/liabilities/get/<string:year>', methods=['GET'])
+def retrieve_liability(year):
     # Call the get function from liabilities_api.py
-    response, status_code = liabilities_api.get_liability(year, quarter)
+    response, status_code = liabilities_api.get_liability(year)
     
     return jsonify(response), status_code
 

@@ -1,0 +1,71 @@
+/* Container for Expenses */
+.expense-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* Section for Year Filter */
+  .filter-section {
+    margin-bottom: 20px;
+  }
+  
+  .year-filter {
+    padding: 5px;
+    font-size: 16px;
+    margin-left: 10px;
+  }
+  
+  /* Sections for Quarters */
+  .sections-container {
+    margin-top: 20px;
+  }
+  
+  /* Styling for each quarter section */
+  .section {
+    margin-bottom: 30px;
+  }
+  
+  .section h2 {
+    font-size: 20px;
+    color: #333;
+  }
+  
+  /* Table Styling */
+  .expense-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .expense-table th, .expense-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .expense-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+  
+  .expense-table td {
+    text-align: left;
+  }
+  
+  .expense-table strong {
+    font-weight: bold;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .expense-container {
+      padding: 10px;
+    }
+  
+    .expense-table table {
+      font-size: 14px;
+    }
+  }
+  

@@ -1,0 +1,87 @@
+/* Style for the main container */
+.expense-table-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    max-width: 1200px;
+    background-color: #f1f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    border-radius: 2rem;
+  }
+  
+  /* Style for the table */
+  .expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: white;
+    text-align: left;
+    border-radius: 1.5rem;
+    overflow: hidden; 
+  }
+  
+  /* Table header */
+  .expense-table thead {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+  }
+  
+  .expense-table thead th {
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #4e4545b9;
+  }
+  
+  /* Table body */
+  .expense-table tbody td {
+    padding: 12px;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Zebra stripe effect for rows */
+  .expense-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* Total Expenses row */
+  .expense-table tbody tr:last-child td {
+    font-weight: bold;
+    background-color: #9a8bdd;
+    color: #fff;
+  }
+  
+  /* Responsive styles */
+  @media screen and (max-width: 768px) {
+    .expense-table thead {
+      display: none;
+    }
+  
+    .expense-table tbody tr {
+      display: block;
+      margin-bottom: 15px;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    .expense-table tbody td {
+      display: block;
+      padding: 10px;
+      text-align: right;
+      border: none;
+      position: relative;
+    }
+  
+    .expense-table tbody td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      padding-left: 15px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  }
+  

@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, request
 from pymongo import MongoClient
 import certifi
 
@@ -7,20 +7,19 @@ client = MongoClient("mongodb+srv://chandrgupt553:8iVT4sFaeFTxDbsK@wealthwise.mt
 db = client['UserAuth']
 users_collection = db['Users']
 
-
 # Method to register a user
 def register_user(request):
     try:
         data = request.json
-        if 'userid' not in data or 'password' not in data:
-            return jsonify({"error": "Both 'userid' and 'password' are required"}), 400
+        if 'Email_id' not in data or 'password' not in data:
+            return jsonify({"error": "Both 'Email-id' and 'password' are required"}), 400
 
-        existing_user = users_collection.find_one({"userid": data['userid']})
+        existing_user = users_collection.find_one({"Email_id": data['Email_id']})
         if existing_user:
             return jsonify({"error": "User already exists"}), 400
 
         new_user = {
-            "userid": data['userid'],
+            "Email_id": data['Email_id'],
             "password": data['password'],  # For simplicity, no password hashing here
             "role": data.get('role', 'user')  # Optional role field, default is 'user'
         }
@@ -31,8 +30,8 @@ def register_user(request):
         return jsonify({"error": str(e)}), 500
 
 
-# Method to update a user by userid
-def update_user(request, userid):
+# Method to update a user by Email-id
+def update_user(request, Emailid):
     try:
         data = request.json
 
@@ -47,12 +46,12 @@ def update_user(request, userid):
             return jsonify({"error": "No valid fields to update"}), 400
 
         result = users_collection.update_one(
-            {"userid": userid},
+            {"Email_id": Emailid},
             {"$set": update_fields}
         )
 
         if result.matched_count > 0:
-            return jsonify({"message": f"User {userid} updated successfully!"}), 200
+            return jsonify({"message": f"User {Emailid} updated successfully!"}), 200
         else:
             return jsonify({"error": "User not found!"}), 404
 
@@ -61,12 +60,12 @@ def update_user(request, userid):
 
 
 # Method to delete a user by userid
-def delete_user(userid):
+def delete_user(Emailid):
     try:
-        result = users_collection.delete_one({"userid": userid})
+        result = users_collection.delete_one({"Email_id": Emailid})
 
         if result.deleted_count > 0:
-            return jsonify({"message": f"User {userid} deleted successfully!"}), 200
+            return jsonify({"message": f"User {Emailid} deleted successfully!"}), 200
         else:
             return jsonify({"error": "User not found!"}), 404
 
@@ -75,20 +74,21 @@ def delete_user(userid):
 
 
 # Method to authenticate a user (login)
-def authenticate_user(request):
+def authenticate_user():
     try:
-        userid = request.args.get('userid')
-        password = request.args.get('password')
+        data = request.get_json()  # Get JSON data from the request body
+        Email_id = data.get('Email_id')
+        password = data.get('password')
 
-        if not userid or not password:
-            return jsonify({"error": "Both 'userid' and 'password' are required"}), 400
+        if not Email_id or not password:
+            return jsonify({"error": "Both 'Email_id' and 'password' are required"}), 400
 
-        user = users_collection.find_one({"userid": userid})
+        user = users_collection.find_one({"Email_id": Email_id})
 
         if user and user['password'] == password:
-            return jsonify({"message": "Authentication successful!", "userid": userid, "role": user['role']}), 200
+            return jsonify({"message": "Authentication successful!", "Email_id": Email_id, "role": user['role']}), 200
         else:
-            return jsonify({"error": "Invalid userid or password"}), 401
+            return jsonify({"error": "Invalid Email_id or password"}), 401
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

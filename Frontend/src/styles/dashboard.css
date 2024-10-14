@@ -63,6 +63,7 @@ span {
   font-size: 1.6em;
   font-weight: bold;
   color: #f1f4f4; /* Light text for contrast */
+  margin-bottom: 20px;
 }
 
 .logo img {
@@ -165,6 +166,67 @@ p {
   color: #7f8c8d; /* Softer paragraph color */
 }
 
+.logout-btn {
+  background-color: #ff4757; /* Bright red color */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  margin-left: 2rem;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn:hover {
+  background-color: #ff6b81; /* Lighter red on hover */
+  transform: translateY(-3px); /* Slight lift effect */
+}
+
+.logout-btn:active {
+  background-color: #ff4757;
+  transform: translateY(0); /* Reset the button after click */
+}
+
+.logout-btn:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0px 0px 10px rgba(255, 71, 87, 0.5); /* Glowing effect on focus */
+}
+
+.new-btn {
+  background-color: #42c4b4; /* Light teal color */
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  margin-right: 2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.new-btn:hover {
+  background-color: #02cdd2; /* Darker teal on hover */
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Slightly deeper shadow on hover */
+  transform: translateY(-2px); /* Lift effect */
+}
+
+.new-btn:active {
+  background-color: #30b1a2; /* Reset to original color on click */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Slightly lower shadow */
+  transform: translateY(0); /* Reset lift effect */
+}
+
+.new-btn:focus {
+  outline: none;
+  box-shadow: 0px 0px 10px rgba(65, 224, 206, 0.5); /* Focus glow effect */
+}
+
+
+
 /* Responsive Sidebar for small screens */
 @media screen and (max-width: 768px) {
   .dashboard {
@@ -192,6 +254,8 @@ p {
     margin-bottom: 1rem;
   }
 }
+
+
 
 /* Mobile View Adjustments */
 @media screen and (max-width: 480px) {

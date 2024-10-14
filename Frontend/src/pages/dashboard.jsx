@@ -2,6 +2,7 @@ import React, { useState, Suspense, lazy } from 'react';
 import '../styles/dashboard.css';
 import logo from '../assets/Logo.png';
 import Liabilities from './Liabilities';
+import Assets from './Assets';
 
 // Dynamically import subcategory and main category components
 const DashboardPage = React.lazy(() => import('../pages/dashboardPage'));
@@ -12,12 +13,12 @@ const CashFlowPage = React.lazy(() => import('../pages/CashFlow'));
 const ProjectPage = React.lazy(() => import('../pages/Project'));
 const RevenuePage = React.lazy(() => import('../pages/Revenue'));
 const ExpensesPage = React.lazy(() => import('../pages/Expense'));
+
 // Sub-Components for subcategories
 // const CostAnalysis = React.lazy(() => import('../components/CostAnalysis'));
 // const RevenueAnalysis = lazy(() => import('../components/RevenueAnalysis'));
 // const RiskPrediction = lazy(() => import('../components/RiskPrediction'));
 // const OutcomeAnalysis = lazy(() => import('../components/OutcomeAnalysis'));
-// Import other sub-items similarly...
 
 function Dashboard() {
   const [selectedSection, setSelectedSection] = useState('Dashboard'); // should be a string
@@ -65,6 +66,10 @@ function Dashboard() {
       switch (selectedSubItem) {
         case 'Liabilities':
           return <Liabilities />;
+        case 'Assets':
+          return <Assets />;
+        case 'Expenses':
+          return <Expenses />;
         // case 'Revenue':
         //   return <RevenueAnalysis />;
         // case 'Risk Prediction':
@@ -133,7 +138,9 @@ function Dashboard() {
 
       <div className="main-content">
         <div className="top-navbar">
+          <button className='new-btn'>Add New</button>
           <div className="profile">Profile</div>
+          <button className="logout-btn">Logout</button>
         </div>
         <div className="content">
           <Suspense fallback={<div>Loading...</div>}>

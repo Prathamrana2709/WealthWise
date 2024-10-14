@@ -1,0 +1,69 @@
+/* Assets.css */
+
+/* Main container styling */
+.Assets-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+  }
+  
+  /* Heading styles */
+  h1 {
+    color: #009fb2; /* Primary color for headings */
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Filter section styling */
+  .filter-section {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .year-filter {
+    padding: 10px;
+    margin-left: 10px;
+    border: 1px solid #009fb2; /* Matching border color */
+    border-radius: 4px;
+    background-color: #ffffff; /* White background for select */
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  /* Sections container styling */
+  .sections-container {
+    display: flex;
+    flex-direction: column; /* Stack sections vertically */
+    gap: 20px; /* Space between sections */
+  }
+  
+  
+  
+  /* Section title styling */
+  .title-1 {
+    color: #72706f; /* Darker color for section titles */
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  /* Add responsive styles */
+  @media (max-width: 768px) {
+    .Assets-container {
+      padding: 15px;
+    }
+  
+    .year-filter {
+      font-size: 0.9rem; /* Smaller font size for mobile */
+    }
+  
+    .title-1 {
+      font-size: 1.3rem; /* Adjust section title size for mobile */
+    }
+  }
+  

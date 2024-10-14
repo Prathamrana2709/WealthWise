@@ -34,7 +34,7 @@ def update_existing_liability(original_year, original_quarter, updated_data):
         return {'error': 'No fields to update'}, 400
 
     # Search for the liability using the original year and quarter
-    search_criteria = {'year': original_year, 'quarter': original_quarter}
+    search_criteria = {'Year': original_year, 'Quarter': original_quarter}
 
     # Update the liability with the provided data
     result = liabilities_collection.update_one(search_criteria, {'$set': update_fields})
@@ -42,10 +42,10 @@ def update_existing_liability(original_year, original_quarter, updated_data):
     if result.matched_count == 1:
         # Retrieve the updated document (note: use updated year/quarter if they were changed)
         # If year/quarter were updated, use them for the fetch, otherwise use the original values
-        updated_year = updated_data.get('year', original_year)
-        updated_quarter = updated_data.get('quarter', original_quarter)
+        updated_year = updated_data.get('Year', original_year)
+        updated_quarter = updated_data.get('Quarter', original_quarter)
 
-        updated_liability = liabilities_collection.find_one({'year': updated_year, 'quarter': updated_quarter})
+        updated_liability = liabilities_collection.find_one({'Year': updated_year, 'Quarter': updated_quarter})
         updated_liability['_id'] = str(updated_liability['_id'])  # Convert ObjectId to string
         
         return updated_liability, 200  # Return the updated liability and status code
@@ -55,7 +55,7 @@ def update_existing_liability(original_year, original_quarter, updated_data):
 # Delete an existing liability using year and quarter
 def delete_liability(year, quarter):
     # Find and delete the liability matching the year and quarter
-    result = liabilities_collection.delete_one({'year': year, 'quarter': quarter})
+    result = liabilities_collection.delete_one({'Year': year, 'Quarter': quarter})
     
     if result.deleted_count == 1:
         return {'message': f'Liability for year {year} and quarter {quarter} deleted successfully'}, 200
@@ -87,7 +87,3 @@ def filter_liabilities(filters):
         liability['_id'] = str(liability['_id'])
     
     return liabilities, 200
-
-
-
-
