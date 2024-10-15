@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
-from Apis import login, liabilities_api, assets_api, expenses_api
 from flask_cors import CORS
-from Apis import login, liabilities_api, assets_api, expenses_api, revenues_api
+from dotenv import load_dotenv
+from Apis import login, liabilities_api, assets_api, expenses_api, revenues_api , cashflow_api
 import os
 
 # Create the Flask application
@@ -37,13 +37,9 @@ def add_liability():
     return jsonify(response), status_code  # Return the response with the appropriate status code
 
 @app.route('/api/liabilities/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
-def update_liability(year, quarter):
-    updated_data = request.json  # Get the updated data from the request body
-    
-    # Call the function from liabilities_api.py to update the liability
-    response, status_code = liabilities_api.update_existing_liability(year, quarter, updated_data)
-    
-    return jsonify(response), status_code
+def update_liability(original_year, original_quarter):
+    updated_data = request.get_json()
+    return liabilities_api.update_existing_liability(original_year, original_quarter, updated_data)
 
 @app.route('/api/liabilities/delete/<string:year>/<int:quarter>', methods=['DELETE'])
 def remove_liability(year, quarter):
@@ -87,14 +83,10 @@ def add_asset():
     response, status_code = assets_api.add_new_asset(new_asset)  # Unpack response and status code
     return jsonify(response), status_code  # Return the response with the appropriate status code
 
-@app.route('/api/assets/update/<string:year>/<int:quarter>', methods=['PUT'])
-def update_asset(year, quarter):
-    updated_data = request.json  # Get the updated data from the request body
-    
-    # Call the function from assets_api.py to update the asset
-    response, status_code = assets_api.update_existing_asset(year, quarter, updated_data)
-    
-    return jsonify(response), status_code
+@app.route('/api/assets/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
+def update_asset(original_year, original_quarter):
+    updated_data = request.get_json()
+    return assets_api.update_existing_asset(original_year, original_quarter, updated_data)
 
 @app.route('/api/assets/delete/<string:year>/<int:quarter>', methods=['DELETE'])
 def remove_asset(year, quarter):
@@ -190,16 +182,39 @@ def filter_revenue():
     filters = request.args
     return revenues_api.filter_revenues(filters)
 
-# Set the secret key for session management (use a securely generated key)
-app.secret_key = '9bc74018332a5fc0a00ccc10e41a293601e64a444c6c83097ee59b1aedd97311'
-
-# Optionally, allow overriding the secret key via environment variable in production
-# Replace 'SECRET_KEY' with a better name for the environment variable
-app.secret_key = os.environ.get('SECRET_KEY', '9bc74018332a5fc0a00ccc10e41a293601e64a444c6c83097ee59b1aedd97311')
+# Set the secret key for session management
+app.secret_key = os.getenv('SECRET_KEY', 'default_dev_key')
 # Define the logout route and allow POST method
 @app.route('/api/logout', methods=['POST'])
 def logout():
     return login.logout_user()
+
+@app.route('/api/cashflow/add', methods=['POST'])
+def add_cashflow():
+    new_cashflow = request.json  # Get JSON payload from the request
+    
+    # Call the method from cashflow_api.py to add the new cashflow
+    response, status_code = cashflow_api.add_new_cashflow(new_cashflow)  # Unpack response and status code
+    return jsonify(response), status_code  # Return the response with the appropriate status code
+
+@app.route('/api/cashflow/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
+def update_cashflow(original_year, original_quarter):
+    updated_data = request.get_json()
+    return cashflow_api.update_existing_cashflow(original_year, original_quarter, updated_data)
+
+@app.route('/api/cashflow/delete/<string:year>/<int:quarter>', methods=['DELETE'])
+def remove_cashflow(year, quarter):
+    # Call the delete function from cashflow_api.py
+    response, status_code = cashflow_api.delete_cashflow(year, quarter)
+    
+    return jsonify(response), status_code
+
+@app.route('/api/cashflow/getAll', methods=['GET'])
+def fetch_all_cashflows():
+    # Call the function to get all assets
+    response, status_code = cashflow_api.get_all_cashflows()
+    
+    return jsonify(response), status_code
 
 
 # Run the Flask app

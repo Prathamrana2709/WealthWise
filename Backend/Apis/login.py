@@ -1,9 +1,10 @@
 from flask import jsonify, request
 from pymongo import MongoClient
-import certifi
+import certifi,os
 
 # MongoDB Atlas connection (handled here in login.py)
-client = MongoClient("mongodb+srv://chandrgupt553:8iVT4sFaeFTxDbsK@wealthwise.mtgwn.mongodb.net/", tlsCAFile=certifi.where())
+mongo_connection_string = os.getenv('MONGODB_CONNECTION_STRING')
+client = MongoClient(mongo_connection_string, tlsCAFile=certifi.where())
 db = client['UserAuth']
 users_collection = db['Users']
 
