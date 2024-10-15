@@ -2,11 +2,20 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from Apis import login, liabilities_api, assets_api, expenses_api, revenues_api , cashflow_api
-import os
+import os,socket
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 # Create the Flask application
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
+
+
+
+@app.route('/example')
+def example():
+    return "This is an example page"
 
 # Register User Route
 @app.route('/api/register', methods=['POST'])
@@ -215,6 +224,7 @@ def fetch_all_cashflows():
     response, status_code = cashflow_api.get_all_cashflows()
     
     return jsonify(response), status_code
+
 
 
 # Run the Flask app
