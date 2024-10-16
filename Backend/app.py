@@ -26,7 +26,7 @@ def delete_user(userid):
 # Login (Authentication) Route
 @app.route('/api/login', methods=['POST'])
 def login_user():
-    return login.authenticate_user()
+    return login.authenticate_user(request)  # Pass 'request' explicitly
 
 @app.route('/api/liabilities/add', methods=['POST'])
 def add_liability():

@@ -74,50 +74,34 @@ def delete_user(Emailid):
         return jsonify({"error": str(e)}), 500
 
 
-# Method to authenticate a user (login)
-def authenticate_user():
-    try:
-        data = request.get_json()  # Get JSON data from the request body
-        Email_id = data.get('Email_id')
-        password = data.get('password')
-
-        if not Email_id or not password:
-            return jsonify({"error": "Both 'Email_id' and 'password' are required"}), 400
-
-        user = users_collection.find_one({"Email_id": Email_id})
-
-        if user and user['password'] == password:
-            return jsonify({"message": "Authentication successful!", "Email_id": Email_id, "role": user['role']}), 200
-        else:
-            return jsonify({"error": "Invalid Email_id or password"}), 401
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
 
-# Method to authenticate a user (login)
+
 def authenticate_user(request):
     try:
-        Emailid = request.args.get('Email_id')
-        password = request.args.get('password')
-
+        data = request.get_json()  # Get JSON data from the request body
+        Emailid = data.get('Email_id')  # Extract 'Email_id' from the JSON payload
+        password = data.get('password')  # Extract 'password' from the JSON payload
+        
         if not Emailid or not password:
             return jsonify({"error": "Both 'Email_id' and 'password' are required"}), 400
 
+        # Find user by Email_id in the database
         user = users_collection.find_one({"Email_id": Emailid})
 
         if user and user['password'] == password:
-             # Return success message along with the userid and role
+            # Return success message along with the Email_id and role
             return jsonify({
                 "message": "Authentication successful!",
                 "Email_id": Emailid,
                 "role": user['role']  # Return the role as part of the response
             }), 200
         else:
-            return jsonify({"error": "Invalid userid or password"}), 401
+            return jsonify({"error": "Invalid Email_id or password"}), 401
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
     
 # Logout function
 def logout_user():
