@@ -15,7 +15,7 @@ const DataFetchExpense = ({ expenseData }) => {
           {expenseData.map((item, index) => (
             <React.Fragment key={index}>
               {Object.keys(item).map((key, i) => (
-                !['_id', 'Year', 'Other Expenses', 'Fringe benefit tax', 'MAT credit entitlement', 'Total Tax Expense', 'Quarter', 'Current Tax', 'Deferred Tax', 'Total Expenses'].includes(key) && (
+                !['_id', 'Year', 'Fringe benefit tax', 'MAT credit entitlement', 'Total Tax Expense', 'Quarter', 'Current Tax', 'Deferred Tax', 'Total Expenses'].includes(key) && (
                   <tr key={i}>
                     <td>{key}</td>
                     <td>{item[key]}</td>

@@ -36,7 +36,9 @@ const Login = () => {
       if (response.ok) {
         console.log('Login Successful:', data);
         // Redirect to the dashboard or home page upon successful login
-        navigate('/dashboard');
+        setEmail('');  // Clear the input fields
+        setPassword('');
+        navigate('/Dashboard');
       } else {
         console.error('Login failed:', data.error);
         setError(data.error);  // Display error message to the user

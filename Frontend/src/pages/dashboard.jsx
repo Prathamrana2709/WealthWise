@@ -1,18 +1,19 @@
 import React, { useState, Suspense, lazy } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/dashboard.css';
 import logo from '../assets/Logo.png';
 import Liabilities from './Liabilities';
 import Assets from './Assets';
 
 // Dynamically import subcategory and main category components
-const DashboardPage = React.lazy(() => import('../pages/dashboardPage'));
-const AnalysisPage = React.lazy(() => import('../pages/Analysis'));
-const PredictPage = React.lazy(() => import('../pages/Predict'));
-const AssetsLiabilitiesPage = React.lazy(() => import('../pages/AssetsAndLiabilities'));
-const CashFlowPage = React.lazy(() => import('../pages/CashFlow'));
-const ProjectPage = React.lazy(() => import('../pages/Project'));
-const RevenuePage = React.lazy(() => import('../pages/Revenue'));
-const ExpensesPage = React.lazy(() => import('../pages/Expense'));
+const DashboardPage = React.lazy(() => import('./dashboardPage'));
+const AnalysisPage = React.lazy(() => import('./Analysis'));
+const PredictPage = React.lazy(() => import('./Predict'));
+const AssetsLiabilitiesPage = React.lazy(() => import('./AssetsAndLiabilities'));
+const CashFlowPage = React.lazy(() => import('./CashFlow'));
+const ProjectPage = React.lazy(() => import('./Project'));
+const RevenuePage = React.lazy(() => import('./Revenue'));
+const ExpensesPage = React.lazy(() => import('./Expense'));
 
 // Sub-Components for subcategories
 // const CostAnalysis = React.lazy(() => import('../components/CostAnalysis'));
@@ -138,9 +139,9 @@ function Dashboard() {
 
       <div className="main-content">
         <div className="top-navbar">
-          <button className='new-btn'>Add New</button>
+          <Link to='/AddNewMember'><button className='new-btn'>Add New</button></Link>
           <div className="profile">Profile</div>
-          <button className="logout-btn">Logout</button>
+          <Link to='/login'><button className='logout-btn'>Logout</button></Link>
         </div>
         <div className="content">
           <Suspense fallback={<div>Loading...</div>}>
