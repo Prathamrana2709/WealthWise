@@ -3,6 +3,7 @@ import '../styles/dashboard.css';
 import logo from '../assets/Logo.png';
 import Liabilities from './Liabilities';
 import Assets from './Assets';
+import CashFlow from './CashFlow';
 
 // Dynamically import subcategory and main category components
 const DashboardPage = React.lazy(() => import('../pages/dashboardPage'));
@@ -70,6 +71,8 @@ function Dashboard() {
           return <Assets />;
         case 'Expenses':
           return <Expenses />;
+        case 'Cashflow':
+            return <CashFlow />;
         // case 'Revenue':
         //   return <RevenueAnalysis />;
         // case 'Risk Prediction':
@@ -100,6 +103,7 @@ function Dashboard() {
           return <RevenuePage />;
         case 'Expenses':
           return <ExpensesPage />;
+          
         default:
           return <p>No component available for this section</p>;
       }
