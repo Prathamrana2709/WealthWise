@@ -5,6 +5,7 @@ import logo from '../assets/Logo.png';
 import Liabilities from './Liabilities';
 import Assets from './Assets';
 import CashFlow from './CashFlow';
+import Revenue from './Revenue';
 
 // Dynamically import subcategory and main category components
 const DashboardPage = React.lazy(() => import('./dashboardPage'));
@@ -12,7 +13,6 @@ const AnalysisPage = React.lazy(() => import('./Analysis'));
 const PredictPage = React.lazy(() => import('./Predict'));
 const AssetsLiabilitiesPage = React.lazy(() => import('./AssetsAndLiabilities'));
 const CashFlowPage = React.lazy(() => import('./CashFlow'));
-const ProjectPage = React.lazy(() => import('./Project'));
 const RevenuePage = React.lazy(() => import('./Revenue'));
 const ExpensesPage = React.lazy(() => import('./Expense'));
 
@@ -37,7 +37,7 @@ function Dashboard() {
     //   'Equity', 'Investments', 'Bonds', 'Taxes', 'Interest Rate related to it', 'Insurance'
     // ],
     'Assets and Liabilities': [
-      'Assets','Liabilities'
+      'Assets', 'Liabilities'
     ],
     'Cash Flow': [],
     // Project: [
@@ -59,7 +59,7 @@ function Dashboard() {
   const handleSubItemClick = (subItem) => {
     setSelectedSubItem(subItem); // Update the state with the selected sub-item
   };
-  
+
   // Function to dynamically load the correct component based on selected item
   const renderContent = () => {
     if (selectedSubItem) {
@@ -71,7 +71,9 @@ function Dashboard() {
         case 'Expenses':
           return <Expenses />;
         case 'Cashflow':
-            return <CashFlow />;
+          return <CashFlow />;
+        case 'Revenue':
+          return <Revenue />;
         // case 'Revenue':
         //   return <RevenueAnalysis />;
         // case 'Risk Prediction':
@@ -98,11 +100,9 @@ function Dashboard() {
           return <CashFlowPage />;
         case 'Project':
           return <ProjectPage />;
-        case 'Revenue':
-          return <RevenuePage />;
         case 'Expenses':
           return <ExpensesPage />;
-          
+
         default:
           return <p>No component available for this section</p>;
       }
@@ -118,27 +118,27 @@ function Dashboard() {
         </div>
 
         <div className='section-margin'>
-        {Object.keys(sections).map((section) => (
-          <div key={section} className="section">
-            <div className="section-title" onClick={() => handleSectionClick(section)}>
-              {section}
-            </div>
-            {selectedSection === section && (
-              <div className="sub-section">
-                {sections[section].map((sub) => (
-                  <div
-                    key={sub}
-                    className="sub-item"
-                    onClick={() => handleSubItemClick(sub)}
-                  >
-                    {sub}
-                  </div>
-                ))}
+          {Object.keys(sections).map((section) => (
+            <div key={section} className="section">
+              <div className="section-title" onClick={() => handleSectionClick(section)}>
+                {section}
               </div>
-            )}
-          </div>
-        ))}
-        
+              {selectedSection === section && (
+                <div className="sub-section">
+                  {sections[section].map((sub) => (
+                    <div
+                      key={sub}
+                      className="sub-item"
+                      onClick={() => handleSubItemClick(sub)}
+                    >
+                      {sub}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+
         </div>
       </div>
 

@@ -20,7 +20,7 @@ const Revenue= () => {
         });
         
         if (!response.ok) {
-          throw new Error(HTTP error! Status: ${response.status} - ${response.statusText});
+          throw new Error('Error');
         }
         
         const apiData = await response.json();
@@ -42,7 +42,7 @@ const Revenue= () => {
     // Filter data by selected year and group by quarter
     const filtered = data.reduce((acc, item) => {
       if (item.Year === selectedYear) {
-        const quarter = ${item.Quarter}; // Group by quarter (Q1, Q2, Q3, Q4)
+        const quarter = item['Quarter']; // Group by quarter (Q1, Q2, Q3, Q4)
 
         if (!acc[quarter]) {
           acc[quarter] = [];
