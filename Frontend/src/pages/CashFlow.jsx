@@ -51,6 +51,8 @@ const Cashflow = () => {
     setFilteredData(filtered);
   }, [data, selectedYear]);
 
+  console.log(filteredData);
+
   return (
     <div className="Assets-container">
       <h1>Cashflow</h1>

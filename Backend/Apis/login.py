@@ -21,6 +21,7 @@ def register_user(request):
 
         new_user = {
             "Email_id": data['Email_id'],
+            "Name": data['Name'],
             "password": data['password'],  # For simplicity, no password hashing here
             "role": data.get('role', 'user')  # Optional role field, default is 'user'
         }

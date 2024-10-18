@@ -36,11 +36,11 @@ span {
   flex-direction: column;
   width: 18%;
   height: 100vw;
-  background: rgba(31, 52, 63, 0.6); /* Semi-transparent background */
+  background: rgba(2, 6, 82, 0.6); /* Semi-transparent background */
   backdrop-filter: blur(12px); /* Blur effect for glassy look */
   padding: 1.2em 1em; /* Adjusted padding to reduce gap */
   overflow-y: auto; /* Enable vertical scrolling */
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2); /* Deep shadow for depth */
+  box-shadow: 2px 0 10px rgba(28, 5, 82, 0.2); /* Deep shadow for depth */
   border-right: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border on the right */
 }
 
@@ -139,7 +139,7 @@ span {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background: rgba(36, 38, 209, 0.6); /* Semi-transparent background for glass effect */
+  background: rgba(255, 255, 255, 0.6); /* Semi-transparent background for glass effect */
   backdrop-filter: blur(10px); /* Blur effect for glassy look */
   color: white;
   padding: 20px;

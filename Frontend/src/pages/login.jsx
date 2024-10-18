@@ -39,7 +39,7 @@ const Login = () => {
         setEmail('');  // Clear the input fields
         setPassword('');
         navigate('/Dashboard');
-      } else if(response.ok && data.role === 'Employee'){
+      } else if(response.ok && data.role === 'Financial Manager'){
         console.log('Login Successful:', data);
         // Redirect to the dashboard or home page upon successful login
         setEmail('');  // Clear the input fields

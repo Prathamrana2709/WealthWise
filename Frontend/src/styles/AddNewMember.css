@@ -1,0 +1,129 @@
+body {
+    background-color: #f0f4f8;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .add-member-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1, h2 {
+    text-align: center;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  input:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .password-input {
+    position: relative;
+  }
+  
+  .password-strength {
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  
+  .validation-errors {
+    color: red;
+    margin-top: 5px;
+  }
+  
+  .add-btn, .back-btn, .delete-btn, .edit-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .add-btn:hover, .back-btn:hover, .delete-btn:hover, .edit-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8); /* Glassy effect */
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .nav-link {
+    margin-left: 15px;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .nav-link:hover {
+    color: #0056b3;
+  }
+  
+  .user-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .user-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .edit-btn, .delete-btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+  }
+  
