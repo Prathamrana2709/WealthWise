@@ -4,6 +4,7 @@ import '../styles/dashboard.css';
 import logo from '../assets/Logo.png';
 import Liabilities from './Liabilities';
 import Assets from './Assets';
+import CashFlow from './CashFlow';
 
 // Dynamically import subcategory and main category components
 const DashboardPage = React.lazy(() => import('./dashboardPage'));
@@ -29,7 +30,7 @@ function Dashboard() {
   const sections = {
     Dashboard: [],
     Analysis: [
-      'Cost', 'Revenue', 'Budgeted vs Actual', 'Profits/Loss'
+      'Revenue', 'Budgeted vs Actual', 'Profits/Loss'
     ],
     Predict: [],
     // 'Shareholders & Partners': [
@@ -38,9 +39,7 @@ function Dashboard() {
     'Assets and Liabilities': [
       'Assets','Liabilities'
     ],
-    'Cash Flow': [
-      'Inflow', 'Outflow'
-    ],
+    'Cash Flow': [],
     // Project: [
     //   'Active Projects', 'Assign Project Manager'
     // ],
@@ -48,7 +47,7 @@ function Dashboard() {
     //   'Filter by Region', 'Filter by Product', 'Customer Segment', 'Sales Channel', 'Total Given'
     // ],
     Expenses: [
-      'Costs (Check Boxes)', 'Add Description'
+      // 'Costs (Check Boxes)', 'Add Description'
     ]
   };
 
@@ -71,6 +70,8 @@ function Dashboard() {
           return <Assets />;
         case 'Expenses':
           return <Expenses />;
+        case 'Cashflow':
+            return <CashFlow />;
         // case 'Revenue':
         //   return <RevenueAnalysis />;
         // case 'Risk Prediction':
@@ -101,6 +102,7 @@ function Dashboard() {
           return <RevenuePage />;
         case 'Expenses':
           return <ExpensesPage />;
+          
         default:
           return <p>No component available for this section</p>;
       }
@@ -115,6 +117,7 @@ function Dashboard() {
           <span>WealthWise</span>
         </div>
 
+        <div className='section-margin'>
         {Object.keys(sections).map((section) => (
           <div key={section} className="section">
             <div className="section-title" onClick={() => handleSectionClick(section)}>
@@ -135,6 +138,8 @@ function Dashboard() {
             )}
           </div>
         ))}
+        
+        </div>
       </div>
 
       <div className="main-content">

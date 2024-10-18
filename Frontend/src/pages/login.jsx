@@ -33,13 +33,20 @@ const Login = () => {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok && data.role === 'HR') {
         console.log('Login Successful:', data);
         // Redirect to the dashboard or home page upon successful login
         setEmail('');  // Clear the input fields
         setPassword('');
         navigate('/Dashboard');
-      } else {
+      } else if(response.ok && data.role === 'Employee'){
+        console.log('Login Successful:', data);
+        // Redirect to the dashboard or home page upon successful login
+        setEmail('');  // Clear the input fields
+        setPassword('');
+        // navigate('/EmployeeDashboard');
+
+            } else {
         console.error('Login failed:', data.error);
         setError(data.error);  // Display error message to the user
       }

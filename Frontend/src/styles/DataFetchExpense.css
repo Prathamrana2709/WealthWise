@@ -50,7 +50,7 @@
   /* Total Expenses row */
   .expense-table tbody tr:last-child td {
     font-weight: bold;
-    background-color: #9a8bdd;
+    background-color: #1f343f;
     color: #fff;
   }
   

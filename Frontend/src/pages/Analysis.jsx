@@ -79,23 +79,23 @@ function Analysis() {
   };
 
   // Filtered data for the Pie chart (expenses)
-  // const pieData = expenses.map(exp => ({
-  //   // name: 'Expenses',
-  //   EmployeeBenefit: exp['Employee Benefit Expense'],
-  //   Equipment: exp['Cost of Equipment and software Licences'],
-  //   Finance: exp['Finance Costs'],
-  //   Depreciation: exp['Depreciation and Amortisation Costs'],
-  //   Other: exp['Other Expenses']
-  // }));
+  const pieData = expenses.map(exp => ({
+    // name: 'Expenses',
+    EmployeeBenefit: exp['Employee Benefit Expense'],
+    Equipment: exp['Cost of Equipment and software Licences'],
+    Finance: exp['Finance Costs'],
+    Depreciation: exp['Depreciation and Amortisation Costs'],
+    Other: exp['Other Expenses']
+  }));
 
   // Prepare pieData with correct format: { name, value }
-  const pieData = [
-    { name: 'Employee Benefit', value: expenses.reduce((acc, exp) => acc + (exp['Employee Benefit Expense'] || 0), 0) },
-    { name: 'Equipment', value: expenses.reduce((acc, exp) => acc + (exp['Cost of Equipment and software Licences'] || 0), 0) },
-    { name: 'Finance', value: expenses.reduce((acc, exp) => acc + (exp['Finance Costs'] || 0), 0) },
-    { name: 'Depreciation', value: expenses.reduce((acc, exp) => acc + (exp['Depreciation and Amortisation Costs'] || 0), 0) },
-    { name: 'Other', value: expenses.reduce((acc, exp) => acc + (exp['Other Expenses'] || 0), 0) }
-  ];
+  // const pieData = [
+  //   { name: 'Employee Benefit', value: expenses.reduce((acc, exp) => acc + (exp['Employee Benefit Expense'] || 0), 0) },
+  //   { name: 'Equipment', value: expenses.reduce((acc, exp) => acc + (exp['Cost of Equipment and software Licences'] || 0), 0) },
+  //   { name: 'Finance', value: expenses.reduce((acc, exp) => acc + (exp['Finance Costs'] || 0), 0) },
+  //   { name: 'Depreciation', value: expenses.reduce((acc, exp) => acc + (exp['Depreciation and Amortisation Costs'] || 0), 0) },
+  //   { name: 'Other', value: expenses.reduce((acc, exp) => acc + (exp['Other Expenses'] || 0), 0) }
+  // ];
 
 
   // Filtered data for the Line chart (revenues by quarter)
@@ -106,17 +106,17 @@ function Analysis() {
 
   console.log('Pie Data:', pieData);
 
-  {pieData.map((entry, index) => {
-    console.log(entry); // This will log each entry
-    return (
-      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-    );
-  })}
+  // {pieData.map((entry, index) => {
+  //   console.log(entry); // This will log each entry
+  //   return (
+  //     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+  //   );
+  // })}
   
 
   return (
     <div className='analysis-container'>
-      <h1 className="title-1">Analysis</h1>
+      {/* <h1 className="title-1">Analysis</h1> */}
 
       {/* Filters for PieChart */}
       <div className="filters">

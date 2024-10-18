@@ -15,7 +15,6 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  background-color: #f1f4f4; /* Light background */
   height: 100vh;
 }
 
@@ -37,24 +36,30 @@ span {
   flex-direction: column;
   width: 18%;
   height: 100vw;
-  background-color: #447075; /* Darker background for sidebar */
+  background: rgba(31, 52, 63, 0.6); /* Semi-transparent background */
+  backdrop-filter: blur(12px); /* Blur effect for glassy look */
   padding: 1.2em 1em; /* Adjusted padding to reduce gap */
   overflow-y: auto; /* Enable vertical scrolling */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2); /* Deep shadow for depth */
+  border-right: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border on the right */
 }
 
+/* Custom Scrollbar */
 .left-navbar::-webkit-scrollbar {
   width: 8px; /* Width of the scrollbar */
 }
 
 .left-navbar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3); /* Thumb color */
-  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.4); /* Semi-transparent thumb color */
+  border-radius: 4px; /* Rounded scrollbar thumb */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Adds a border for a more refined look */
 }
 
 .left-navbar::-webkit-scrollbar-track {
-  background-color: #72706f; /* Track color */
+  background-color: rgba(114, 112, 111, 0.3); /* Semi-transparent track color */
+  border-radius: 4px;
 }
+
 
 /* Logo styling */
 .logo {
@@ -63,12 +68,12 @@ span {
   font-size: 1.6em;
   font-weight: bold;
   color: #f1f4f4; /* Light text for contrast */
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .logo img {
-  width: 35px;
-  height: 35px;
+  width: 100%;
+  height: 100%;
   margin-right: 10px;
 }
 
@@ -78,7 +83,7 @@ span {
 
 .section-title {
   font-weight: bold;
-  color: #f1f4f4;
+  color: #fff9f9;
   cursor: pointer;
   padding: 10px;
   border-radius: 4px;
@@ -87,8 +92,13 @@ span {
 }
 
 .section-title:hover {
-  background-color: #3f4d4b; /* Hover effect for section title */
+  background-color: hsl(208, 45%, 78%); /*Hover effect for section title*/
+  /* background: linear-gradient(to bottom right, #e0b1ba, #a8e6cf); */
   transform: scale(1.02); /* Slight scaling on hover */
+}
+
+.section-margin{
+  margin-top: 3rem;
 }
 
 .sub-section {
@@ -129,11 +139,14 @@ span {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-color: #455352; /* Primary color for the navbar */
+  background: rgba(36, 38, 209, 0.6); /* Semi-transparent background for glass effect */
+  backdrop-filter: blur(10px); /* Blur effect for glassy look */
   color: white;
   padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Stronger shadow for more depth */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for separation */
 }
+
 
 .profile {
   cursor: pointer;

@@ -14,9 +14,9 @@ function Home() {
           <span className="company-name">WealthWise</span>
         </div>
         <div className="content1">
-          <h1 className="title-1">Transforming Data into Smart Financial Decisions</h1>
-          <p>Our platform provides real-time financial analysis and accurate predictions to help you make smarter decisions.</p>
-          <Link to="/login"><button className="login-btn" >Login </button></Link>
+          <h1 id="title-1">Transforming Data into Smart Financial Decisions</h1>
+          <p className='para'>Our platform provides real-time financial analysis and accurate predictions to help you make smarter decisions.</p>
+          <Link to="/login"><button className="login-btn" >Login</button></Link>
         </div>
       </div>
       <div className="illustration">
