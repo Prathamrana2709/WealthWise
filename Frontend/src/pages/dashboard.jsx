@@ -13,6 +13,7 @@ const AnalysisPage = React.lazy(() => import('./Analysis'));
 const PredictPage = React.lazy(() => import('./Predict'));
 const AssetsLiabilitiesPage = React.lazy(() => import('./AssetsAndLiabilities'));
 const CashFlowPage = React.lazy(() => import('./CashFlow'));
+// const ProjectPage = React.lazy(() => import('./Project'));
 const RevenuePage = React.lazy(() => import('./Revenue'));
 const ExpensesPage = React.lazy(() => import('./Expense'));
 
