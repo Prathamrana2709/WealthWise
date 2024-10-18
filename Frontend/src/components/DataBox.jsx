@@ -34,12 +34,12 @@ const DataBox = ({ data, hideYear, deleteMode, onCheckboxChange, onUpdate }) => 
             <td>{item.Category}</td>
             <td>{item.Amount}</td>
             <td>
-              {showOptions === index && (
+              {/* {showOptions === index && (
                 <div className="three-dots-menu">
                   <button onClick={() => onUpdate(item)}>Update</button>
                   <button onClick={() => onCheckboxChange(item)}>Delete</button>
                 </div>
-              )}
+              )} */}
             </td>
           </tr>
         ))}
