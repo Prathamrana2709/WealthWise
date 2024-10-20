@@ -2,17 +2,15 @@ import React, { useState, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/dashboard.css';
 import logo from '../assets/Logo.png';
-import Liabilities from './Liabilities';
-import Assets from './Assets';
+
 import CashFlow from './CashFlow';
-import Cost from './Cost';
 import Revenue from './Revenue';
 
 // Dynamically import subcategory and main category components
 const DashboardPage = React.lazy(() => import('./dashboardPage'));
 const AnalysisPage = React.lazy(() => import('./Analysis'));
 const PredictPage = React.lazy(() => import('./Predict'));
-const AssetsLiabilitiesPage = React.lazy(() => import('./AssetsAndLiabilities'));
+
 const CashFlowPage = React.lazy(() => import('./CashFlow'));
 // const ProjectPage = React.lazy(() => import('./Project'));
 const RevenuePage = React.lazy(() => import('./Revenue'));
@@ -24,7 +22,7 @@ const ExpensesPage = React.lazy(() => import('./Expense'));
 // const RiskPrediction = lazy(() => import('../components/RiskPrediction'));
 // const OutcomeAnalysis = lazy(() => import('../components/OutcomeAnalysis'));
 
-function Dashboard() {
+function Dashboard2() {
   const [selectedSection, setSelectedSection] = useState('Dashboard'); // should be a string
 
   const [selectedSubItem, setSelectedSubItem] = useState('');
@@ -32,15 +30,13 @@ function Dashboard() {
   const sections = {
     Dashboard: [],
     Analysis: [
-      'Cost','Revenue'
+      'Revenue', 'Budgeted vs Actual', 'Profits/Loss'
     ],
     Predict: [],
     // 'Shareholders & Partners': [
     //   'Equity', 'Investments', 'Bonds', 'Taxes', 'Interest Rate related to it', 'Insurance'
     // ],
-    'Assets and Liabilities': [
-      'Assets', 'Liabilities'
-    ],
+    
     'Cash Flow': [],
     // Project: [
     //   'Active Projects', 'Assign Project Manager'
@@ -66,19 +62,20 @@ function Dashboard() {
   const renderContent = () => {
     if (selectedSubItem) {
       switch (selectedSubItem) {
-        case 'Liabilities':
-          return <Liabilities />;
-        case 'Assets':
-          return <Assets />;
+        
         case 'Expenses':
           return <Expenses />;
         case 'Cashflow':
           return <CashFlow />;
         case 'Revenue':
           return <Revenue />;
-          case 'Cost':
-          return <Cost />;
-       
+        // case 'Revenue':
+        //   return <RevenueAnalysis />;
+        // case 'Risk Prediction':
+        //   return <RiskPrediction />;
+        // case 'Outcome Analysis':
+        //   return <OutcomeAnalysis />;
+        // Add other sub-items here...
         default:
           return <p>No component available for this sub-item</p>;
       }
@@ -92,8 +89,7 @@ function Dashboard() {
           return <PredictPage />;
         case 'Shareholders & Partners':
           return <ShareholdersPage />;
-        case 'Assets and Liabilities':
-          return <AssetsLiabilitiesPage />;
+      
         case 'Cash Flow':
           return <CashFlowPage />;
         case 'Project':
@@ -143,7 +139,7 @@ function Dashboard() {
       <div className="main-content">
         <div className="top-navbar">
           <Link to='/AddNewMember'><button className='new-btn'>Add New</button></Link>
-          {/* <div className="profile">Profile</div> */}
+          <div className="profile">Profile</div>
           <Link to='/login'><button className='logout-btn'>Logout</button></Link>
         </div>
         <div className="content">
@@ -156,4 +152,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Dashboard2;

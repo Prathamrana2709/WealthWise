@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DataBox from '../components/DataBox';
-import ConfirmationDialog from '../components/AddNewModal';
-import AddNewModal from '../components/AddNewModal'; // Modal for Adding New Liabilities
+// import ConfirmationDialog from '../components/AddNewModal';
+// import AddNewModal from '../components/AddNewModal'; // Modal for Adding New Liabilities
 import '../styles/Liabilities.css';
 
 const Liabilities = () => {
@@ -162,7 +162,7 @@ const Liabilities = () => {
           <div key={section} className="section">
             <div className="section-header">
               <h2 className="title-1">{section.replace('_', ' ').toUpperCase()}</h2>
-              <div className="section-buttons">
+              {/* <div className="section-buttons">
                 <button onClick={() => handleAdd(section)}>Add New {section.replace('_', ' ')}</button>
                 <button onClick={handleDeleteMode}>
                   {deleteMode ? 'Cancel Delete' : 'Delete'}
@@ -170,7 +170,7 @@ const Liabilities = () => {
                 {deleteMode && selectedItems.length > 0 && (
                   <button onClick={handleDelete}>Delete Selected ({selectedItems.length})</button>
                 )}
-              </div>
+              </div> */}
             </div>
             {filteredData[section] && (
               <DataBox

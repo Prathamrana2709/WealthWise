@@ -5,7 +5,6 @@ import logo from '../assets/Logo.png';
 import Liabilities from './Liabilities';
 import Assets from './Assets';
 import CashFlow from './CashFlow';
-import Cost from './Cost';
 import Revenue from './Revenue';
 
 // Dynamically import subcategory and main category components
@@ -32,7 +31,7 @@ function Dashboard() {
   const sections = {
     Dashboard: [],
     Analysis: [
-      'Cost','Revenue'
+      'Revenue', 'Budgeted vs Actual', 'Profits/Loss'
     ],
     Predict: [],
     // 'Shareholders & Partners': [
@@ -76,9 +75,13 @@ function Dashboard() {
           return <CashFlow />;
         case 'Revenue':
           return <Revenue />;
-          case 'Cost':
-          return <Cost />;
-       
+        // case 'Revenue':
+        //   return <RevenueAnalysis />;
+        // case 'Risk Prediction':
+        //   return <RiskPrediction />;
+        // case 'Outcome Analysis':
+        //   return <OutcomeAnalysis />;
+        // Add other sub-items here...
         default:
           return <p>No component available for this sub-item</p>;
       }
@@ -143,7 +146,7 @@ function Dashboard() {
       <div className="main-content">
         <div className="top-navbar">
           <Link to='/AddNewMember'><button className='new-btn'>Add New</button></Link>
-          {/* <div className="profile">Profile</div> */}
+          <div className="profile">Profile</div>
           <Link to='/login'><button className='logout-btn'>Logout</button></Link>
         </div>
         <div className="content">
