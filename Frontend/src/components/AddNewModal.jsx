@@ -40,12 +40,12 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
       currentQuarter = 4;
       currentYear -= 1; // The financial year ends in March
     }
-
-    setYear(`${currentYear}-${currentYear + 1}`);
-    setQuarter(currentQuarter);
+    const nextYear = (currentYear + 1).toString().slice(-2); // get only last two digits, e.g., "25"
+    setYear(`${currentYear}-${nextYear}`); // sets year to "2024-25"
+    setQuarter(currentQuarter); // sets the quarter as usual
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const newItem = {
       Year: year,
       Quarter: quarter,
@@ -53,29 +53,11 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
       Amount: amount,
       Type: section, // Section passed from parent (e.g., 'Current_Liabilities', 'NonCurrent_Liabilities', 'Equity')
     };
-
-    try {
-      // Sending data to your API endpoint using fetch
-      const response = await fetch('http://127.0.0.1:5001/api/liabilities/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newItem),
-      });
-
-      // Handle success or error
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log('Data successfully added:', responseData);
-        onAdd(newItem); // Notify parent component
-      } else {
-        console.error('Failed to add data:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  
+    // Call the onAdd method passed from the parent with the newItem data
+    onAdd(newItem);
   };
+  
 
   return (
     <div className="modal-overlay">

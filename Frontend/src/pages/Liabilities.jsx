@@ -224,6 +224,7 @@ const Liabilities = () => {
   const [deleteMode, setDeleteMode] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false); // Add state for Add Modal
   const [selectedSection, setSelectedSection] = useState(''); // Section for Adding New Item
+  const [liabilities, setLiabilities] = useState([]); // Holds the list of liabilities
 
   const fetchData = async () => {
     try {
