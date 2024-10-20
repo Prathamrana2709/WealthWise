@@ -1,6 +1,15 @@
-from flask import jsonify, request
+from flask import jsonify, request, Flask, url_for, render_template, redirect
 from pymongo import MongoClient
-import certifi,os
+import certifi, os
+from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer
+import bcrypt
+
+app = Flask(__name__)
+
+# Mail and token configuration
+s = URLSafeTimedSerializer('YourSecretKey')
+mail = Mail()
 
 # MongoDB Atlas connection (handled here in login.py)
 mongo_connection_string = os.getenv('MONGODB_CONNECTION_STRING')
@@ -74,10 +83,7 @@ def delete_user(Emailid):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-
-
-
+# Method to authenticate a user
 def authenticate_user(request):
     try:
         data = request.get_json()  # Get JSON data from the request body
@@ -112,3 +118,84 @@ def logout_user():
         return jsonify({"message": "Logout successful!"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+# Get all users
+
+def get_users():
+    try:
+        users = users_collection.find({})
+        user_list = [{"Email_id": user["Email_id"], "Name": user["Name"], "role": user["role"]} for user in users]
+        return jsonify({"users": user_list})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+def register():
+    data = request.get_json()
+    email = data['Email_id']
+    name = data['Name']
+    role = data['role']
+    
+    # Create a temporary password and hash it
+    temp_password = bcrypt.hashpw(b'TemporaryPassword123', bcrypt.gensalt())
+    
+    # Save the user details in the database (here it's a dummy dictionary)
+    users_collection[email] = {
+        'name': name,
+        'role': role,
+        'password': temp_password,  # Store hashed temp password
+    }
+    
+    # Generate token for the password reset link
+    token = s.dumps(email, salt='password-reset-salt')
+    reset_link = url_for('reset_password', token=token, _external=True)
+    
+    # Send email with the reset link
+    send_reset_email(email, reset_link, role)
+    
+    return jsonify({'message': f'User {name} registered successfully, email sent with password reset link.'})
+
+# Function to send email
+def send_reset_email(email, reset_link, role):
+    msg = Message('Set Your Password for WealthWise', recipients=[email])
+    msg.body = f'''
+    Hello,
+
+    Please click the link below to set your password for the WealthWise system:
+    {reset_link}
+
+    Your role: {role}
+    
+    Note: The link will expire in 60 minutes.
+    '''
+    mail.send(msg)
+
+# Endpoint to handle password reset link
+def reset_password(token):
+    try:
+        email = s.loads(token, salt='password-reset-salt', max_age=3600)  # Token valid for 1 hour
+    except:
+        return jsonify({'message': 'The reset link is invalid or has expired.'}), 400
+    
+    if request.method == 'POST':
+        data = request.get_json()
+        new_password = data['password']
+        
+        # Hash the new password
+        hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+        
+        # Update user's password in the database
+        if email in users_collection:
+            users_collection[email]['password'] = hashed_password
+            return jsonify({'message': 'Password updated successfully.'})
+        else:
+            return jsonify({'message': 'User not found.'}), 404
+        
+    # If GET request, return a password reset form (for demonstration)
+    return '''
+        <form method="POST">
+            <label>Enter New Password:</label>
+            <input type="password" name="password" required>
+            <button type="submit">Reset Password</button>
+        </form>
+    '''

@@ -45,8 +45,7 @@ const Login = () => {
         setEmail('');  // Clear the input fields
         setPassword('');
         // navigate('/EmployeeDashboard');
-
-            } else {
+        } else {
         console.error('Login failed:', data.error);
         setError(data.error);  // Display error message to the user
       }

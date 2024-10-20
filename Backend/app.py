@@ -8,6 +8,18 @@ import os
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+# Flask-Mail configuration for Gmail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'wealthwise.com.in@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Wealthwise@2024'
+app.config['MAIL_DEFAULT_SENDER'] = 'wealthwise.com.in@gmail.com'
+
+# Initialize Mail and login components
+login.mail.init_app(app)
+
 # Register User Route
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -22,6 +34,16 @@ def update_user(userid):
 @app.route('/api/delete/<userid>', methods=['DELETE'])
 def delete_user(userid):
     return login.delete_user(userid)
+
+# Get Users Route
+@app.route('/api/users', methods=['GET'])
+def get_users():
+    return login.get_users()
+
+# Endpoint to handle password reset link
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    return login.reset_password(token)
 
 # Login (Authentication) Route
 @app.route('/api/login', methods=['POST'])
