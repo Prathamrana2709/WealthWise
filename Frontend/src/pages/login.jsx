@@ -44,9 +44,67 @@ const Login = () => {
         // Redirect to the dashboard or home page upon successful login
         setEmail('');  // Clear the input fields
         setPassword('');
-        // navigate('/EmployeeDashboard');
-
-            } else {
+        navigate('/Dashboard1');
+        }
+        else if(response.ok && data.role === 'Chief Financial Officer (CFO)'){
+          console.log('Login Successful:', data);
+          // Redirect to the dashboard or home page upon successful login
+          setEmail('');  // Clear the input fields
+          setPassword('');
+          navigate('/Dashboard');
+  
+              } 
+              else if(response.ok && data.role === 'Data Analyst/Scientist'){
+                console.log('Login Successful:', data);
+                // Redirect to the dashboard or home page upon successful login
+                setEmail('');  // Clear the input fields
+                setPassword('');
+                navigate('/Dashboard2');
+        
+                    } 
+                    else if(response.ok && data.role === 'Compliance Officer'){
+                      console.log('Login Successful:', data);
+                      // Redirect to the dashboard or home page upon successful login
+                      setEmail('');  // Clear the input fields
+                      setPassword('');
+                      navigate('/Dashboard');
+              
+                          } 
+                          else if(response.ok && data.role === 'Financial Analyst/Advisor'){
+                            console.log('Login Successful:', data);
+                            // Redirect to the dashboard or home page upon successful login
+                            setEmail('');  // Clear the input fields
+                            setPassword('');
+                            navigate('/Dashboard3');
+                    
+                                } 
+                                else if(response.ok && data.role === 'Budget Analyst'){
+                                  console.log('Login Successful:', data);
+                                  // Redirect to the dashboard or home page upon successful login
+                                  setEmail('');  // Clear the input fields
+                                  setPassword('');
+                                  navigate('/Dashboard4');
+                          
+                                      } 
+                                      else if(response.ok && data.role === 'Treasury Manager'){
+                                        console.log('Login Successful:', data);
+                                        // Redirect to the dashboard or home page upon successful login
+                                        setEmail('');  // Clear the input fields
+                                        setPassword('');
+                                        navigate('/Dashboard5');
+                                
+                                            } 
+                                            else if(response.ok && data.role === 'Compliance Auditor'){
+                                              console.log('Login Successful:', data);
+                                              // Redirect to the dashboard or home page upon successful login
+                                              setEmail('');  // Clear the input fields
+                                              setPassword('');
+                                              navigate('/Dashboard');
+                                      
+                                                  } 
+      
+                    
+            else {
         console.error('Login failed:', data.error);
         setError(data.error);  // Display error message to the user
       }
