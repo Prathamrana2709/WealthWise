@@ -31,13 +31,13 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
 
     // Start year in April, Q1 starts in April
     if (currentMonth >= 4 && currentMonth <= 6) {
-      currentQuarter = 'Q1';
+      currentQuarter = 1;
     } else if (currentMonth >= 7 && currentMonth <= 9) {
-      currentQuarter = 'Q2';
+      currentQuarter = 2;
     } else if (currentMonth >= 10 && currentMonth <= 12) {
-      currentQuarter = 'Q3';
+      currentQuarter = 3;
     } else {
-      currentQuarter = 'Q4';
+      currentQuarter = 4;
       currentYear -= 1; // The financial year ends in March
     }
 
@@ -45,7 +45,7 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
     setQuarter(currentQuarter);
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newItem = {
       Year: year,
       Quarter: quarter,
@@ -54,7 +54,27 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
       Type: section, // Section passed from parent (e.g., 'Current_Liabilities', 'NonCurrent_Liabilities', 'Equity')
     };
 
-    onAdd(newItem); // Pass the new item to parent
+    try {
+      // Sending data to your API endpoint using fetch
+      const response = await fetch('http://127.0.0.1:5001/api/liabilities/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newItem),
+      });
+
+      // Handle success or error
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log('Data successfully added:', responseData);
+        onAdd(newItem); // Notify parent component
+      } else {
+        console.error('Failed to add data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -88,12 +108,16 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
 
         <div className="form-group">
           <label>Year</label>
-          <input type="text" value={year} readOnly /> {/* Dynamic year */}
+          <input type="text" value={year} 
+           onChange={(e) => setAmount(e.target.value)}
+           placeholder="Enter year" /> {/* Dynamic year */}
         </div>
 
         <div className="form-group">
           <label>Quarter</label>
-          <input type="text" value={quarter} readOnly /> {/* Dynamic quarter */}
+          <input type="text" value={quarter}
+           onChange={(e) => setAmount(e.target.value)}
+           placeholder="Enter Quarter" /> {/* Dynamic quarter */}
         </div>
 
         <div className="modal-actions">
