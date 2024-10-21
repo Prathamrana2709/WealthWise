@@ -1,33 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/AddNewMember.css';
+import logo from '../assets/Logo.png';
 
 function AddNewMember() {
+  const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     name: '',
     password: '',
-    role: 'Finance Manager', // Default role
+    role: 'Finance Manager',
   });
-  const [showPopup, setShowPopup] = useState(false);
+  const [editingUserId, setEditingUserId] = useState(null);
   const [validationErrors, setValidationErrors] = useState([]);
   const [passwordStrength, setPasswordStrength] = useState('');
-  const [users, setUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [notification, setNotification] = useState(null);
 
-  // Fetch users on component mount
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = () => {
-    fetch('http://127.0.0.1:5001/api/users') // API to fetch users
+    fetch('http://127.0.0.1:5001/api/users')
       .then((response) => response.json())
       .then((data) => setUsers(data.users))
       .catch((error) => console.error('Error fetching users:', error));
   };
 
-  // Define the password strength validation function
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredUsers = users.filter(user =>
+    user.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.Email_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.role.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const validatePassword = (password) => {
     const errors = [];
     if (password.length < 8) errors.push("Must be at least 8 characters");
@@ -40,36 +51,24 @@ function AddNewMember() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData(prev => ({ ...prev, [name]: value }));
 
-    // Handle password strength validation
     if (name === 'password') {
       const errors = validatePassword(value);
       setValidationErrors(errors);
-
-      // Provide a password strength rating based on the number of criteria met
-      if (errors.length === 0) {
-        setPasswordStrength("Strong");
-      } else if (errors.length <= 2) {
-        setPasswordStrength("Medium");
-      } else {
-        setPasswordStrength("Weak");
-      }
+      setPasswordStrength(errors.length === 0 ? "Strong" : errors.length <= 2 ? "Medium" : "Weak");
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowPopup(true);
-  };
-
-  const confirmAddUser = () => {
-    // Call API to register user
-    fetch('http://127.0.0.1:5001/api/register', {
-      method: 'POST',
+  
+    const url = editingUserId
+      ? `http://127.0.0.1:5001/api/update/${editingUserId}`
+      : 'http://127.0.0.1:5001/api/register';
+  
+    fetch(url, {
+      method: editingUserId ? 'PUT' : 'POST',  // Use PUT for updates
       headers: {
         'Content-Type': 'application/json',
       },
@@ -83,123 +82,160 @@ function AddNewMember() {
       .then((response) => response.json())
       .then((data) => {
         if (data.message) {
-          alert(data.message);
-          fetchUsers(); // Refresh user list
+          setNotification({ type: 'success', message: data.message });
+          fetchUsers();
         } else {
-          alert(data.error);
+          setNotification({ type: 'error', message: data.error });
         }
-        setShowPopup(false);
-        // Clear form after successful addition
-        setFormData({
-          email: '',
-          name: '',
-          password: '',
-          role: 'Finance Manager', // Reset default role
-        });
-        setValidationErrors([]); // Clear validation errors
-        setPasswordStrength(''); // Reset password strength
+        resetForm();
       })
       .catch((error) => {
-        alert('Error adding user:', error);
-        setShowPopup(false);
+        setNotification({ type: 'error', message: 'Error updating user: ' + error });
       });
   };
+  
+  const handleEdit = (user) => {
+    setFormData({
+      email: user.Email_id,
+      name: user.Name,
+      password: '',
+      role: user.role,
+    });
+    setEditingUserId(user.Email_id);
+    setShowForm(true);
+  };
 
-  const handleDeleteUser = (userId) => {
+  const handleDelete = (userId) => {
     fetch(`http://127.0.0.1:5001/api/delete/${userId}`, {
-      method: 'DELETE',
+        method: 'DELETE',
     })
-      .then((response) => response.json())
-      .then((data) => {
-        alert(data.message);
-        fetchUsers(); // Refresh user list
-      })
-      .catch((error) => console.error('Error deleting user:', error));
+    .then((response) => response.json())
+    .then((data) => {
+        if (data.error) {
+            // Check for the specific error message for HR role
+            if (data.error.includes("HR role")) {
+                alert("You cannot delete a user with HR role!");
+            } else {
+                setNotification({ type: 'error', message: data.error });
+            }
+        } else {
+            setNotification({ type: 'success', message: data.message });
+            fetchUsers();
+        }
+    })
+    .catch((error) => {
+        setNotification({ type: 'error', message: 'Error deleting user: ' + error });
+    });
+};
+
+
+  const resetForm = () => {
+    setFormData({ email: '', name: '', password: '', role: 'Finance Manager' });
+    setEditingUserId(null);
+    setShowForm(false);
+    setValidationErrors([]);
+    setPasswordStrength('');
   };
 
   return (
     <div className="add-member-container">
       <nav className="navbar">
-        <div className="navbar-logo">Your Logo</div>
-        <div className="navbar-links">
-          <Link to='/add-new-member' className="navbar-link">Add User</Link>
-          <Link to='/update-user' className="navbar-link">Update User</Link>
-          <Link to='/delete-user' className="navbar-link">Delete User</Link>
+        <div className="logo-sec">
+          <img src={logo} alt="logo" />
+          <div className="logo-text"><h1>WealthWise</h1></div>
         </div>
-        <input
-          type="text"
-          placeholder="Search..."
-          className="navbar-search"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        {!showForm && (
+          <input
+            type="text"
+            placeholder="Search..."
+            className="navbar-search small-search-bar"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+        )}
+        <div className="navbar-links">
+          <Link to='/dashboard' className="navbar-link">Back</Link>
+        </div>
       </nav>
 
-      <h1>Add New Member</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Email:</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label>Name:</label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label>Temporary Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className={`password-input ${validationErrors.length > 0 ? 'error' : passwordStrength ? passwordStrength.toLowerCase() : ''}`}
-          />
-          <p className="password-strength">Password Strength: <strong>{passwordStrength}</strong></p>
-          {validationErrors.length > 0 && (
-            <ul className="validation-errors">
-              {validationErrors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <div className="form-group">
-          <label>Role:</label>
-          <select name="role" value={formData.role} onChange={handleChange} required>
-            <option value="Finance Manager">Finance Manager</option>
-            <option value="Chief Financial Officer (CFO)">Chief Financial Officer (CFO)</option>
-            <option value="Financial Controller">Financial Controller</option>
-            <option value="Data Analyst/Scientist">Data Analyst/Scientist</option>
-            <option value="Compliance Officer">Compliance Officer</option>
-            <option value="Financial Analyst/Advisor">Financial Analyst/Advisor</option>
-            <option value="Budget Analyst">Budget Analyst</option>
-            <option value="Treasury Manager">Treasury Manager</option>
-            <option value="Customer Support Lead">Customer Support Lead</option>
-            <option value="Compliance Auditor">Compliance Auditor</option>
-          </select>
-        </div>
-        <button type="submit" className="add-btn">Add Member</button>
-        <Link to='/dashboard'><button type="button" className="back-btn">Back</button></Link>
-      </form>
+      <div className='main-title'>
+        <h1>{showForm ? (editingUserId ? 'Edit Member' : 'Add New Member') : 'Users List'}</h1>
 
-      <h2>User List</h2>
-      <ul className="user-list">
-        {users.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase())).map(user => (
-          <li key={user.id}>
-            {user.name} ({user.email})
-            <button onClick={() => handleDeleteUser(user.id)} className="delete-btn">Delete</button>
-          </li>
-        ))}
-      </ul>
+        {!showForm && (
+          <button onClick={() => setShowForm(true)} className="add-btn">Add New Member</button>
+        )}
+      </div>
 
-      {showPopup && (
-        <div className="popup">
-          <div className="popup-content">
-            <p>Are you sure you want to add {formData.name} with the role of {formData.role}?</p>
-            <button className="confirm-btn" onClick={confirmAddUser}>OK</button>
-            <button className="cancel-btn" onClick={() => setShowPopup(false)}>Cancel</button>
+      {showForm ? (
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Email:</label>
+            <input type="email" name="email" value={formData.email} onChange={handleChange} required />
           </div>
+          <div className="form-group">
+            <label>Name:</label>
+            <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+          </div>
+          <div className="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required={!editingUserId}
+              className={`password-input ${validationErrors.length > 0 ? 'error' : passwordStrength.toLowerCase()}`}
+            />
+            <p className="password-strength">Password Strength: <strong>{passwordStrength}</strong></p>
+            {validationErrors.length > 0 && (
+              <ul className="validation-errors">
+                {validationErrors.map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div className="form-group">
+            <label>Role:</label>
+            <select name="role" className='select-add-new' value={formData.role} onChange={handleChange} required>
+              <option value="Finance Manager">Finance Manager</option>
+              <option value="Chief Financial Officer (CFO)">Chief Financial Officer (CFO)</option>
+              <option value="Financial Controller">Financial Controller</option>
+              <option value="Data Analyst/Scientist">Data Analyst/Scientist</option>
+              <option value="Compliance Officer">Compliance Officer</option>
+              <option value="Financial Analyst/Advisor">Financial Analyst/Advisor</option>
+              <option value="Budget Analyst">Budget Analyst</option>
+              <option value="Treasury Manager">Treasury Manager</option>
+              <option value="Customer Support Lead">Customer Support Lead</option>
+              <option value="Compliance Auditor">Compliance Auditor</option>
+            </select>
+          </div>
+          <button type="submit" className="add-btn">{editingUserId ? 'Update Member' : 'Add Member'}</button>
+          <button type="button" onClick={() => setShowForm(false)} className="back-btn">Back</button>
+        </form>
+      ) : (
+        <div>
+          <ul className="user-list">
+            {filteredUsers.map(user => (
+              <li key={user.Email_id}>
+                <div>
+                  <strong>{user.Name} </strong>
+                  ({user.Email_id})<br />
+                  <span className="user-role">{user.role}</span>
+                </div>
+                <div>
+                  <button onClick={() => handleEdit(user)} className="edit-btn">Edit</button>
+                  <button onClick={() => handleDelete(user.Email_id)} className="delete-btn">Delete</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {notification && (
+        <div className={`notification ${notification.type}`}>
+          {notification.message}
         </div>
       )}
     </div>

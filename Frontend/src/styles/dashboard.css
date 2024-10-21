@@ -15,7 +15,7 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
 }
 
 /* Dashboard layout */
@@ -35,7 +35,7 @@ span {
   display: flex;
   flex-direction: column;
   width: 18%;
-  height: 100vw;
+  height: 100%;
   background: rgba(2, 6, 82, 0.6); /* Semi-transparent background */
   backdrop-filter: blur(12px); /* Blur effect for glassy look */
   padding: 1.2em 1em; /* Adjusted padding to reduce gap */
@@ -184,7 +184,7 @@ p {
   color: white;
   padding: 10px 20px;
   border: none;
-  margin-left: 2rem;
+  margin-left: 0.5em;
   border-radius: 25px;
   font-size: 16px;
   cursor: pointer;
@@ -214,7 +214,7 @@ p {
   font-size: 16px;
   font-weight: bold;
   border: none;
-  margin-right: 2rem;
+  margin-right: 0.5em;
   border-radius: 30px;
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
@@ -237,8 +237,6 @@ p {
   outline: none;
   box-shadow: 0px 0px 10px rgba(65, 224, 206, 0.5); /* Focus glow effect */
 }
-
-
 
 /* Responsive Sidebar for small screens */
 @media screen and (max-width: 768px) {

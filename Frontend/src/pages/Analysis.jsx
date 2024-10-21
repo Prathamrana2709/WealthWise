@@ -46,8 +46,15 @@ function Analysis() {
     setExpenses(expenseData);
 
     // Get distinct years from revenues
-    const years = [...new Set(revenueData.map(item => item.Year))]; // Extract unique years
-    setDistinctYears(years.sort((a, b) => b - a)); // Sort descending
+const years = [...new Set(revenueData.map(item => item.Year))]; // Extract unique years
+
+// Sort the years descending based on the first part of the "Year" string (e.g., "2023" from "2023-24")
+setDistinctYears(years.sort((a, b) => {
+  const yearA = parseInt(a.split('-')[0]); // Extract the first year (e.g., "2023" from "2023-24")
+  const yearB = parseInt(b.split('-')[0]);
+  return yearB - yearA; // Sort in descending order
+}));
+
 
     // Find the most recent year and set it as default for both charts
     const recentYear = years[0]; // Get the latest year
