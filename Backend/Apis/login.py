@@ -42,9 +42,10 @@ def register_user(request):
 
 
 # Method to update a user by Email-id
-def update_user(request, Emailid):
+def update_user(request, userid):
     try:
         data = request.json
+        print("Received update data:", data)  # Debugging line
 
         update_fields = {}
         if 'password' in data:
@@ -53,35 +54,50 @@ def update_user(request, Emailid):
         if 'role' in data:
             update_fields['role'] = data['role']
 
+        if 'Name' in data:
+            update_fields['Name'] = data['Name']
+
         if not update_fields:
             return jsonify({"error": "No valid fields to update"}), 400
 
+        print("Update fields:", update_fields)  # Debugging line
+
         result = users_collection.update_one(
-            {"Email_id": Emailid},
+            {"Email_id": userid},  
             {"$set": update_fields}
         )
 
         if result.matched_count > 0:
-            return jsonify({"message": f"User {Emailid} updated successfully!"}), 200
+            return jsonify({"message": f"User {userid} updated successfully!"}), 200
         else:
             return jsonify({"error": "User not found!"}), 404
 
     except Exception as e:
+        print("Error occurred:", str(e))  # Debugging line
         return jsonify({"error": str(e)}), 500
-
 
 # Method to delete a user by userid
 def delete_user(Emailid):
     try:
+        # Find the user to check their role
+        user = users_collection.find_one({"Email_id": Emailid})
+
+        if user is None:
+            return jsonify({"error": "User not found!"}), 404
+
+        # Check if the user has the HR role
+        if user.get("role") == "HR":
+            return jsonify({"error": "User with HR role cannot be deleted!"}), 403
+
+        # Proceed to delete the user if not HR
         result = users_collection.delete_one({"Email_id": Emailid})
 
         if result.deleted_count > 0:
             return jsonify({"message": f"User {Emailid} deleted successfully!"}), 200
-        else:
-            return jsonify({"error": "User not found!"}), 404
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 # Method to authenticate a user
 def authenticate_user(request):
@@ -125,6 +141,7 @@ def get_users():
     try:
         users = users_collection.find({})
         user_list = [{"Email_id": user["Email_id"], "Name": user["Name"], "role": user["role"]} for user in users]
+      
         return jsonify({"users": user_list})
 
     except Exception as e:

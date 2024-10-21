@@ -17,7 +17,6 @@ body::-webkit-scrollbar {
     display: none;  /* Chrome, Safari, and Opera */
 }
 
-
 /* Navbar Styling */
 .navbar {
     position: fixed;
@@ -108,6 +107,13 @@ h1, h2 {
     width: 25%;
 }
 
+/* .main-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1em;
+} */
+
 .form-group {
     margin-bottom: 20px;
 }
@@ -135,6 +141,7 @@ input[type="email"], input[type="text"], input[type="password"], .select-add-new
 .add-btn {
     background-color: #009fb2;
     color: white;
+    margin-bottom: 1em;
 }
 .add-btn:hover {
     background-color: #41e0ce;
@@ -211,7 +218,7 @@ input[type="email"], input[type="text"], input[type="password"], .select-add-new
     display: flex;
     justify-content: lefft;
     align-items: center;
-    color: rgb(46, 45, 45);
+    color: rgb(116, 115, 115);
     font-family: 'Poppins', sans-serif;
 }
 

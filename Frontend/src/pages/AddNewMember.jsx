@@ -62,8 +62,13 @@ function AddNewMember() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://127.0.0.1:5001/api/register', {
-      method: 'POST',
+  
+    const url = editingUserId
+      ? `http://127.0.0.1:5001/api/update/${editingUserId}`
+      : 'http://127.0.0.1:5001/api/register';
+  
+    fetch(url, {
+      method: editingUserId ? 'PUT' : 'POST',  // Use PUT for updates
       headers: {
         'Content-Type': 'application/json',
       },
@@ -85,10 +90,10 @@ function AddNewMember() {
         resetForm();
       })
       .catch((error) => {
-        setNotification({ type: 'error', message: 'Error adding user: ' + error });
+        setNotification({ type: 'error', message: 'Error updating user: ' + error });
       });
   };
-
+  
   const handleEdit = (user) => {
     setFormData({
       email: user.Email_id,
@@ -102,17 +107,27 @@ function AddNewMember() {
 
   const handleDelete = (userId) => {
     fetch(`http://127.0.0.1:5001/api/delete/${userId}`, {
-      method: 'DELETE',
+        method: 'DELETE',
     })
-      .then((response) => response.json())
-      .then((data) => {
-        setNotification({ type: 'success', message: data.message });
-        fetchUsers();
-      })
-      .catch((error) => {
+    .then((response) => response.json())
+    .then((data) => {
+        if (data.error) {
+            // Check for the specific error message for HR role
+            if (data.error.includes("HR role")) {
+                alert("You cannot delete a user with HR role!");
+            } else {
+                setNotification({ type: 'error', message: data.error });
+            }
+        } else {
+            setNotification({ type: 'success', message: data.message });
+            fetchUsers();
+        }
+    })
+    .catch((error) => {
         setNotification({ type: 'error', message: 'Error deleting user: ' + error });
-      });
-  };
+    });
+};
+
 
   const resetForm = () => {
     setFormData({ email: '', name: '', password: '', role: 'Finance Manager' });
@@ -143,11 +158,13 @@ function AddNewMember() {
         </div>
       </nav>
 
-      <h1>{showForm ? (editingUserId ? 'Edit Member' : 'Add New Member') : 'Users List'}</h1>
+      <div className='main-title'>
+        <h1>{showForm ? (editingUserId ? 'Edit Member' : 'Add New Member') : 'Users List'}</h1>
 
-      {!showForm && (
-        <button onClick={() => setShowForm(true)} className="add-btn">Add New Member</button>
-      )}
+        {!showForm && (
+          <button onClick={() => setShowForm(true)} className="add-btn">Add New Member</button>
+        )}
+      </div>
 
       {showForm ? (
         <form onSubmit={handleSubmit}>
@@ -198,22 +215,22 @@ function AddNewMember() {
         </form>
       ) : (
         <div>
-            <ul className="user-list">
-              {filteredUsers.map(user => (
-                <li key={user.Email_id}>
-                  <div>
-                    <strong>{user.Name} </strong>
-                    ({user.Email_id})<br />
-                    <span className="user-role">{user.role}</span>
-                  </div>
-                  <div>
-                    <button onClick={() => handleEdit(user)} className="edit-btn">Edit</button>
-                    <button onClick={() => handleDelete(user.Email_id)} className="delete-btn">Delete</button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="user-list">
+            {filteredUsers.map(user => (
+              <li key={user.Email_id}>
+                <div>
+                  <strong>{user.Name} </strong>
+                  ({user.Email_id})<br />
+                  <span className="user-role">{user.role}</span>
+                </div>
+                <div>
+                  <button onClick={() => handleEdit(user)} className="edit-btn">Edit</button>
+                  <button onClick={() => handleDelete(user.Email_id)} className="delete-btn">Delete</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
 
       {notification && (

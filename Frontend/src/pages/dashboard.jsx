@@ -142,7 +142,7 @@ function Dashboard() {
 
       <div className="main-content">
         <div className="top-navbar">
-          <Link to='/AddNewMember'><button className='new-btn'>Add New</button></Link>
+          <Link to='/AddNewMember'><button className='new-btn'>Users</button></Link>
           {/* <div className="profile">Profile</div> */}
           <Link to='/login'><button className='logout-btn'>Logout</button></Link>
         </div>
