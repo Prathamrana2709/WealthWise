@@ -18,10 +18,11 @@ const DataBox = ({ data, hideYear, deleteMode, onCheckboxChange, onUpdate }) => 
       <tbody>
           {data.map((item, index) => (
             <tr key={index}>
+              <td>{item.Quarter}</td>
               <td>{item.Category}</td>
               <td>{item.Amount}</td>
-              <td>{item.Year}</td>
-              <td>{item.Quarter}</td>
+              
+              
               <td>
                 <button onClick={() => onUpdate(item)}>Update</button> {/* Pass item to handle update */}
                 <button onClick={() => onDelete(item)}>Delete</button> {/* Pass item to handle delete */}
@@ -43,10 +44,7 @@ const DataBox = ({ data, hideYear, deleteMode, onCheckboxChange, onUpdate }) => 
                 />
               </td>
             )}
-     <td>{item.Quarter}</td>
-            <td>{item.Category}</td>
-            <td>{item.Amount}</td>
- 
+    
   </tr>
 ))}
 
