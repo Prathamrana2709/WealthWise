@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/AddNewMember.css';
 import logo from '../assets/Logo.png';
+import FluidCanvas from '../canvas/FluidCanvas'; // Import the fluid canvas component
 
 function AddNewMember() {
   const [users, setUsers] = useState([]);
@@ -107,32 +108,17 @@ function AddNewMember() {
 
   const handleDelete = (userId) => {
     fetch(`http://127.0.0.1:5001/api/delete/${userId}`, {
-        method: 'DELETE',
+      method: 'DELETE',
     })
-    .then((response) => response.json())
-    .then((data) => {
-        if (data.error) {
-            // Skip confirmation dialog if user has HR role
-            if (data.error.includes("HR role")) {
-                alert("You cannot delete a user with HR role!");
-            } else {
-                setNotification({ type: 'error', message: data.error });
-            }
-        } else {
-            // Show confirmation dialog for other users
-            const confirmation = window.confirm('Are you sure you want to delete this user?');
-            if (confirmation) {
-                setNotification({ type: 'success', message: data.message });
-                fetchUsers(); // Refresh the users list after successful deletion
-            }
-        }
-    })
-    .catch((error) => {
+      .then((response) => response.json())
+      .then((data) => {
+        setNotification({ type: 'success', message: data.message });
+        fetchUsers();
+      })
+      .catch((error) => {
         setNotification({ type: 'error', message: 'Error deleting user: ' + error });
-    });
-};
-
-
+      });
+  };
 
   const resetForm = () => {
     setFormData({ email: '', name: '', password: '', role: 'Finance Manager' });
@@ -143,67 +129,60 @@ function AddNewMember() {
   };
 
   return (
-    <div className="add-member-container">
-      <nav className="navbar">
-        <div className="logo-sec">
-          <img src={logo} alt="logo" />
-          <div className="logo-text"><h1>WealthWise</h1></div>
-        </div>
-        {!showForm && (
-          <input
-            type="text"
-            placeholder="Search..."
-            className="navbar-search small-search-bar"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-        )}
-        <div className="navbar-links">
-          <Link to='/dashboard' className="navbar-link">Back</Link>
-        </div>
-      </nav>
-
-      <div className='main-title'>
-        <h1>{showForm ? (editingUserId ? 'Edit Member' : 'Add New Member') : 'Users List'}</h1>
-
-        {!showForm && (
-          <button onClick={() => setShowForm(true)} className="add-btn">Add New Member</button>
-        )}
+    <div className="wrapper">
+      <FluidCanvas />
+      <div className="add-member-container">
+    <nav className="navbar">
+      <div className="logo-sec">
+        <img src={logo} alt="logo" />
+        <div className="logo-text"><h1>WealthWise</h1></div>
       </div>
+      {!showForm && (
+        <input
+          type="text"
+          placeholder="Search..."
+          className="navbar-search small-search-bar"
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+      )}
+      <div className="navbar-links">
+        <Link to='/dashboard' className="navbar-link">Back</Link>
+      </div>
+    </nav>
 
-      {showForm ? (
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email:</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label>Name:</label>
-            <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label>Password:</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required={!editingUserId}
-              className={`password-input ${validationErrors.length > 0 ? 'error' : passwordStrength.toLowerCase()}`}
-            />
-            <p className="password-strength">Password Strength: <strong>{passwordStrength}</strong></p>
-            {validationErrors.length > 0 && (
-              <ul className="validation-errors">
-                {validationErrors.map((error, index) => (
-                  <li key={index}>{error}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="form-group">
-            <label>Role:</label>
-            <select name="role" className='select-add-new' value={formData.role} onChange={handleChange} required>
-              <option value="Finance Manager">Finance Manager</option>
+    <div className='main-title'>
+      <h1>{showForm ? (editingUserId ? 'Edit Member' : 'Add New Member') : 'Users List'}</h1>
+
+      {!showForm && (
+        <button onClick={() => setShowForm(true)} className="add-btn">Add New Member</button>
+      )}
+    </div>
+
+    {showForm ? (
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>Email:</label>
+          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+        </div>
+        <div className="form-group">
+          <label>Name:</label>
+          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+        </div>
+        <div className="form-group">
+          <label>Password:</label>
+          <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+          <p className={`password-strength ${passwordStrength.toLowerCase()}`}>Strength: {passwordStrength}</p>
+          {validationErrors.length > 0 && (
+            <ul className="validation-errors">
+              {validationErrors.map((error, index) => <li key={index}>{error}</li>)}
+            </ul>
+          )}
+        </div>
+        <div className="form-group">
+          <label>Role:</label>
+          <select name="role" value={formData.role} onChange={handleChange}>
+          <option value="Finance Manager">Finance Manager</option>
               <option value="Chief Financial Officer (CFO)">Chief Financial Officer (CFO)</option>
               <option value="Financial Controller">Financial Controller</option>
               <option value="Data Analyst/Scientist">Data Analyst/Scientist</option>
@@ -213,37 +192,37 @@ function AddNewMember() {
               <option value="Treasury Manager">Treasury Manager</option>
               <option value="Customer Support Lead">Customer Support Lead</option>
               <option value="Compliance Auditor">Compliance Auditor</option>
-            </select>
-          </div>
-          <button type="submit" className="add-btn">{editingUserId ? 'Update Member' : 'Add Member'}</button>
-          <button type="button" onClick={() => setShowForm(false)} className="back-btn">Back</button>
-        </form>
-      ) : (
-        <div>
-          <ul className="user-list">
-            {filteredUsers.map(user => (
-              <li key={user.Email_id}>
-                <div>
-                  <strong>{user.Name} </strong>
-                  ({user.Email_id})<br />
-                  <span className="user-role">{user.role}</span>
-                </div>
-                <div>
-                  <button onClick={() => handleEdit(user)} className="edit-btn">Edit</button>
-                  <button onClick={() => handleDelete(user.Email_id)} className="delete-btn">Delete</button>
-                </div>
-              </li>
-            ))}
-          </ul>
+          </select>
         </div>
-      )}
 
-      {notification && (
-        <div className={`notification ${notification.type}`}>
-          {notification.message}
-        </div>
-      )}
-    </div>
+        <button type="submit" className="form-submit-btn">{editingUserId ? 'Update Member' : 'Add Member'}</button>
+        <button type="button" className="cancel-btn" onClick={resetForm}>Cancel</button>
+      </form>
+    ) : (
+      <div className="user-list">
+        {filteredUsers.length > 0 ? (
+          <ul className="user-list">
+          {filteredUsers.map(user => (
+            <li key={user.Email_id}>
+              <div>
+                <strong>{user.Name} </strong>
+                ({user.Email_id})<br />
+                <span className="user-role">{user.role}</span>
+              </div>
+              <div>
+                <button onClick={() => handleEdit(user)} className="edit-btn">Edit</button>
+                <button onClick={() => handleDelete(user.Email_id)} className="delete-btn">Delete</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+        ) : (
+          <p>No users found.</p>
+        )}
+      </div>
+    )}
+  </div>
+</div>
   );
 }
 
