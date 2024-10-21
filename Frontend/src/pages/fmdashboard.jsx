@@ -2,27 +2,23 @@ import React, { useState, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/dashboard.css';
 import logo from '../assets/Logo.png';
-
+import Liabilities from './Liabilities';
+import Assets from './Assets';
 import CashFlow from './CashFlow';
+import Cost from './Cost';
 import Revenue from './Revenue';
 
 // Dynamically import subcategory and main category components
 const DashboardPage = React.lazy(() => import('./dashboardPage'));
 const AnalysisPage = React.lazy(() => import('./Analysis'));
 const PredictPage = React.lazy(() => import('./Predict'));
-
+const AssetsLiabilitiesPage = React.lazy(() => import('./AssetsAndLiabilities'));
 const CashFlowPage = React.lazy(() => import('./CashFlow'));
-// const ProjectPage = React.lazy(() => import('./Project'));
 const RevenuePage = React.lazy(() => import('./Revenue'));
-const ExpensesPage = React.lazy(() => import('./Expense'));
 
-// Sub-Components for subcategories
-// const CostAnalysis = React.lazy(() => import('../components/CostAnalysis'));
-// const RevenueAnalysis = lazy(() => import('../components/RevenueAnalysis'));
-// const RiskPrediction = lazy(() => import('../components/RiskPrediction'));
-// const OutcomeAnalysis = lazy(() => import('../components/OutcomeAnalysis'));
 
-function Dashboard2() {
+
+function Dashboard() {
   const [selectedSection, setSelectedSection] = useState('Dashboard'); // should be a string
 
   const [selectedSubItem, setSelectedSubItem] = useState('');
@@ -30,23 +26,15 @@ function Dashboard2() {
   const sections = {
     Dashboard: [],
     Analysis: [
-      'Revenue', 'Budgeted vs Actual', 'Profits/Loss'
+      'Cost','Revenue'
     ],
-    Predict: [],
-    // 'Shareholders & Partners': [
-    //   'Equity', 'Investments', 'Bonds', 'Taxes', 'Interest Rate related to it', 'Insurance'
-    // ],
     
+    'Assets and Liabilities': [
+      'Assets', 'Liabilities'
+    ],
     'Cash Flow': [],
-    // Project: [
-    //   'Active Projects', 'Assign Project Manager'
-    // ],
-    // Revenue: [
-    //   'Filter by Region', 'Filter by Product', 'Customer Segment', 'Sales Channel', 'Total Given'
-    // ],
-    Expenses: [
-      // 'Costs (Check Boxes)', 'Add Description'
-    ]
+    
+   
   };
 
   const handleSectionClick = (section) => {
@@ -62,20 +50,18 @@ function Dashboard2() {
   const renderContent = () => {
     if (selectedSubItem) {
       switch (selectedSubItem) {
-        
-        case 'Expenses':
-          return <Expenses />;
+        case 'Liabilities':
+          return <Liabilities />;
+        case 'Assets':
+          return <Assets />;
+      
         case 'Cashflow':
           return <CashFlow />;
         case 'Revenue':
           return <Revenue />;
-        // case 'Revenue':
-        //   return <RevenueAnalysis />;
-        // case 'Risk Prediction':
-        //   return <RiskPrediction />;
-        // case 'Outcome Analysis':
-        //   return <OutcomeAnalysis />;
-        // Add other sub-items here...
+          case 'Cost':
+          return <Cost />;
+       
         default:
           return <p>No component available for this sub-item</p>;
       }
@@ -85,18 +71,12 @@ function Dashboard2() {
           return <DashboardPage />;
         case 'Analysis':
           return <AnalysisPage />;
-        case 'Predict':
-          return <PredictPage />;
-        case 'Shareholders & Partners':
-          return <ShareholdersPage />;
       
+        case 'Assets and Liabilities':
+          return <AssetsLiabilitiesPage />;
         case 'Cash Flow':
           return <CashFlowPage />;
-        case 'Project':
-          return <ProjectPage />;
-        case 'Expenses':
-          return <ExpensesPage />;
-
+      
         default:
           return <p>No component available for this section</p>;
       }
@@ -138,8 +118,7 @@ function Dashboard2() {
 
       <div className="main-content">
         <div className="top-navbar">
-          <Link to='/AddNewMember'><button className='new-btn'>Add New</button></Link>
-          <div className="profile">Profile</div>
+         
           <Link to='/login'><button className='logout-btn'>Logout</button></Link>
         </div>
         <div className="content">
@@ -152,4 +131,4 @@ function Dashboard2() {
   );
 }
 
-export default Dashboard2;
+export default Dashboard;

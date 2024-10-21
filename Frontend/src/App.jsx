@@ -4,7 +4,11 @@ import Home from './pages/home';
 import Login from './pages/login';
 import Dashboard from './pages/dashboard';
 import AddNewMember from './pages/AddNewMember';
-import Dashboard1 from './pages/dashboard1';
+import Fmdashboard from './pages/fmdashboard';
+import Badashboard from './pages/badashboard';
+import Dasdashboard from './pages/dasdashboard';
+import Fdashboard from './pages/fdashboard';
+import Tmdashboard from './pages/tmdashboard';
 
 function App() {
   return (
@@ -14,7 +18,15 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/AddNewMember" element={<AddNewMember />} />
-        <Route path="/dashboard1" element={<Dashboard1 />}/>
+        <Route path="/fmdashboard" element={<Fmdashboard />}/>
+        <Route path="/dasdashboard" element={<Dasdashboard />}/>
+        <Route path="/fdashboard" element={<Fdashboard />}/>
+        <Route path="/badashboard" element={<Badashboard />}/>
+        <Route path="/tmdashboard" element={<Tmdashboard />}/>
+        {/* <Route path="/badashboard" element={<Badashboard />}/>
+        <Route path="/dasdashboard" element={<Dasdashboard />}/>
+        <Route path="/faadashboard" element={<FAADashboard />}/>
+        <Route path="/tmdashboard" element={<Tmdashboard />}/> */}
       </Routes>
     </Router>
   );

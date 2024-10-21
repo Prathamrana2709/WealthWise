@@ -44,7 +44,7 @@ const Login = () => {
         // Redirect to the dashboard or home page upon successful login
         setEmail('');  // Clear the input fields
         setPassword('');
-        navigate('/Dashboard1');
+        navigate('/Fmdashboard');
       }
       else if (response.ok && data.role === 'Chief Financial Officer (CFO)') {
         console.log('Login Successful:', data);
@@ -59,7 +59,7 @@ const Login = () => {
         // Redirect to the dashboard or home page upon successful login
         setEmail('');  // Clear the input fields
         setPassword('');
-        navigate('/Dashboard2');
+        navigate('/Dasdashboard');
 
       }
       else if (response.ok && data.role === 'Compliance Officer') {
@@ -75,7 +75,7 @@ const Login = () => {
         // Redirect to the dashboard or home page upon successful login
         setEmail('');  // Clear the input fields
         setPassword('');
-        navigate('/Dashboard3');
+        navigate('/Fdashboard');
 
       }
       else if (response.ok && data.role === 'Budget Analyst') {
@@ -83,7 +83,7 @@ const Login = () => {
         // Redirect to the dashboard or home page upon successful login
         setEmail('');  // Clear the input fields
         setPassword('');
-        navigate('/Dashboard4');
+        navigate('/Badashboard');
 
       }
       else if (response.ok && data.role === 'Treasury Manager') {
@@ -91,7 +91,7 @@ const Login = () => {
         // Redirect to the dashboard or home page upon successful login
         setEmail('');  // Clear the input fields
         setPassword('');
-        navigate('/Dashboard5');
+        navigate('/Tmdashboard');
 
       }
       else if (response.ok && data.role === 'Compliance Auditor') {

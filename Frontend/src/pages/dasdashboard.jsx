@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom';
 import '../styles/dashboard.css';
 import logo from '../assets/Logo.png';
 
-
-
+import CashFlow from './CashFlow';
+import Cost from './Cost';
 import Revenue from './Revenue';
 
 // Dynamically import subcategory and main category components
-
+const DashboardPage = React.lazy(() => import('./dashboardPage'));
 const AnalysisPage = React.lazy(() => import('./Analysis'));
-
+const PredictPage = React.lazy(() => import('./Predict'));
+const AssetsLiabilitiesPage = React.lazy(() => import('./AssetsAndLiabilities'));
+const CashFlowPage = React.lazy(() => import('./CashFlow'));
 // const ProjectPage = React.lazy(() => import('./Project'));
 const RevenuePage = React.lazy(() => import('./Revenue'));
 const ExpensesPage = React.lazy(() => import('./Expense'));
@@ -27,12 +29,22 @@ function Dashboard() {
   const [selectedSubItem, setSelectedSubItem] = useState('');
 
   const sections = {
-    
+    Dashboard: [],
     Analysis: [
-      'Revenue', 'Budgeted vs Actual', 'Profits/Loss'
+      'Cost','Revenue'
     ],
-   
-   
+    Predict: [],
+    // 'Shareholders & Partners': [
+    //   'Equity', 'Investments', 'Bonds', 'Taxes', 'Interest Rate related to it', 'Insurance'
+    // ],
+    
+    'Cash Flow': [],
+    // Project: [
+    //   'Active Projects', 'Assign Project Manager'
+    // ],
+    // Revenue: [
+    //   'Filter by Region', 'Filter by Product', 'Customer Segment', 'Sales Channel', 'Total Given'
+    // ],
     Expenses: [
       // 'Costs (Check Boxes)', 'Add Description'
     ]
@@ -51,22 +63,32 @@ function Dashboard() {
   const renderContent = () => {
     if (selectedSubItem) {
       switch (selectedSubItem) {
-        
+       
         case 'Expenses':
           return <Expenses />;
-       
+        case 'Cashflow':
+          return <CashFlow />;
         case 'Revenue':
           return <Revenue />;
+          case 'Cost':
+          return <Cost />;
        
         default:
           return <p>No component available for this sub-item</p>;
       }
     } else {
       switch (selectedSection) {
-      
+        case 'Dashboard':
+          return <DashboardPage />;
         case 'Analysis':
           return <AnalysisPage />;
-        
+        case 'Predict':
+          return <PredictPage />;
+       
+        case 'Cash Flow':
+          return <CashFlowPage />;
+        case 'Project':
+          return <ProjectPage />;
         case 'Expenses':
           return <ExpensesPage />;
 
@@ -111,8 +133,7 @@ function Dashboard() {
 
       <div className="main-content">
         <div className="top-navbar">
-          <Link to='/AddNewMember'><button className='new-btn'>Add New</button></Link>
-          <div className="profile">Profile</div>
+        
           <Link to='/login'><button className='logout-btn'>Logout</button></Link>
         </div>
         <div className="content">
