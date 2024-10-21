@@ -11,17 +11,30 @@ const DataBox = ({ data, hideYear, deleteMode, onCheckboxChange, onUpdate }) => 
           <th>Quarter</th>
           <th>Category</th>
           <th>Amount (In Millions)</th>
+          <th>Actions</th>
           <th style={{ width: '10%' }}></th> {/* Empty header for three-dot options */}
         </tr>
       </thead>
       <tbody>
-        {data.map((item, index) => (
-          <tr
-            key={index}
-            onMouseEnter={() => setShowOptions(index)}
-            onMouseLeave={() => setShowOptions(null)}
-          >
-            {deleteMode && (
+          {data.map((item, index) => (
+            <tr key={index}>
+              <td>{item.Category}</td>
+              <td>{item.Amount}</td>
+              <td>{item.Year}</td>
+              <td>{item.Quarter}</td>
+              <td>
+                <button onClick={() => onUpdate(item)}>Update</button> {/* Pass item to handle update */}
+                <button onClick={() => onDelete(item)}>Delete</button> {/* Pass item to handle delete */}
+              </td>
+            </tr>
+          ))}
+        
+
+{data.map((item, index) => (
+  <tr key={item.id || index}
+  onMouseEnter={() => setShowOptions(index)}
+            onMouseLeave={() => setShowOptions(null)}>
+               {deleteMode && (
               <td>
                 <input
                   type="checkbox"
@@ -30,19 +43,13 @@ const DataBox = ({ data, hideYear, deleteMode, onCheckboxChange, onUpdate }) => 
                 />
               </td>
             )}
-            <td>{item.Quarter}</td>
+     <td>{item.Quarter}</td>
             <td>{item.Category}</td>
             <td>{item.Amount}</td>
-            <td>
-              {/* {showOptions === index && (
-                <div className="three-dots-menu">
-                  <button onClick={() => onUpdate(item)}>Update</button>
-                  <button onClick={() => onCheckboxChange(item)}>Delete</button>
-                </div>
-              )} */}
-            </td>
-          </tr>
-        ))}
+ 
+  </tr>
+))}
+
       </tbody>
     </table>
   );

@@ -31,18 +31,18 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
 
     // Start year in April, Q1 starts in April
     if (currentMonth >= 4 && currentMonth <= 6) {
-      currentQuarter = 'Q1';
+      currentQuarter = 1;
     } else if (currentMonth >= 7 && currentMonth <= 9) {
-      currentQuarter = 'Q2';
+      currentQuarter = 2;
     } else if (currentMonth >= 10 && currentMonth <= 12) {
-      currentQuarter = 'Q3';
+      currentQuarter = 3;
     } else {
-      currentQuarter = 'Q4';
+      currentQuarter = 4;
       currentYear -= 1; // The financial year ends in March
     }
-
-    setYear(`${currentYear}-${currentYear + 1}`);
-    setQuarter(currentQuarter);
+    const nextYear = (currentYear + 1).toString().slice(-2); // get only last two digits, e.g., "25"
+    setYear(`${currentYear}-${nextYear}`); // sets year to "2024-25"
+    setQuarter(currentQuarter); // sets the quarter as usual
   }, []);
 
   const handleSubmit = () => {
@@ -53,9 +53,11 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
       Amount: amount,
       Type: section, // Section passed from parent (e.g., 'Current_Liabilities', 'NonCurrent_Liabilities', 'Equity')
     };
-
-    onAdd(newItem); // Pass the new item to parent
+  
+    // Call the onAdd method passed from the parent with the newItem data
+    onAdd(newItem);
   };
+  
 
   return (
     <div className="modal-overlay">
@@ -88,12 +90,16 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
 
         <div className="form-group">
           <label>Year</label>
-          <input type="text" value={year} readOnly /> {/* Dynamic year */}
+          <input type="text" value={year} 
+           onChange={(e) => setAmount(e.target.value)}
+           placeholder="Enter year" /> {/* Dynamic year */}
         </div>
 
         <div className="form-group">
           <label>Quarter</label>
-          <input type="text" value={quarter} readOnly /> {/* Dynamic quarter */}
+          <input type="text" value={quarter}
+           onChange={(e) => setAmount(e.target.value)}
+           placeholder="Enter Quarter" /> {/* Dynamic quarter */}
         </div>
 
         <div className="modal-actions">
