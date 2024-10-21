@@ -112,21 +112,26 @@ function AddNewMember() {
     .then((response) => response.json())
     .then((data) => {
         if (data.error) {
-            // Check for the specific error message for HR role
+            // Skip confirmation dialog if user has HR role
             if (data.error.includes("HR role")) {
                 alert("You cannot delete a user with HR role!");
             } else {
                 setNotification({ type: 'error', message: data.error });
             }
         } else {
-            setNotification({ type: 'success', message: data.message });
-            fetchUsers();
+            // Show confirmation dialog for other users
+            const confirmation = window.confirm('Are you sure you want to delete this user?');
+            if (confirmation) {
+                setNotification({ type: 'success', message: data.message });
+                fetchUsers(); // Refresh the users list after successful deletion
+            }
         }
     })
     .catch((error) => {
         setNotification({ type: 'error', message: 'Error deleting user: ' + error });
     });
 };
+
 
 
   const resetForm = () => {
