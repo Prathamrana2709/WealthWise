@@ -198,19 +198,22 @@ function AddNewMember() {
         </form>
       ) : (
         <div>
-          <ul className="user-list">
-            {filteredUsers.map(user => (
-              <li key={user.Email_id}>
-                {user.Name} ({user.Email_id})
-                <div>
-                  <button onClick={() => handleEdit(user)} className="edit-btn">Edit</button>
-                  <button onClick={() => handleDelete(user.Email_id)} className="delete-btn">Delete</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-          {/* <Link to='/dashboard'><button type="button" className="back-btn">Back to Dashboard</button></Link> */}
-        </div>
+            <ul className="user-list">
+              {filteredUsers.map(user => (
+                <li key={user.Email_id}>
+                  <div>
+                    <strong>{user.Name} </strong>
+                    ({user.Email_id})<br />
+                    <span className="user-role">{user.role}</span>
+                  </div>
+                  <div>
+                    <button onClick={() => handleEdit(user)} className="edit-btn">Edit</button>
+                    <button onClick={() => handleDelete(user.Email_id)} className="delete-btn">Delete</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
       )}
 
       {notification && (

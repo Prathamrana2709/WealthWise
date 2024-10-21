@@ -206,6 +206,18 @@ input[type="email"], input[type="text"], input[type="password"], .select-add-new
 .user-list li .delete-btn:hover {
     background-color: #c00; /* darker red on hover */
 }
+
+.user-role{
+    display: flex;
+    justify-content: lefft;
+    align-items: center;
+    color: rgb(46, 45, 45);
+    font-family: 'Poppins', sans-serif;
+}
+
+strong{
+    font-weight: 600;
+}
 /* Popup */
 .popup {
     position: fixed;
