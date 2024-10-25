@@ -52,15 +52,17 @@ def update_expense(id, updated_data):
 # Remove an expense
 def remove_expense(id):
     if not ObjectId.is_valid(id):
-        return {'error': 'Invalid ObjectId format'}, 400
+        return jsonify({'error': 'Invalid ObjectId format'}), 400
     try:
         result = expenses_collection.delete_one({'_id': ObjectId(id)})
         if result.deleted_count == 1:
-            return {'message': 'Expense deleted successfully'}, 200
+            return jsonify({'message': 'Liability deleted successfully'}), 200
         else:
-            return {'error': 'Expense not found'}, 404
+            return jsonify({'error': 'Liability not found'}), 404
+    except InvalidId:
+        return jsonify({'error': 'Invalid ObjectId'}), 400
     except Exception as e:
-        return {'error': str(e)}, 500
+        return jsonify({'error': str(e)}), 500
     
 
 # Get all expenses

@@ -1,6 +1,8 @@
 from flask import jsonify
 from pymongo import MongoClient
 import certifi, os
+from bson import ObjectId
+from bson.errors import InvalidId
 
 # MongoDB Atlas connection (handled here in cashflow_api.py)
 mongo_connection_string = os.getenv('MONGODB_CONNECTION_STRING')
@@ -24,41 +26,39 @@ def add_new_cashflow(new_cashflow):
     except Exception as e:
         return {'error': str(e)}, 500
     
-def update_existing_cashflow(original_year, original_quarter, updated_data):
-    # Remove any fields from updated_data that are not provided (i.e., partial update)
-    update_fields = {key: value for key, value in updated_data.items() if value is not None}
-    
-    if not update_fields:
-        return {'error': 'No fields to update'}, 400
-
-    # Search for the cashflow using the original year and quarter
-    search_criteria = {'Year': original_year, 'Quarter': original_quarter}
-
-    # Update the asset with the provided data
-    result = cashflow_collection.update_one(search_criteria, {'$set': update_fields})
-
-    if result.matched_count == 1:
-        # Retrieve the updated document (note: use updated year/quarter if they were changed)
-        # If year/quarter were updated, use them for the fetch, otherwise use the original values
-        updated_year = updated_data.get('Year', original_year)
-        updated_quarter = updated_data.get('Quarter', original_quarter)
-
-        updated_cashflow = cashflow_collection.find_one({'Year': updated_year, 'Quarter': updated_quarter})
-        updated_cashflow['_id'] = str(updated_cashflow['_id'])  # Convert ObjectId to string
+def update_cashflow(id, updated_data):
+    try:
+        # Validate ObjectId format
+        if not ObjectId.is_valid(id):
+            return jsonify({'error': 'Invalid ObjectId format'}), 400
         
-        return updated_cashflow, 200  # Return the updated cashflow and status code
-    else:
-        return {'error': 'Cashflow not found for the given year and quarter'}, 404
+        # Remove '_id' field if present in updated_data to avoid conflicts during update
+        updated_data.pop('_id', None)
+
+        # Perform the update operation
+        result = cashflow_collection.update_one({'_id': ObjectId(id)}, {'$set': updated_data})
+
+        if result.matched_count == 0:
+            return jsonify({'error': 'Liability not found'}), 404
+
+        return jsonify({'message': 'Liability updated successfully'}), 200
+    except InvalidId:
+        return jsonify({'error': 'Invalid ObjectId'}), 400
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500  
     
-# Delete an existing revenue using year and quarter
-def delete_cashflow(year, quarter):
-    # Find and delete the revenue matching the year and quarter
-    result = cashflow_collection.delete_one({'Year': year, 'Quarter': quarter})
-    
-    if result.deleted_count == 1:
-        return {'message': f'Cashflow for year {year} and quarter {quarter} deleted successfully'}, 200
-    else:
-        return {'error': 'Cashflow not found for the given year and quarter'}, 404
+# Delete an 
+def remove_cashflow(id):
+    if not ObjectId.is_valid(id):
+        return jsonify({'error': 'Invalid ObjectId format'}), 400
+    try:
+        result = cashflow_collection.delete_one({'_id': ObjectId(id)})
+        if result.deleted_count == 1:
+            return jsonify({'message': 'Liability deleted successfully'}), 200
+        else:
+            return jsonify({'error': 'Liability not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
     
 # Get all revenue
 def get_all_cashflows():

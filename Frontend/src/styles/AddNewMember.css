@@ -7,7 +7,7 @@
 }
 body {
     min-height: 100vh;
-    background: #e1dbdb;
+    background: linear-gradient(to bottom right, rgb(193, 219, 243),white);
     overflow:scroll;
     -ms-overflow-style: none;
 }

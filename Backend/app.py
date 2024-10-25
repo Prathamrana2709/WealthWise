@@ -179,15 +179,15 @@ def add_revenue():
     new_revenue = request.get_json()
     return revenues_api.add_new_revenue(new_revenue)
 
-@app.route('/api/revenues/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
-def update_revenue(original_year, original_quarter):
+@app.route('/api/revenues/update/<string:id>', methods=['PUT'])
+def update_revenue(id):
     updated_data = request.get_json()
-    return revenues_api.update_existing_revenue(original_year, original_quarter, updated_data)
+    return revenues_api.update_revenue(id, updated_data)
 
-@app.route('/api/revenues/delete/<string:year>/<int:quarter>', methods=['DELETE'])
-def remove_revenues(year, quarter):
-    # Call the delete function from expenses_api.py
-    response, status_code = revenues_api.delete_revenue(year, quarter)
+@app.route('/api/revenues/delete/<string:id', methods=['DELETE'])
+def remove_revenue(id):
+    # Call the delete function from revenues_api.py
+    response, status_code = revenues_api.delete_revenue(id)
     
     return jsonify(response), status_code
 
@@ -218,16 +218,15 @@ def add_cashflow():
     response, status_code = cashflow_api.add_new_cashflow(new_cashflow)  # Unpack response and status code
     return jsonify(response), status_code  # Return the response with the appropriate status code
 
-@app.route('/api/cashflow/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
-def update_cashflow(original_year, original_quarter):
+@app.route('/api/cashflow/update/<string:id>', methods=['PUT'])
+def update_cashflow(id):
     updated_data = request.get_json()
-    return cashflow_api.update_existing_cashflow(original_year, original_quarter, updated_data)
+    return cashflow_api.update_cashflow(id, updated_data)
 
-@app.route('/api/cashflow/delete/<string:year>/<int:quarter>', methods=['DELETE'])
-def remove_cashflow(year, quarter):
+@app.route('/api/cashflow/delete/<string:id>', methods=['DELETE'])
+def remove_cashflow(id):
     # Call the delete function from cashflow_api.py
-    response, status_code = cashflow_api.delete_cashflow(year, quarter)
-    
+    response, status_code = cashflow_api.remove_cashflow(id)    
     return jsonify(response), status_code
 
 @app.route('/api/cashflow/getAll', methods=['GET'])
@@ -236,8 +235,6 @@ def fetch_all_cashflows():
     response, status_code = cashflow_api.get_all_cashflows()
     
     return jsonify(response), status_code
-
-
 
 # Run the Flask app
 if __name__ == '__main__':
