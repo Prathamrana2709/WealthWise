@@ -77,7 +77,7 @@ p {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: linear-gradient(to bottom right, #ffccd5, #a8e6cf);
+  background: linear-gradient(to bottom right, rgb(193, 219, 243),white);
 }
 
 img {
@@ -131,7 +131,7 @@ img {
 }
 
 .right-section h1 {
-  color: #6c23cc;
+  color: #3c4671;
 }
 
 .input-field {
@@ -152,7 +152,7 @@ img {
 
 /* Login Button Styling */
 .login-button {
-  background-color: #8c38ff; /* Primary background color */
+  background-color:  #3c4671; /* Primary background color */
   color: white; /* Button text color */
   padding: 1rem;
   border: none;
