@@ -8,7 +8,6 @@
 body {
     min-height: 100vh;
     background: #e1dbdb;
-    /* background-image: url('../assets/login.png'); */
     overflow:scroll;
     -ms-overflow-style: none;
 }
@@ -17,19 +16,9 @@ body::-webkit-scrollbar {
     display: none;  /* Chrome, Safari, and Opera */
 }
 
-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  }
-  
-  .wrapper {
-    position: relative;
-    z-index: 2;
-    padding: 20px;
+.wrapper{
+    position:relative;
+    z-index:1;
   }
 
 /* Navbar Styling */
@@ -274,11 +263,11 @@ strong{
 .cancel-btn {
     margin-left: 10px;
     padding: 10px 20px;
-    background-color: #ddd;
+    background-color: #e72525;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 .cancel-btn:hover {
-    background-color: #aaa;
+    background-color: #f76d6d;
 }

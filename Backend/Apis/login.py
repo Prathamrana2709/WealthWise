@@ -117,7 +117,8 @@ def authenticate_user(request):
             return jsonify({
                 "message": "Authentication successful!",
                 "Email_id": Emailid,
-                "role": user['role']  # Return the role as part of the response
+                "role": user['role'],  # Return the role as part of the response
+                "name": user['Name']
             }), 200
         else:
             return jsonify({"error": "Invalid Email_id or password"}), 401
@@ -141,9 +142,20 @@ def get_users():
     try:
         users = users_collection.find({})
         user_list = [{"Email_id": user["Email_id"], "Name": user["Name"], "role": user["role"]} for user in users]
-      
         return jsonify({"users": user_list})
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+# Get a user by Email_id
+def get_user(Emailid):
+    try:
+        user = users_collection.find_one({"Email_id": Emailid})
+        if user:
+            return jsonify({"Name": user["Name"], "role": user["role"]})
+        else:
+            return jsonify({"error": "User not found!"}), 404
+    
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     

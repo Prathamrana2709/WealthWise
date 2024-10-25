@@ -25,7 +25,7 @@ function FluidCanvas() {
       BACK_COLOR: {
         r: 0,
         g: 0,
-        b: 0,
+        b: 0
       },
       BLOOM: true,
       BLOOM_ITERATIONS: 4,
@@ -33,9 +33,9 @@ function FluidCanvas() {
       BLOOM_INTENSITY: 0.8,
       BLOOM_THRESHOLD: 0.6,
       BLOOM_SOFT_KNEE: 0.7,
-      SUNRAYS: false,
+      SUNRAYS: true,
       SUNRAYS_RESOLUTION: 196,
-      SUNRAYS_WEIGHT: 1.0,
+      SUNRAYS_WEIGHT: 1.0
     });
   }, []);
 

@@ -139,7 +139,6 @@ span {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background: rgba(255, 255, 255, 0.6); /* Semi-transparent background for glass effect */
   backdrop-filter: blur(10px); /* Blur effect for glassy look */
   color: white;
   padding: 20px;
@@ -151,9 +150,9 @@ span {
 .profile {
   cursor: pointer;
   padding: 10px 20px;
-  background-color: #009fb2; /* Profile button color */
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  color: black;
 }
 
 .profile:hover {

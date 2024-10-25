@@ -40,6 +40,10 @@ def delete_user(userid):
 def get_users():
     return login.get_users()
 
+@app.route('/api/users/<string:userid>', methods=['GET'])
+def get_user(userid):
+    return login.get_user(userid)   
+
 # Endpoint to handle password reset link
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -58,16 +62,16 @@ def add_liability():
     response, status_code = liabilities_api.add_new_liability(new_liability)  # Unpack response and status code
     return jsonify(response), status_code  # Return the response with the appropriate status code
 
-@app.route('/api/liabilities/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
-def update_liability(original_year, original_quarter):
+@app.route('/api/liabilities/update/<string:id>', methods=['PUT'])
+def update_liability(id):
     updated_data = request.get_json()
-    return liabilities_api.update_existing_liability(original_year, original_quarter, updated_data)
+    return liabilities_api.update_liability(id, updated_data)
 
-@app.route('/api/liabilities/delete/<string:year>/<int:quarter>', methods=['DELETE'])
-def remove_liability(year, quarter):
+@app.route('/api/liabilities/delete/<string:id>', methods=['DELETE'])
+def remove_liability(id):
+    print(id)
     # Call the delete function from liabilities_api.py
-    response, status_code = liabilities_api.delete_liability(year, quarter)
-    
+    response, status_code = liabilities_api.remove_liability(id)
     return jsonify(response), status_code
 
 @app.route('/api/liabilities/getAll', methods=['GET', 'OPTIONS'])
@@ -105,16 +109,15 @@ def add_asset():
     response, status_code = assets_api.add_new_asset(new_asset)  # Unpack response and status code
     return jsonify(response), status_code  # Return the response with the appropriate status code
 
-@app.route('/api/assets/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
-def update_asset(original_year, original_quarter):
+@app.route('/api/assets/update/<string:id>', methods=['PUT'])
+def update_asset(id):
     updated_data = request.get_json()
-    return assets_api.update_existing_asset(original_year, original_quarter, updated_data)
+    return assets_api.update_asset(id, updated_data)
 
-@app.route('/api/assets/delete/<string:year>/<int:quarter>', methods=['DELETE'])
-def remove_asset(year, quarter):
+@app.route('/api/assets/delete/<string:id>', methods=['DELETE'])
+def remove_asset(id):
     # Call the delete function from assets_api.py
-    response, status_code = assets_api.delete_asset(year, quarter)
-    
+    response, status_code = assets_api.remove_asset(id)    
     return jsonify(response), status_code
 
 @app.route('/api/assets/getAll', methods=['GET'])
@@ -146,20 +149,16 @@ def create_expense():
     new_expense = request.get_json()
     return expenses_api.add_new_expense(new_expense)
 
-@app.route('/api/expenses/update/<string:original_year>/<int:original_quarter>', methods=['PUT'])
-def update_expenses(original_year, original_quarter):
+@app.route('/api/expenses/update/<string:id>', methods=['PUT'])
+def update_expense(id):
     updated_data = request.get_json()
-    return expenses_api.update_existing_expenses(original_year, original_quarter, updated_data)
+    return expenses_api.update_expense(id, updated_data)
 
-
-
-@app.route('/api/expenses/delete/<string:year>/<int:quarter>', methods=['DELETE'])
-def remove_expense(year, quarter):
+@app.route('/api/expenses/delete/<string:id>', methods=['DELETE'])
+def remove_expense(id):
     # Call the delete function from expenses_api.py
-    response, status_code = expenses_api.delete_expense(year, quarter)
-    
+    response, status_code = expenses_api.remove_expense(id)
     return jsonify(response), status_code
-
 
 
 @app.route('/api/expenses/getAll', methods=['GET'])
@@ -169,10 +168,10 @@ def fetch_all_expenses():
     
     return jsonify(response), status_code
 
-@app.route('/api/expenses/filter', methods=['GET'])
-def filter_expense():
-    filters = request.args
-    return expenses_api.filter_expenses(filters)
+@app.route('/api/expenses/filter/<string:Year>/<string:Quarter>', methods=['GET'])
+def filter_expense(Year, Quarter):
+    filters = {'Year': Year, 'Quarter': Quarter}
+    return expenses_api.filter_expense(filters)
 
 # Flask route for adding a new revenue record
 @app.route('/api/revenues/add', methods=['POST'])

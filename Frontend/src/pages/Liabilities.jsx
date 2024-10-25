@@ -1,8 +1,6 @@
-
-
 import React, { useState, useEffect } from 'react';
 import DataBox from '../components/DataBox';
-import ConfirmationDialog from '../components/AddNewModal';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 import AddNewModal from '../components/AddNewModal'; // Modal for Adding New Liabilities
 import UpdateModal from '../components/Updatemodel';
 import '../styles/Liabilities.css';
@@ -19,7 +17,9 @@ const Liabilities = () => {
   const [deleteMode, setDeleteMode] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false); // Add state for Add Modal
   const [selectedSection, setSelectedSection] = useState(''); // Section for Adding New Item
+  const [selectedItem, setSelectedItem] = useState(null); // Selected Item for Update
   const [liabilities, setLiabilities] = useState([]); // Holds the list of liabilities
+  const [showUpdateModal, setShowUpdateModal] = useState(false); // State for Update Modal
 
   const fetchData = async () => {
     try {
@@ -46,21 +46,16 @@ const Liabilities = () => {
     fetchData();
   }, []);
 
-  
   useEffect(() => {
     const filtered = data.reduce((acc, item) => {
-    // console.log(`Item Year: ${item.Year}, Selected Year: ${selectedYear}`);
-    if (item.Year === selectedYear) {
-      const normalizedType = item.Type.toLowerCase();
-      acc[normalizedType] = acc[normalizedType] ? [...acc[normalizedType], item] : [item];
-    }
-    return acc;
-  }, {});
-    // console.log('Filtered Data:', filtered);
+      if (item.Year === selectedYear) {
+        const normalizedType = item.Type.toLowerCase();
+        acc[normalizedType] = acc[normalizedType] ? [...acc[normalizedType], item] : [item];
+      }
+      return acc;
+    }, {});
     setFilteredData(filtered);
   }, [data, selectedYear]);
-  
-  
 
   const handleCheckboxChange = (item) => {
     setSelectedItems((prevSelected) =>
@@ -70,12 +65,8 @@ const Liabilities = () => {
     );
   };
 
-  
-
-  
-
   const handleAdd = (section) => {
-    setSelectedSection(section); // Pass the selected section (e.g., equity)
+    setSelectedSection(section);
     setShowAddModal(true); // Show modal for adding new item
   };
 
@@ -84,47 +75,51 @@ const Liabilities = () => {
     try {
       if (confirmationType === 'delete') {
         await deleteItems();
+        fetchData(); // Refresh data after deletion
       } else if (confirmationType === 'update') {
         await updateItem(currentItem);
       }
     } catch (error) {
-      console.error('Error during action:', error); // Log the error
+      console.error('Error during action:', error);
     }
   };
 
-  // const deleteItems = async () => {
-  //   try {
-  //     for (const item of selectedItems) {
-  //       const response = await fetch(`http://127.0.0.1:5001/api/liabilities/delete/${item.Year}/${item.Quarter}`, {
-  //         method: 'DELETE',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //       });
-  //       if (!response.ok) {
-  //         throw new Error(`Error: ${response.status} ${response.statusText}`);
-  //       }
-  //     }
-  //     setSelectedItems([]);
-  //     setDeleteMode(false);
-  //     fetchData(); // Refresh data after deletion
-  //   } catch (error) {
-  //     console.error('Error deleting items:', error);
-  //   }
-  // };
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
- 
-  
+  const handleDelete = (item) => {
+    setCurrentItem(item); // Set the item to be deleted
+    setConfirmationType('delete');
+    setShowConfirmation(true); // Show the confirmation dialog
+  };
+
+  const deleteItems = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5001/api/liabilities/delete/${currentItem._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} ${response.statusText}`);
+      }
+      setSelectedItems([]);
+      setDeleteMode(false);
+      fetchData(); // Refresh data after deletion
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
   // Function to open update modal with the selected item
   const handleUpdate = (item) => {
     setCurrentItem(item);
     setShowUpdateModal(true); // Show modal when updating
   };
-  
+
   // Function to handle updating the item
   const updateItem = async (updatedItem) => {
     try {
-      const response = await fetch('http://127.0.0.1:5001/api/liabilities/update', {
+      console.log('Updating item:', updatedItem); // Debug the item being updated
+      const response = await fetch(`http://127.0.0.1:5001/api/liabilities/update/${updatedItem._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -134,14 +129,14 @@ const Liabilities = () => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-      console.log('Response:', response);
       await fetchData(); // Reload data after update
-      setSelectedYear(updatedItem.Year); // Update selected year if necessary
+      setSelectedYear(updatedItem['Year']); // Update selected year if necessary
     } catch (error) {
       console.error('Error updating item:', error);
     }
     setShowUpdateModal(false); // Close the modal after updating
   };
+
   const addNewItem = async (newItem) => {
     try {
       const response = await fetch('http://127.0.0.1:5001/api/liabilities/add', {
@@ -154,7 +149,6 @@ const Liabilities = () => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-      
       await fetchData(); // Ensure fetchData is awaited to complete before moving on
       setSelectedYear(newItem.Year); // Update selectedYear if the new item has a different year
     } catch (error) {
@@ -162,8 +156,6 @@ const Liabilities = () => {
     }
     setShowAddModal(false); // Close the modal after adding
   };
-  
-  
 
   return (
     <div className="liabilities-container">
@@ -188,27 +180,20 @@ const Liabilities = () => {
         {['equity', 'current_liability', 'non_current_liability'].map((section) => (
           <div key={section} className="section">
             <div className="section-header">
-               {/* <button onClick={handleDeleteMode}>
-                  {deleteMode ? 'Cancel Delete' : 'Delete'}
-                </button>  */}
-                 {/* {deleteMode && selectedItems.length > 0 && (
-                  <button onClick={handleDelete}>Delete Selected ({selectedItems.length})</button>
-                )} */}
-                < h2 className="title-1"/>{section.replace('_', ' ').toUpperCase()}
+              <h2 className="title-1">{section.replace('_', ' ').toUpperCase()}</h2>
               <div className="section-buttons">
                 <button onClick={() => handleAdd(section)}>Add New {section.replace('_', ' ')}</button>
-              
               </div>
             </div>
             {filteredData[section] && (
               <DataBox
-              data={filteredData[section]} // Make sure filteredData is properly structured
-              hideYear={true}
-              deleteMode={deleteMode}
-              onCheckboxChange={handleCheckboxChange}
-              onUpdate={handleUpdate}
-            />
-            
+                data={filteredData[section]} // Make sure filteredData is properly structured
+                hideYear={true}
+                deleteMode={deleteMode}
+                onCheckboxChange={handleCheckboxChange}
+                onUpdate={handleUpdate}
+                onDelete={handleDelete}
+              />
             )}
           </div>
         ))}
@@ -220,6 +205,7 @@ const Liabilities = () => {
           section={selectedSection}
           onAdd={addNewItem}
           onCancel={() => setShowAddModal(false)}
+          // itemType={selectedItem.Type}
         />
       )}
 
@@ -230,14 +216,15 @@ const Liabilities = () => {
           onCancel={() => setShowConfirmation(false)}
         />
       )}
+
       {showUpdateModal && (
-  <UpdateModal
-    item={currentItem}
-    section={selectedSection}
-    onUpdate={updateItem}
-    onCancel={() => setShowUpdateModal(false)}
-  />
-)}
+        <UpdateModal
+          item={currentItem}
+          section={selectedSection}
+          onUpdate={updateItem}
+          onCancel={() => setShowUpdateModal(false)}
+        />
+      )}
     </div>
   );
 };

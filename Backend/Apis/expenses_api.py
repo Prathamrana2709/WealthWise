@@ -1,6 +1,8 @@
 from flask import jsonify
 from pymongo import MongoClient
 import certifi,os
+from bson import ObjectId
+from bson.errors import InvalidId
 
 # MongoDB Atlas connection (handled here in expenses_api.py)
 mongo_connection_string = os.getenv('MONGODB_CONNECTION_STRING')
@@ -28,42 +30,38 @@ def add_new_expense(new_expense):
     except Exception as e:
         return {'error': str(e)}, 500
     
-# Update an existing expenses using the original year and quarter as search keys
-def update_existing_expenses(original_year, original_quarter, updated_data):
-    # Remove any fields from updated_data that are not provided (i.e., partial update)
-    update_fields = {key: value for key, value in updated_data.items() if value is not None}
-    
-    if not update_fields:
-        return {'error': 'No fields to update'}, 400
-
-    # Search for the asset using the original year and quarter
-    search_criteria = {'Year': original_year, 'Quarter': original_quarter}
-
-    # Update the asset with the provided data
-    result = expenses_collection.update_one(search_criteria, {'$set': update_fields})
-
-    if result.matched_count == 1:
-        # Retrieve the updated document (note: use updated year/quarter if they were changed)
-        # If year/quarter were updated, use them for the fetch, otherwise use the original values
-        updated_year = updated_data.get('Year', original_year)
-        updated_quarter = updated_data.get('Quarter', original_quarter)
-
-        updated_expens = expenses_collection.find_one({'Year': updated_year, 'Quarter': updated_quarter})
-        updated_expens['_id'] = str(updated_expens['_id'])  # Convert ObjectId to string
+# Update an existing expense
+def update_expense(id, updated_data):
+    try:
+        if not ObjectId.is_valid(id):
+            return {'error': 'Invalid ObjectId format'}, 400
         
-        return updated_expens, 200  # Return the updated asset and status code
-    else:
-        return {'error': 'Expense not found for the given year and quarter'}, 404
+        updated_data.pop('_id', None)
+
+        result = expenses_collection.update_one({'_id': ObjectId(id)}, {'$set': updated_data})
+
+        if result.matched_count == 0:
+            return {'error': 'Expense not found'}, 404
+
+        return {'message': 'Expense updated successfully'}, 200
+    except InvalidId:
+        return {'error': 'Invalid ObjectId'}, 400
+    except Exception as e:
+        return {'error': str(e)},
+
+# Remove an expense
+def remove_expense(id):
+    if not ObjectId.is_valid(id):
+        return {'error': 'Invalid ObjectId format'}, 400
+    try:
+        result = expenses_collection.delete_one({'_id': ObjectId(id)})
+        if result.deleted_count == 1:
+            return {'message': 'Expense deleted successfully'}, 200
+        else:
+            return {'error': 'Expense not found'}, 404
+    except Exception as e:
+        return {'error': str(e)}, 500
     
-# Delete an existing expense using year and quarter
-def delete_expense(year, quarter):
-    # Find and delete the expense matching the year and quarter
-    result = expenses_collection.delete_one({'Year': year, 'Quarter': quarter})
-    
-    if result.deleted_count == 1:
-        return {'message': f'Expense for year {year} and quarter {quarter} deleted successfully'}, 200
-    else:
-        return {'error': 'Expense not found for the given year and quarter'}, 404
 
 # Get all expenses
 def get_all_expenses():
@@ -75,18 +73,19 @@ def get_all_expenses():
     
     return assets, 200
 
-def filter_expenses(filters):
-    query = {}
-    
-    if 'Year' in filters:
-        query['Year'] = filters['Year']
-    if 'Quarter' in filters:
-        query['Quarter'] = filters['Quarter']
-
-    expenses = list(expenses_collection.find(query))
-
-    for expense in expenses:
-        expense['_id'] = str(expense['_id'])
-    
-    return expenses, 200
-
+def filter_expense(filters):
+    try:
+        # Convert string values to integer
+        for key in filters:
+            if key in ['Year', 'Quarter']:
+                filters[key] = int(filters[key])
+        
+        expenses = list(expenses_collection.find(filters))  # Fetch filtered expenses
+        # print(expenses)
+        # Convert ObjectId to string for each expense
+        for expense in expenses:
+            expense['_id'] = str(expense['_id'])
+        
+        return expenses, 200
+    except Exception as e:
+        return {'error': str(e)}, 500

@@ -1,5 +1,5 @@
 import React, { useState, Suspense, lazy } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import '../styles/dashboard.css';
 import logo from '../assets/Logo.png';
 import Liabilities from './Liabilities';
@@ -29,6 +29,12 @@ function Dashboard() {
 
   const [selectedSubItem, setSelectedSubItem] = useState('');
 
+  const location = useLocation();
+  const role = location.state?.Role;
+  const email = location.state?.Email_id;
+  const Name = location.state?.Name;
+  console.log('Role:', role, 'Email:', email, 'Name:', Name);
+
   const sections = {
     Dashboard: [],
     Analysis: [
@@ -52,6 +58,8 @@ function Dashboard() {
       // 'Costs (Check Boxes)', 'Add Description'
     ]
   };
+
+  // Get Role and Name from login.jsx
 
   const handleSectionClick = (section) => {
     setSelectedSubItem(''); // Reset sub-item when a new section is clicked
@@ -145,6 +153,10 @@ function Dashboard() {
           <Link to='/AddNewMember'><button className='new-btn'>Users</button></Link>
           {/* <div className="profile">Profile</div> */}
           <Link to='/login'><button className='logout-btn'>Logout</button></Link>
+          <div className='profile'>
+                <strong>{Name}</strong>
+                <span className="user-role">{role}</span>
+            </div>
         </div>
         <div className="content">
           <Suspense fallback={<div>Loading...</div>}>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/AddNewMember.css';
 import logo from '../assets/Logo.png';
-import FluidCanvas from '../canvas/FluidCanvas'; // Import the fluid canvas component
+// import FluidCanvas from '../canvas/FluidCanvas'; // Import the fluid canvas component
 
 function AddNewMember() {
   const [users, setUsers] = useState([]);
@@ -18,6 +18,7 @@ function AddNewMember() {
   const [validationErrors, setValidationErrors] = useState([]);
   const [passwordStrength, setPasswordStrength] = useState('');
   const [notification, setNotification] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -130,7 +131,7 @@ function AddNewMember() {
 
   return (
     <div className="wrapper">
-      <FluidCanvas />
+      {/* <FluidCanvas /> */}
       <div className="add-member-container">
     <nav className="navbar">
       <div className="logo-sec">
@@ -147,7 +148,7 @@ function AddNewMember() {
         />
       )}
       <div className="navbar-links">
-        <Link to='/dashboard' className="navbar-link">Back</Link>
+        <Link to={'/dashboard'} className="navbar-link">Back</Link>
       </div>
     </nav>
 
@@ -223,6 +224,7 @@ function AddNewMember() {
     )}
   </div>
 </div>
+
   );
 }
 

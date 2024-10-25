@@ -18,6 +18,15 @@ function Analysis() {
     }
   }, [lineYearFilter]);
 
+  // Custom sort function for "YYYY-YY" year format
+  const sortYears = (years) => {
+    return years.sort((a, b) => {
+      const yearA = parseInt(a.split('-')[0], 10);
+      const yearB = parseInt(b.split('-')[0], 10);
+      return yearB - yearA; // Sort in descending order
+    });
+  };
+
   const fetchAllData = async () => {
     // Fetch Expenses
     const expenseResponse = await fetch('http://127.0.0.1:5001/api/expenses/getAll');
@@ -26,9 +35,10 @@ function Analysis() {
 
     // Get distinct years from expenses
     const years = [...new Set(expenseData.map(item => item.Year))]; // Extract unique years
-    setDistinctYears(years.sort((a, b) => b - a)); // Sort descending
+    setDistinctYears(sortYears(years)); // Sort years in "YYYY-YY" format descending
 
-    const recentYear = years[0];
+    // Set the most recent year as the default
+    const recentYear = sortYears(years)[0];
     setLineYearFilter(recentYear); // Set default year for line charts
   };
 
@@ -39,11 +49,15 @@ function Analysis() {
     setExpenses(filteredExpenses);
   };
 
-  // Prepare lineData for each expense category
-  const lineData = expenses.map(exp => ({
+  // Filter expenses based on the selected year and prepare lineData for each expense category
+  const filteredExpenses = expenses
+    .filter(exp => exp.Year === lineYearFilter)
+    .sort((a, b) => a.Quarter - b.Quarter); // Sort quarters numerically
+
+  const lineData = filteredExpenses.map(exp => ({
     name: `Q${exp["Quarter"]}`,
     EmployeeBenefit: exp['Employee Benefit Expense'],
-    Equipment: exp['Cost of Equipment and software Licences'],
+    Equipment: exp['Cost of Equipment and software Licences'] || exp['Cost of Equipment and Software Licences'],
     Finance: exp['Finance Costs'],
     Depreciation: exp['Depreciation and Amortisation Costs'],
     Other: exp['Other Expenses']
@@ -53,8 +67,8 @@ function Analysis() {
     <div className='analysis-container'>
       {/* Line Chart Year Filter */}
       <div className="filters">
-      <label  htmlFor="yearFilter">Filter by Year:</label>
-        <select className="year-filter"  id="yearFilter" value={lineYearFilter} onChange={(e) => setLineYearFilter(e.target.value)}>
+        <label htmlFor="yearFilter">Filter by Year:</label>
+        <select className="year-filter" id="yearFilter" value={lineYearFilter} onChange={(e) => setLineYearFilter(e.target.value)}>
           {distinctYears.map((year) => (
             <option key={year} value={year}>
               {year}
@@ -123,7 +137,6 @@ function Analysis() {
           <Line type="monotone" dataKey="Other" stroke="#AF19FF" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
-
     </div>
   );
 }

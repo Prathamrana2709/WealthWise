@@ -1,6 +1,8 @@
 from flask import jsonify
 from pymongo import MongoClient
 import certifi,os
+from bson import ObjectId
+from bson.errors import InvalidId
 
 # MongoDB Atlas connection
 mongo_connection_string = os.getenv('MONGODB_CONNECTION_STRING')
@@ -21,43 +23,36 @@ def add_new_asset(new_asset):
     except Exception as e:
         return {'error': str(e)}, 500  # Internal server error
 
-def update_existing_asset(original_year, original_quarter, updated_data):
-    update_fields = {key: value for key, value in updated_data.items() if value is not None}
-    
-    if not update_fields:
-        return {'error': 'No fields to update'}, 400
-
-    # Search for the asset using the original year and quarter
-
-    search_criteria = {'Year': original_year, 'Quarter': original_quarter}
-
-    result = assets_collection.update_one(search_criteria, {'$set': update_fields})
-
-    if result.matched_count == 1:
-        updated_asset = assets_collection.find_one(search_criteria)
-        updated_asset['_id'] = str(updated_asset['_id'])
-        return updated_asset, 200  # Updated
-        # Retrieve the updated document (note: use updated year/quarter if they were changed)
-        # If year/quarter were updated, use them for the fetch, otherwise use the original values
-        updated_year = updated_data.get('Year', original_year)
-        updated_quarter = updated_data.get('Quarter', original_quarter)
-
-        updated_asset = assets_collection.find_one({'Qear': updated_year, 'Quarter': updated_quarter})
-        updated_asset['_id'] = str(updated_asset['_id'])  # Convert ObjectId to string
+def update_asset(id, updated_data):
+    try:
+        if not ObjectId.is_valid(id):
+            return {'error': 'Invalid ObjectId format'}, 400
         
-        return updated_asset, 200  # Return the updated asset and status code
-    else:
-        return {'error': 'Asset not found for the given year and quarter'}, 404
+        updated_data.pop('_id', None)
 
-def delete_asset(year, quarter):
-    # Find and delete the asset matching the year and quarter
-    result = assets_collection.delete_one({'Year': year, 'Quarter': quarter})
+        result = assets_collection.update_one({'_id': ObjectId(id)}, {'$set': updated_data})
+
+        if result.matched_count == 0:
+            return {'error': 'Asset not found'}, 404
+
+        return {'message': 'Asset updated successfully'}, 200
+    except InvalidId:
+        return {'error': 'Invalid ObjectId'}, 400
+    except Exception as e:
+        return {'error': str(e)}, 500
     
-    if result.deleted_count == 1:
-        return {'message': f'Asset for year {year} and quarter {quarter} deleted successfully'}, 200
-    else:
-        return {'error': 'Asset not found for the given year and quarter'}, 404
-    
+def remove_asset(id):
+    if not ObjectId.is_valid(id):
+        return {'error': 'Invalid ObjectId format'}, 400
+    try:
+        result = assets_collection.delete_one({'_id': ObjectId(id)})
+        if result.deleted_count == 1:
+            return {'message': 'Asset deleted successfully'}, 200
+        else:
+            return {'error': 'Asset not found'}, 404
+    except Exception as e:
+        return {'error': str(e)}, 500  
+
 def get_all_assets():
     assets = list(assets_collection.find())
     

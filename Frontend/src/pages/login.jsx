@@ -30,7 +30,6 @@ const Login = () => {
         body: JSON.stringify({ Email_id: Email_id, password: password }),  // Correct key
       });
 
-
       const data = await response.json();
 
       if (response.ok && data.role === 'HR') {
@@ -38,8 +37,9 @@ const Login = () => {
         // Redirect to the dashboard or home page upon successful login
         setEmail('');  // Clear the input fields
         setPassword('');
-        navigate('/Dashboard');
-      } else if (response.ok && data.role === 'Finance Manager') {
+        navigate('/Dashboard', { state: { Email_id : data.Email_id, Role : data.role, Name: data.name} });
+      }
+      else if (response.ok && data.role === 'Finance Manager') {
         console.log('Login Successful:', data);
         // Redirect to the dashboard or home page upon successful login
         setEmail('');  // Clear the input fields
@@ -52,7 +52,6 @@ const Login = () => {
         setEmail('');  // Clear the input fields
         setPassword('');
         navigate('/Dashboard');
-
       }
       else if (response.ok && data.role === 'Data Analyst/Scientist') {
         console.log('Login Successful:', data);
@@ -60,7 +59,6 @@ const Login = () => {
         setEmail('');  // Clear the input fields
         setPassword('');
         navigate('/Dasdashboard');
-
       }
       else if (response.ok && data.role === 'Compliance Officer') {
         console.log('Login Successful:', data);
@@ -68,7 +66,6 @@ const Login = () => {
         setEmail('');  // Clear the input fields
         setPassword('');
         navigate('/Dashboard');
-
       }
       else if (response.ok && data.role === 'Financial Analyst/Advisor') {
         console.log('Login Successful:', data);
@@ -76,7 +73,6 @@ const Login = () => {
         setEmail('');  // Clear the input fields
         setPassword('');
         navigate('/Fdashboard');
-
       }
       else if (response.ok && data.role === 'Budget Analyst') {
         console.log('Login Successful:', data);
@@ -84,7 +80,6 @@ const Login = () => {
         setEmail('');  // Clear the input fields
         setPassword('');
         navigate('/Badashboard');
-
       }
       else if (response.ok && data.role === 'Treasury Manager') {
         console.log('Login Successful:', data);
@@ -92,7 +87,6 @@ const Login = () => {
         setEmail('');  // Clear the input fields
         setPassword('');
         navigate('/Tmdashboard');
-
       }
       else if (response.ok && data.role === 'Compliance Auditor') {
         console.log('Login Successful:', data);
@@ -100,10 +94,7 @@ const Login = () => {
         setEmail('');  // Clear the input fields
         setPassword('');
         navigate('/Dashboard');
-
       }
-
-
       else {
         console.error('Login failed:', data.error);
         setError(data.error);  // Display error message to the user

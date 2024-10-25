@@ -7,29 +7,52 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
   const [year, setYear] = useState('');
   const [quarter, setQuarter] = useState('');
 
-  // Categories options
-  const categoryOptions = [
-    'Provisions',
-    'Other liabilities',
-    'Trade payables',
-    'Other financial liabilities',
-    'Income tax liabilities',
-    'Lease Liabilities',
-    'Unearned and deferred revenue',
-    'Employee benefit obligations',
-    'Deferred tax liabilities',
-    'Share Capital',
-    'Other equity'
-  ];
+  console.log('section:', section);
+
+
+  // Define categories based on section type
+  const categoryOptions = {
+    current_liability: [
+      'Provisions',
+      'Unearned and deferred revenue',
+      'Lease Liabilities',
+      'Other financial liabilities',
+      'Employee benefit obligations',
+      'Income tax liabilities',
+      'Trade payables',
+      'Other liabilities',
+    ],
+    non_current_liability: [
+      'Lease Liabilities',
+      'Deferred tax liabilities',
+      'Unearned and deferred revenue',
+      'Other financial liabilities',
+      'Employee benefit obligations',
+    ],
+    equity: [
+      'Other equity',
+      'Share Capital',
+    ]
+  };
+
+  // Generate year options in "YYYY-YY" format dynamically
+  const generateYearOptions = () => {
+    const currentYear = new Date().getFullYear();
+    const yearOptions = [];
+    for (let i = 2004; i <= currentYear; i++) {
+      yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
+    }
+    return yearOptions;
+  };
 
   // Calculate the current financial year and quarter
   useEffect(() => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1; // JS months are 0-indexed
     let currentYear = currentDate.getFullYear();
-    let currentQuarter = 'Q1';
+    let currentQuarter = 1;
 
-    // Start year in April, Q1 starts in April
+    // Determine the quarter based on the current month
     if (currentMonth >= 4 && currentMonth <= 6) {
       currentQuarter = 1;
     } else if (currentMonth >= 7 && currentMonth <= 9) {
@@ -40,9 +63,11 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
       currentQuarter = 4;
       currentYear -= 1; // The financial year ends in March
     }
-    const nextYear = (currentYear + 1).toString().slice(-2); // get only last two digits, e.g., "25"
-    setYear(`${currentYear}-${nextYear}`); // sets year to "2024-25"
-    setQuarter(currentQuarter); // sets the quarter as usual
+
+    const nextYear = (currentYear + 1).toString().slice(-2); // Last two digits of the next year
+    setYear(`${currentYear}-${nextYear}`);
+    setQuarter(currentQuarter);
+
   }, []);
 
   const handleSubmit = () => {
@@ -53,11 +78,10 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
       Amount: amount,
       Type: section, // Section passed from parent (e.g., 'Current_Liabilities', 'NonCurrent_Liabilities', 'Equity')
     };
-  
+
     // Call the onAdd method passed from the parent with the newItem data
     onAdd(newItem);
   };
-  
 
   return (
     <div className="modal-overlay">
@@ -72,7 +96,7 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
             placeholder="Select category"
           >
             <option value="" disabled>Select category</option>
-            {categoryOptions.map((option, index) => (
+            {categoryOptions[section]?.map((option, index) => (
               <option key={index} value={option}>{option}</option>
             ))}
           </select>
@@ -90,16 +114,27 @@ const AddNewModal = ({ section, onAdd, onCancel }) => {
 
         <div className="form-group">
           <label>Year</label>
-          <input type="text" value={year} 
-           onChange={(e) => setAmount(e.target.value)}
-           placeholder="Enter year" /> {/* Dynamic year */}
+          <select
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+          >
+            {generateYearOptions().map((yearOption, index) => (
+              <option key={index} value={yearOption}>{yearOption}</option>
+            ))}
+          </select>
         </div>
 
         <div className="form-group">
           <label>Quarter</label>
-          <input type="text" value={quarter}
-           onChange={(e) => setAmount(e.target.value)}
-           placeholder="Enter Quarter" /> {/* Dynamic quarter */}
+          <select
+            value={quarter}
+            onChange={(e) => setQuarter(e.target.value)}
+          >
+            <option value="1">Q1</option>
+            <option value="2">Q2</option>
+            <option value="3">Q3</option>
+            <option value="4">Q4</option>
+          </select>
         </div>
 
         <div className="modal-actions">
