@@ -18,11 +18,12 @@ span {
   display: flex;
   height: 100vh;
   overflow: hidden; /* Ensure no overflow */  
-  background: linear-gradient(to bottom right, #ffccd5, #a8e6cf);
+  background: linear-gradient(to bottom right, rgb(193, 219, 243),white);
+  /* background-color: rgb(193, 219, 243); */
 }
 
 .left-section1 {
-  flex: 1;
+  flex: 1; 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -71,7 +72,7 @@ p {
 
 .login-btn {
   padding: 10px;
-  background-color: #8c38ff;
+  background-color: #3c4671;
   color: white;
   border: none;
   cursor: pointer;
