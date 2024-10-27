@@ -184,7 +184,7 @@ def update_revenue(id):
     updated_data = request.get_json()
     return revenues_api.update_revenue(id, updated_data)
 
-@app.route('/api/revenues/delete/<string:id', methods=['DELETE'])
+@app.route('/api/revenues/delete/<string:id>', methods=['DELETE'])
 def remove_revenue(id):
     # Call the delete function from revenues_api.py
     response, status_code = revenues_api.delete_revenue(id)

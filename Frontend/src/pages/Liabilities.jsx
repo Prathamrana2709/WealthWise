@@ -17,8 +17,7 @@ const Liabilities = () => {
   const [deleteMode, setDeleteMode] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false); // Add state for Add Modal
   const [selectedSection, setSelectedSection] = useState(''); // Section for Adding New Item
-  const [selectedItem, setSelectedItem] = useState(null); // Selected Item for Update
-  const [liabilities, setLiabilities] = useState([]); // Holds the list of liabilities
+  
   const [showUpdateModal, setShowUpdateModal] = useState(false); // State for Update Modal
 
   const fetchData = async () => {
