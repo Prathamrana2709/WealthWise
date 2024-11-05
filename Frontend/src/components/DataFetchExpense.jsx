@@ -22,7 +22,7 @@ const DataFetchExpense = ({ data, hideYear, deleteMode, onCheckboxChange, onUpda
             {!hideYear && <th>Year</th>}
             <th>Category</th>
             <th>Amount (In Millions)</th>
-            <th className='action'>Actions</th>
+           
           </tr>
         </thead>
         <tbody>
@@ -44,10 +44,7 @@ const DataFetchExpense = ({ data, hideYear, deleteMode, onCheckboxChange, onUpda
                     <td>{key}</td>
                     <td>{item[key]}</td>
                     <td>
-                      <div className="options">
-                        <button onClick={() => onUpdate(item)} className="databox-update">Update</button>
-                        <button onClick={() => onDelete(item)} className='databox-delete'>Delete</button>
-                      </div>
+                     
                     </td>
                   </tr>
                 )
