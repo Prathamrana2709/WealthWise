@@ -1,139 +1,165 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/Modal.css'; // Ensure you have a CSS file for styling the modal
+import '../styles/AddNewExpense.css';
 
-const UpdateModal = ({ item, section, onUpdate, onCancel }) => {
-  const [category, setCategory] = useState(item['Category'] || '');
-  const [amount, setAmount] = useState(item['Amount'] || '');
-  const [year, setYear] = useState(item['Year'] || '');
-  const [quarter, setQuarter] = useState(item['Quarter'] || '');
-  const [type, setType] = useState(item['Type'] || '');
+const UpdateExpense = ({ section, item, onUpdate, onCancel }) => {
+  const [employeeBenefit, setEmployeeBenefit] = useState(item["Employee Benefit Expense"] || '');
+  const [costOfEquipment, setCostOfEquipment] = useState(item["Cost of Equipment and software Licences"] || '');
+  const [financeCost, setFinanceCost] = useState(item["Finance Costs"] || '');
+  const [depreciation, setDepreciation] = useState(item["Depreciation and Amortisation Costs"] || '');
+  const [otherExpense, setOtherExpense] = useState(item["Other Expenses"] || '');
+  const [currentTax, setCurrentTax] = useState(item["Current Tax"] || '');
+  const [deferredTax, setDeferredTax] = useState(item["Deferred Tax"] || '');
+  const [fringeBenefit, setFringeBenefit] = useState(item["Fringe benefit tax"] || '');
+  const [matCredit, setMatCredit] = useState(item["MAT credit entitlement"] || '');
+  const [totalExpense, setTotalExpense] = useState(item["Total Expenses"] || 0);
+  const [totalTax, setTotalTax] = useState(item["Total Tax Expense"] || 0);
 
-  // Get the current year dynamically
-const currentYear = new Date().getFullYear();
+  useEffect(() => {
+    setTotalExpense(
+      (parseFloat(employeeBenefit) || 0) +
+      (parseFloat(costOfEquipment) || 0) +
+      (parseFloat(financeCost) || 0) +
+      (parseFloat(depreciation) || 0) +
+      (parseFloat(otherExpense) || 0)
+    );
 
-// Generate years in "YYYY-YY" format starting from "2004-05" up to the current year
-const yearOptions = [];
-for (let i = 2004; i <= currentYear; i++) {
-  yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
-}
-
-  // Quarters options
-  const quarterOptions = [1, 2, 3, 4];
-
-  // Categories mapped based on the selected type
-  const categoryOptionsMap = {
-    1: [
-        'Cost of Equipment and software Licences',
-        'Depreciation and Amortisation Costs',
-        'Employee Benefit Expense',
-        'Finance Costs',
-        'Other Expenses',
-        'Total Expenses',
-         ],
-        2: [
-          'Cost of Equipment and software Licences',
-        'Depreciation and Amortisation Costs',
-        'Employee Benefit Expense',
-        'Finance Costs',
-        'Other Expenses',
-        'Total Expenses',
-         ],
-         3:[
-        'Cost of Equipment and software Licences',
-        'Depreciation and Amortisation Costs',
-        'Employee Benefit Expense',
-        'Finance Costs',
-        'Other Expenses',
-        'Total Expenses',
-         ],
-         4:[
-        'Cost of Equipment and software Licences',
-        'Depreciation and Amortisation Costs',
-        'Employee Benefit Expense',
-        'Finance Costs',
-        'Other Expenses',
-        'Total Expenses',
-         ],
-  };
-
-  // Dynamically update category options based on the type selected
-  const categoryOptions = categoryOptionsMap[item.Type] || [];
-  console.log(item.Type);
+    setTotalTax(
+      (parseFloat(currentTax) || 0) +
+      (parseFloat(deferredTax) || 0) +
+      (parseFloat(fringeBenefit) || 0) +
+      (parseFloat(matCredit) || 0)
+    );
+  }, [employeeBenefit, costOfEquipment, financeCost, depreciation, otherExpense, currentTax, deferredTax, fringeBenefit, matCredit]);
 
   const handleSubmit = () => {
     const updatedItem = {
-      _id: item._id, // Retain the original _id
-      Year: year,
-      Quarter: quarter,
-      Category: category,
-      Amount: amount,
-      Type: type,
+      ...item,
+      "Employee Benefit Expense": employeeBenefit,
+      "Cost of Equipment and software Licences": costOfEquipment,
+      "Finance Costs": financeCost,
+      "Depreciation and Amortisation Costs": depreciation,
+      "Other Expenses": otherExpense,
+      "Total Expenses": totalExpense,
+      "Current Tax": currentTax,
+      "Deferred Tax": deferredTax,
+      "Fringe benefit tax": fringeBenefit,
+      "MAT credit entitlement": matCredit,
+      "Total Tax Expense": totalTax
     };
-  
-    // Call the onUpdate method passed from the parent with the updated item data
+
     onUpdate(updatedItem);
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Update {section.replace('_', ' ').toUpperCase()}</h2>
+        <h2>Update {section.replace('_', ' ')
+          .toLowerCase()
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')}
+        </h2>
 
-        <div className="form-group">
-          <label>Type</label>
-          <h3>{type.replace('_', ' ')}</h3> {/* Display the type */}
-        </div>
+        <div className="form-container">
+          {/* Similar form structure with input fields as AddExpenseModal */}
+          <div className="form-column">
+            <div className="form-group">
+              <label>Employee Benefit Expense</label>
+              <input
+                type="number"
+                value={employeeBenefit}
+                onChange={(e) => setEmployeeBenefit(e.target.value)}
+                placeholder="Enter Employee Benefit Expense"
+              />
+            </div>
+            <div className="form-group">
+              <label>Cost of Equipment</label>
+              <input
+                type="number"
+                value={costOfEquipment}
+                onChange={(e) => setCostOfEquipment(e.target.value)}
+                placeholder="Enter Cost of Equipment"
+              />
+            </div>
+            <div className="form-group">
+              <label>Finance Cost</label>
+              <input
+                type="number"
+                value={financeCost}
+                onChange={(e) => setFinanceCost(e.target.value)}
+                placeholder="Enter Finance Cost"
+              />
+            </div>
+          </div>
 
-        <div className="form-group">
-          <label>Category</label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="Select category"
-          >
-            <option value="" disabled>Select category</option>
-            {categoryOptions.map((option, index) => (
-              <option key={index} value={option}>{option}</option>
-            ))}
-          </select>
-        </div>
+          <div className="form-column">
+            <div className="form-group">
+              <label>Depreciation</label>
+              <input
+                type="number"
+                value={depreciation}
+                onChange={(e) => setDepreciation(e.target.value)}
+                placeholder="Enter Depreciation"
+              />
+            </div>
+            <div className="form-group">
+              <label>Other Expense</label>
+              <input
+                type="number"
+                value={otherExpense}
+                onChange={(e) => setOtherExpense(e.target.value)}
+                placeholder="Enter Other Expense"
+              />
+            </div>
+            <div className="form-group">
+              <label>Current Tax</label>
+              <input
+                type="number"
+                value={currentTax}
+                onChange={(e) => setCurrentTax(e.target.value)}
+                placeholder="Enter Current Tax"
+              />
+            </div>
+          </div>
 
-        <div className="form-group">
-          <label>Amount (in Millions)</label>
-          <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="Enter amount"
-          />
-        </div>
+          <div className="form-column">
+            <div className="form-group">
+              <label>Deferred Tax</label>
+              <input
+                type="number"
+                value={deferredTax}
+                onChange={(e) => setDeferredTax(e.target.value)}
+                placeholder="Enter Deferred Tax"
+              />
+            </div>
+            <div className="form-group">
+              <label>Fringe Benefit</label>
+              <input
+                type="number"
+                value={fringeBenefit}
+                onChange={(e) => setFringeBenefit(e.target.value)}
+                placeholder="Enter Fringe Benefit"
+              />
+            </div>
+            <div className="form-group">
+              <label>MAT Credit</label>
+              <input
+                type="number"
+                value={matCredit}
+                onChange={(e) => setMatCredit(e.target.value)}
+                placeholder="Enter MAT Credit"
+              />
+            </div>
+          </div>
 
-        <div className="form-group">
-          <label>Year</label>
-          <select
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            placeholder="Select year"
-          >
-            <option value="" disabled>Select year</option>
-            {yearOptions.map((yearOption, index) => (
-              <option key={index} value={yearOption}>{yearOption}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Quarter</label>
-          <select
-            value={quarter}
-            onChange={(e) => setQuarter(e.target.value)}
-            placeholder="Select quarter"
-          >
-            <option value="" disabled>Select quarter</option>
-            {quarterOptions.map((q, index) => (
-              <option key={index} value={q}>{q}</option>
-            ))}
-          </select>
+          <div className="form-column">
+            <div className="form-group">
+              <label>Total Expenses: {totalExpense}</label>
+            </div>
+            <div className="form-group">
+              <label>Total Tax Expense: {totalTax}</label>
+            </div>
+          </div>
         </div>
 
         <div className="modal-actions">
@@ -145,4 +171,4 @@ for (let i = 2004; i <= currentYear; i++) {
   );
 };
 
-export default UpdateModal;
+export default UpdateExpense;

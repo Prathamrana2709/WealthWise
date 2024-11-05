@@ -196,8 +196,8 @@ function AddNewMember() {
           </select>
         </div>
 
-        <button type="submit" className="form-submit-btn">{editingUserId ? 'Update Member' : 'Add Member'}</button>
         <button type="button" className="cancel-btn" onClick={resetForm}>Cancel</button>
+        <button type="submit" className="form-submit-btn">{editingUserId ? 'Update Member' : 'Add Member'}</button>
       </form>
     ) : (
       <div className="user-list">

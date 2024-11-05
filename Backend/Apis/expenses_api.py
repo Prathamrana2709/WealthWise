@@ -12,16 +12,24 @@ expenses_collection = db['Expenses']
 
 # Add a new expense
 def add_new_expense(new_expense):
-    # required_fields = [
-    #     'Year', 'Quarter', 'Employee Benefit Expense',
-    #     'Cost of Equipment and software Licences', 'Finance Costs',
-    #     'Depreciation and Amortisation Costs', 'Other Expenses',
-    #     'Total Expenses', 'Current Tax', 'Deferred Tax','Fringe benefit tax','MAT credit entitlement', 'Total Tax Expense'
-    # ]
+    # print(new_expense)
+    required_fields = [
+        'Year', 'Quarter', 'Employee Benefit Expense',
+        'Cost of Equipment and software Licences', 'Finance Costs',
+        'Depreciation and Amortisation Costs', 'Other Expenses',
+        'Total Expenses', 'Current Tax', 'Deferred Tax','Fringe benefit tax','MAT credit entitlement', 'Total Tax Expense'
+    ]
     
-    # for field in required_fields:
-    #     if field not in new_expense:
-    #         return {'error': f'Missing required field: {field}'}, 400
+    for field in required_fields:
+        if field not in new_expense:
+            return {'error': f'Missing required field: {field}'}, 400
+        
+    #For checking if the year and quarter already exists
+    year = new_expense['Year']
+    quarter = new_expense['Quarter']
+    expense = expenses_collection.find_one({'Year': year, 'Quarter': quarter})
+    if expense:
+        return {'error': 'Expense for this year and quarter already exists'}, 400
 
     try:
         result = expenses_collection.insert_one(new_expense)
