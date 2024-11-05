@@ -22,8 +22,7 @@ const DataFetchExpense = ({ data, hideYear, deleteMode, onCheckboxChange, onUpda
             {!hideYear && <th>Year</th>}
             <th>Category</th>
             <th>Amount (In Millions)</th>
-           
-          </tr>
+           </tr>
         </thead>
         <tbody>
           {data.map((item, index) => (
