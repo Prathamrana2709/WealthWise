@@ -21,6 +21,7 @@ import Nonrevenue from './Nonrevenue';
 function Dashboard() {
   const [selectedSection, setSelectedSection] = useState('Dashboard');
   const [selectedSubItem, setSelectedSubItem] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const role = sessionStorage.getItem('Role');
@@ -28,10 +29,8 @@ function Dashboard() {
 
   useEffect(() => {
     console.log("Role in Dashboard:", role);
-    if (!role) {
-      navigate('/login');
-    }
-  }, [role, navigate]);
+  }, [role]);
+  
 
   const handleLogout = () => {
     sessionStorage.clear();
