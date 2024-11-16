@@ -50,14 +50,14 @@ function Dashboard() {
     if (selectedSubItem) {
       switch (selectedSubItem) {
         case 'Liabilities':
-          return ['Compliance Officer','Financial Analyst/Advisor', 'Chief Financial Officer (CFO)','Customer Support Lead','Compliance Auditor'].includes(role) ? <Nonliabilities /> : ['Finance Manager', 'Financial Controller','Treasury Manager'].includes(role) ? <Liabilities /> : <p>No access</p>;
+          return ['Compliance Officer','Financial Analyst/Advisor', 'Chief Financial Officer (CFO)','Customer Support Lead','Compliance Auditor','HR'].includes(role) ? <Nonliabilities /> : ['Finance Manager', 'Financial Controller','Treasury Manager'].includes(role) ? <Liabilities /> : <p>No access</p>;
           case 'Assets':
-            return ['Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)','Customer Support Lead','Compliance Auditor'].includes(role)? <Nonassets />
+            return ['Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)','Customer Support Lead','Compliance Auditor','HR'].includes(role)? <Nonassets />
               : ['Finance Manager', 'Chief Financial Officer (CFO)', 'Financial Controller', 'Treasury Manager'].includes(role)? <Assets />: <p>No access</p>;
         case 'Cost':
-          return role === 'Finance Manager' || role === 'Chief Financial Officer (CFO)' || role ==='Financial Controller' || role ==='Data Analyst/Scientist' || role ==='Compliance Officer' || role ==='Financial Analyst/Advisor'||role==='Budget Analyst'|| role==='Compliance Auditor'|| role==='Customer Support Lead' ? <Cost /> : <p>No access</p>;
+          return role === 'Finance Manager' || role === 'Chief Financial Officer (CFO)' || role ==='Financial Controller' || role ==='Data Analyst/Scientist' || role ==='Compliance Officer' || role ==='Financial Analyst/Advisor'||role==='Budget Analyst'|| role==='Compliance Auditor'|| role==='Customer Support Lead'|| role=== 'HR' ? <Cost /> : <p>No access</p>;
         case 'Revenue':
-          return [ 'Compliance Officer', 'Chief Financial Officer (CFO)','Compliance Auditor','Customer Support Lead'].includes(role) ? <Nonrevenue /> : ['Finance Manager', 'Financial Controller','Financial Analyst/Advisor','Budget Analyst','Data Analyst/Scientist'].includes(role) ? <Revenue /> : <p>No access</p>;
+          return [ 'Compliance Officer', 'Chief Financial Officer (CFO)','Compliance Auditor','Customer Support Lead','HR'].includes(role) ? <Nonrevenue /> : ['Finance Manager', 'Financial Controller','Financial Analyst/Advisor','Budget Analyst','Data Analyst/Scientist'].includes(role) ? <Revenue /> : <p>No access</p>;
         default:
           return <p>No component available for this sub-item</p>;
       }
@@ -66,15 +66,15 @@ function Dashboard() {
         case 'Dashboard':
           return <DashboardPage />;
         case 'AssetsAndLiabilities':  
-          return role === 'Finance Manager' || role === 'Chief Financial Officer (CFO)' || role ==='Compliance Officer'|| role ==='Financial Controller'|| role==='Treasury Manager'||role==='Customer Support Lead'|| role==='Compliance Auditor' ? <AssetsAndLiabilitiesPage /> : <p>No access</p>;
+          return role === 'Finance Manager' || role === 'Chief Financial Officer (CFO)' || role ==='Compliance Officer'|| role ==='Financial Controller'|| role==='Treasury Manager'||role==='Customer Support Lead'|| role==='Compliance Auditor'|| role==='HR' ? <AssetsAndLiabilitiesPage /> : <p>No access</p>;
         case 'Analysis':
-          return role === 'Finance Manager' || role === 'Chief Financial Officer (CFO)' || role ==='Financial Controller' || role ==='Data Analyst/Scientist' || role ==='Compliance Officer' || role ==='Financial Analyst/Advisor'|| role ==='Budget Analyst' || role==='Compliance Auditor'|| role==='Customer Support Lead' ?  <AnalysisPage /> : <p>No access</p>;
+          return role === 'Finance Manager' || role === 'Chief Financial Officer (CFO)' || role ==='Financial Controller' || role ==='Data Analyst/Scientist' || role ==='Compliance Officer' || role ==='Financial Analyst/Advisor'|| role ==='Budget Analyst' || role==='Compliance Auditor'|| role==='Customer Support Lead'|| role==='HR' ?  <AnalysisPage /> : <p>No access</p>;
         case 'Predict':
-          return role === 'Finance Manager' || role === 'Chief Financial Officer (CFO)' || role ==='Data Analyst/Scientist' || role ==='Financial Analyst/Advisor' ? <PredictPage /> : <p>No access</p>;
+          return role === 'Finance Manager' || role === 'Chief Financial Officer (CFO)' || role ==='Data Analyst/Scientist' || role ==='Financial Analyst/Advisor'|| role==='HR' ? <PredictPage /> : <p>No access</p>;
         case 'Expenses':
-          return [ 'Compliance Officer','Financial Analyst/Advisor', 'Chief Financial Officer (CFO)','Compliance Auditor'].includes(role) ? <Nonexpense /> : ['Finance Manager', 'Financial Controller','Budget Analyst','Data Analyst/Scientist'].includes(role) ? <Expenses /> : <p>No access</p>;
+          return [ 'Compliance Officer','Financial Analyst/Advisor', 'Chief Financial Officer (CFO)','Compliance Auditor','HR'].includes(role) ? <Nonexpense /> : ['Finance Manager', 'Financial Controller','Budget Analyst','Data Analyst/Scientist'].includes(role) ? <Expenses /> : <p>No access</p>;
         case 'Cash Flow':
-          return ['Data Analyst/Scientist', 'Compliance Officer','Financial Analyst/Advisor', 'Chief Financial Officer (CFO)','Customer Support Lead','Compliance Auditor'].includes(role) ? <Noncashflow /> : ['Finance Manager', 'Financial Controller','Treasury Manager'].includes(role) ? <CashFlow /> : <p>No access</p>;
+          return ['Data Analyst/Scientist', 'Compliance Officer','Financial Analyst/Advisor', 'Chief Financial Officer (CFO)','Customer Support Lead','Compliance Auditor','HR'].includes(role) ? <Noncashflow /> : ['Finance Manager', 'Financial Controller','Treasury Manager'].includes(role) ? <CashFlow /> : <p>No access</p>;
         default:
           return <p>No component available for this section</p>;
       }
