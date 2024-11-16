@@ -12,7 +12,7 @@ cashflow_collection = db['Cashflow']
 
 def add_new_cashflow(new_cashflow):
     required_fields = [
-        'Year', 'Quarter', 'Amount','Type', 'Category'
+        'Year', 'Quarter', 'Amount','Type', 'Category','In/Out'
     ]
     
     for field in required_fields:
