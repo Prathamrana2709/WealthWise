@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DataBox from '../components/DataBox';
 import ConfirmationDialog from '../components/ConfirmationDialog';
 import AddNewModal from '../components/AddNewModal'; // Modal for Adding New Liabilities
-import UpdateModal from '../components/Updatemodel';
+import UpdateModal from '../components/UpdateModel';
 import '../styles/Liabilities.css';
 
 const Liabilities = () => {

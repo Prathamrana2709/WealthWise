@@ -12,36 +12,15 @@ const Addnewassets = ({ section, onAdd, onCancel }) => {
 
   // Define categories based on section type
   const categoryOptions = {
-    current_asset: [
-        'Other balances with banks',
-        'Investments',
-        'Billed trade receivables',
-  'Other financial assets',
-  'Other current assets',
-  'Cash and cash equivalents',
-  'Loans',
-  'Inventories',
-  'Income tax assets',
-  'Unbilled trade receivables',
-  
-  
-      ],
-      noncurrent_asset: [
-        'Goodwill',
-        'Property,plant and equipment',
-        'Unbilled trade receivables',
-        'Deferred tax assets',
-        'Income tax assets',
-        'Right of use assets',
-        'Investments',
-        'Capital work in progress',
-        'Other financial assets',
-  'Loans',
-  'Billed trade receivables',
-  'Other non current assets',
-  'Other intangible assets',
-  
-      ],
+    operating: [
+      'Bad Debts and advances', 'Tax Expense', 'Interest income', 'Depreciation and Amortisation Cost',
+    ],
+    investing: [
+      'Proceeds from disposal / redemption of investments', 'Dividend received', 'Payment for purchase of intangible assets',
+    ],
+    financing: [
+      'Dividend paid', 'Proceeds from borrowings', 'Repayment of borrowings',
+    ],
   };
 
   // Generate year options in "YYYY-YY" format dynamically

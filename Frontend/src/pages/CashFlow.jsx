@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import DataBox from '../components/DataBox';
+import DataBox from '../components/Databoxsimple';
 import '../styles/Assets.css'; // CSS for styling
 
-const Cashflow = () => {
+const Noncashflow = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState({});
   const [selectedYear, setSelectedYear] = useState('');
@@ -91,4 +91,4 @@ const Cashflow = () => {
   );
 };
 
-export default Cashflow
+export default Noncashflow;

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import DataFetchRevenue from '../components/DataFetchRevenue'; // Component for rendering expense data
-import '../styles/Expense.css'; // CSS file for styling
+import DataFetchRevenue from '../components/DataFetchRevenueCRUD';
+import '../styles/Expense.css';
 
 import ConfirmationDialog from '../components/ConfirmationDialog';
-import AddNewModal from '../components/Addnewrevenue'; // Modal for Adding New Liabilities
-import UpdateModal from '../components/Updaterevenue';
+import AddNewRevenue from '../components/Addnewrevenue';
+import UpdateRevenue from '../components/Updaterevenue';
 
 
-const Expense = () => {
+const Revenue = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState({});
   const [selectedYear, setSelectedYear] = useState('');
@@ -17,7 +17,7 @@ const Expense = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationType, setConfirmationType] = useState('');
   const [currentItem, setCurrentItem] = useState(null);
-  const [selectedSection, setSelectedSection] = useState(''); 
+  const [selectedSection, setSelectedSection] = useState('');
 
   const fetchData = async () => {
     try {
@@ -53,7 +53,6 @@ const Expense = () => {
     setFilteredData(filtered);
   }, [data, selectedYear]);
 
-
   const handleAdd = (section) => {
     setSelectedSection(section);
     setShowAddModal(true);
@@ -64,27 +63,43 @@ const Expense = () => {
     setShowUpdateModal(true);
   };
 
-  const handleDelete = (item) => {
-    setCurrentItem(item);
-    setConfirmationType('delete');
-    setShowConfirmation(true);
+  //popupmessage for 
+  const popupMessage = (message) => {
+    alert(message);
   };
 
   const addNewItem = async (newItem) => {
+    // Check for duplicate entries before making the fetch request
+    const duplicate = data.find(
+      (item) => item['Year'] === newItem['Year'] && item['Quarter'] === newItem['Quarter']
+    );
+
+    if (duplicate) {
+      // Show popup message for duplicate entry
+      popupMessage('Expense already exists for the selected year and quarter. Please update the existing entry.');
+      return; // Exit the function if duplicate found
+    }
+
     try {
+      console.log("Payload for new revenue:", newItem);
       const response = await fetch('http://127.0.0.1:5001/api/revenues/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newItem),
       });
-      if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`);
-      await fetchData();
-      setSelectedYear(newItem.Year);
+      if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`)
+      setShowAddModal(false);
+
+      await fetchData(); // Refresh the data after adding the new item
+      setSelectedYear(newItem.Year); // Set the selected year to the new item's year
+
     } catch (error) {
       console.error('Error adding item:', error);
     }
-    setShowAddModal(false);
+
+    setShowAddModal(false); // Close the add modal after processing
   };
+
 
   const updateItem = async (updatedItem) => {
     try {
@@ -102,28 +117,13 @@ const Expense = () => {
     setShowUpdateModal(false);
   };
 
-  const deleteItem = async () => {
-    try {
-      const response = await fetch(`http://127.0.0.1:5001/api/revenues/delete/${currentItem._id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`);
-      await fetchData();
-    } catch (error) {
-      console.error('Error deleting item:', error);
-    }
-    setShowConfirmation(false);
-  };
-
   const confirmAction = () => {
     if (confirmationType === 'delete') deleteItem();
   };
 
-
   return (
     <div className="expense-container">
-      <h1>Expenses by Year and Quarter</h1>
+      <h1>Revenue by Year and Quarter</h1>
 
       {/* Year Filter Dropdown */}
       <div className="filter-section">
@@ -144,31 +144,32 @@ const Expense = () => {
 
       {/* Display Expenses by Quarter */}
       <div className="sections-container">
+        <button onClick={() => handleAdd('revenue')}>Add New Revenue</button>
         {['1', '2', '3', '4'].map(quarter => (
           filteredData[quarter] && (
             <div key={quarter} className="section">
               <h2>Quarter {quarter}</h2>
-              <button onClick={() => handleAdd(quarter)}>Add New Expense</button>
-              <br />
-              {/* <DataFetchExpense expenseData={filteredData[quarter]} /> */}
-              <DataFetchRevenue 
+              <DataFetchRevenue
                 data={filteredData[quarter]}
                 hideYear={true}
                 onUpdate={handleUpdate}
-                onDelete={handleDelete}
               />
             </div>
           )
         ))}
       </div>
+
+      {/* Add Expense Modal */}
       {showAddModal && (
-        <AddNewModal
+        <AddNewRevenue
           section={selectedSection}
           onAdd={addNewItem}
           onCancel={() => setShowAddModal(false)}
+          existingEntries={data} // Pass the existing data to check for duplicates
         />
       )}
 
+      {/* Confirmation Dialog */}
       {showConfirmation && (
         <ConfirmationDialog
           message={`Are you sure you want to ${confirmationType}?`}
@@ -177,17 +178,18 @@ const Expense = () => {
         />
       )}
 
+      {/* Update Expense Modal */}
       {showUpdateModal && (
-        <UpdateModal
+        <UpdateRevenue
           item={currentItem}
           section={selectedSection}
           onUpdate={updateItem}
           onCancel={() => setShowUpdateModal(false)}
         />
       )}
-      <br /><br /><br />
+
     </div>
   );
 };
 
-export default Expense;
+export default Revenue;

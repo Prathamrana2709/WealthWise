@@ -13,16 +13,24 @@ revenue_collection = db['Revenues']
 # Add a new revenue record
 def add_new_revenue(new_revenue):
     # Ensure all required fields are present
-    required_fields = ['Year', 'Quarter', 'Revenue from operations', 'Other Income', 'Total Revenue', 
+    required_fields = ['Year', 'Quarter', 'Revenue from operations', 'Total Revenue', 
                        'Cost of Revenue', 'Gross Margin', 'SG&A Expense', 'Operating Income', 
-                       'Expenditure', 'Other Expense', 'Income Before Income Tax', 'Income Taxes', 
+                       'Expenditure', 'Income Before Income Tax', 'Income Taxes', 
                        'Income After Income Tax', 'Non controlling Interest', 'Net Income', 
-                       'Net Cash as % of Net Income', 'Net Cash', 'Earnings per share', 'Total Assets', 
-                       'Total Liabilities', 'Total Expenditure', 'Budget']
+                       'Earnings per share', 'Total Assets', 
+                       'Total Liabilities', 'Total Expenditure']
     
     for field in required_fields:
         if field not in new_revenue:
             return {'error': f'Missing required field: {field}'}, 400
+
+ #For checking if the year and quarter already exists
+    year = new_revenue['Year']
+    quarter = new_revenue['Quarter']
+    expense = revenue_collection.find_one({'Year': year, 'Quarter': quarter})
+    if expense:
+        return {'error': 'Revenue for this year and quarter already exists'}, 400
+
 
     try:
         # Insert the revenue into the MongoDB collection
