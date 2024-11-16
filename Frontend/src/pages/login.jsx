@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
@@ -31,9 +29,11 @@ const Login = () => {
         sessionStorage.setItem('Role', data.role);
         sessionStorage.setItem('Name', data.name);
         sessionStorage.setItem('Email_id', data.Email_id);
+        // console.log('Role:', sessionStorage.getItem('Role'));
+        navigate('/dashboard');
         
         // Navigate to Dashboard
-        navigate('/dashboard');
+        // navigate('/dashboard');
       } else {
         setError(data.error);
       }
