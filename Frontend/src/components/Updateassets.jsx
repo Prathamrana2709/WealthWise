@@ -1,24 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Modal.css'; // Ensure you have a CSS file for styling the modal
 
-const UpdateModal = ({ item, section, onUpdate, onCancel }) => {
+const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
   const [category, setCategory] = useState(item['Category'] || '');
   const [amount, setAmount] = useState(item['Amount'] || '');
   const [year, setYear] = useState(item['Year'] || '');
   const [quarter, setQuarter] = useState(item['Quarter'] || '');
-  const [type, setType] = useState(item['Type'] || '');
-
-  // Get the current year dynamically
-const currentYear = new Date().getFullYear();
-
-// Generate years in "YYYY-YY" format starting from "2004-05" up to the current year
-const yearOptions = [];
-for (let i = 2004; i <= currentYear; i++) {
-  yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
-}
-
-  // Quarters options
-  const quarterOptions = [1, 2, 3, 4];
 
   // Categories mapped based on the selected type
   const categoryOptionsMap = {
@@ -26,7 +13,7 @@ for (let i = 2004; i <= currentYear; i++) {
         'Other balances with banks',
         'Investments',
         'Billed trade receivables',
-        'Other Financial Assets',
+        'Other financial assets',
         'Other current assets',
         'Cash and cash equivalents',
         'Loans',
@@ -65,9 +52,9 @@ for (let i = 2004; i <= currentYear; i++) {
       Quarter: quarter,
       Category: category,
       Amount: amount,
-      Type: type,
+      Type: section,
     };
-  
+
     // Call the onUpdate method passed from the parent with the updated item data
     onUpdate(updatedItem);
   };
@@ -75,7 +62,7 @@ for (let i = 2004; i <= currentYear; i++) {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Update {section}</h2>
+        <h2>Update {section.replace('_', ' ').toUpperCase()}</h2>
 
         <div className="form-group">
           <label>Type</label>
@@ -89,8 +76,8 @@ for (let i = 2004; i <= currentYear; i++) {
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Select category"
           >
-            <option value="" disabled>Select category</option>
-            {categoryOptions.map((option, index) => (
+            <option value="" >Select category</option>
+            {categoryOptions[section]?.map((option, index) => (
               <option key={index} value={option}>{option}</option>
             ))}
           </select>
@@ -111,10 +98,8 @@ for (let i = 2004; i <= currentYear; i++) {
           <select
             value={year}
             onChange={(e) => setYear(e.target.value)}
-            placeholder="Select year"
           >
-            <option value="" disabled>Select year</option>
-            {yearOptions.map((yearOption, index) => (
+            {generateYearOptions().map((yearOption, index) => (
               <option key={index} value={yearOption}>{yearOption}</option>
             ))}
           </select>
@@ -125,12 +110,11 @@ for (let i = 2004; i <= currentYear; i++) {
           <select
             value={quarter}
             onChange={(e) => setQuarter(e.target.value)}
-            placeholder="Select quarter"
           >
-            <option value="" disabled>Select quarter</option>
-            {quarterOptions.map((q, index) => (
-              <option key={index} value={q}>{q}</option>
-            ))}
+            <option value="1">Q1</option>
+            <option value="2">Q2</option>
+            <option value="3">Q3</option>
+            <option value="4">Q4</option>
           </select>
         </div>
 
@@ -143,4 +127,4 @@ for (let i = 2004; i <= currentYear; i++) {
   );
 };
 
-export default UpdateModal;
+export default UpdateAssets;
