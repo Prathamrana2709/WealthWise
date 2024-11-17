@@ -26,7 +26,7 @@ for (let i = 2004; i <= currentYear; i++) {
         'Other balances with banks',
         'Investments',
         'Billed trade receivables',
-        'Other financial assets',
+        'Other Financial Assets',
         'Other current assets',
         'Cash and cash equivalents',
         'Loans',
@@ -75,7 +75,7 @@ for (let i = 2004; i <= currentYear; i++) {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Update {section.replace('_', ' ').toUpperCase()}</h2>
+        <h2>Update {section}</h2>
 
         <div className="form-group">
           <label>Type</label>

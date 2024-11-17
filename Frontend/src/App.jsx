@@ -23,7 +23,7 @@ function App() {
       {/* Protected Route for Dashboard */}
       <Route
         path="/dashboard"
-        element={isAuthenticated() ? <Dashboard /> : <Navigate to="/login" replace />}
+        element={isAuthenticated() ? <Dashboard /> : <Navigate to="/dashboard" replace />}
       />
 
       {/* Protected Route for AddNewMember (only accessible by certain roles) */}

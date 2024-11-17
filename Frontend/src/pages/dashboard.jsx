@@ -31,9 +31,11 @@ function Dashboard() {
   }, [role]);
 
   const handleLogout = () => {
-    sessionStorage.clear();
-    navigate('/login');
-  };
+    if (window.confirm('Are you sure you want to log out?')) {
+      sessionStorage.clear();
+      navigate('/login');
+    }
+  };  
 
   const handleSectionClick = (section) => {
     setSelectedSubItem('');
