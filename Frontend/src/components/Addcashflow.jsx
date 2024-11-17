@@ -6,20 +6,37 @@ const Addnewassets = ({ section, onAdd, onCancel }) => {
   const [amount, setAmount] = useState('');
   const [year, setYear] = useState('');
   const [quarter, setQuarter] = useState('');
-
-  console.log('section:', section);
+  const [type,setType]= useState('') ; 
+ console.log('section:', section);
 
 
   // Define categories based on section type
   const categoryOptions = {
-    operating: [
-      'Bad Debts and advances', 'Tax Expense', 'Interest income', 'Depreciation and Amortisation Cost',
-    ],
-    investing: [
-      'Proceeds from disposal / redemption of investments', 'Dividend received', 'Payment for purchase of intangible assets',
-    ],
-    financing: [
-      'Dividend paid', 'Proceeds from borrowings', 'Repayment of borrowings',
+    in: [
+      'Net gain on disposal of property, plant and equipment',
+      'Unrealised foreign exchange gain',
+      'Net gain on disposal / fair valuation of investments',
+      'Interest income',
+      'Dividend Income',
+      'Bank Deposits placed',
+      'Purchase of investments',
+      'Proceeds from bank deposits',
+      'Proceeds from inter-corporate deposits',
+   'Proceeds from disposal / redemption of investments',
+   'Proceeds from sub-lease receivable',
+   'Proceeds from disposal of property, plant and equipment',
+   'Interest received',
+   'Dividend received',
+   
+     ],
+     out: [
+       'Depreciation and Amortisation Cost',
+      'Bad Debts and advances',
+      'Tax Expense',
+      'Finance Costs',
+      'Payment for purchase of property , plant and equipment',
+      'Payment including advances for acquiring right-of-use assets',
+      'Payment for purchase of intangible assets',
     ],
   };
 
@@ -59,12 +76,14 @@ const Addnewassets = ({ section, onAdd, onCancel }) => {
   }, []);
 
   const handleSubmit = () => {
+   
     const newItem = {
       Year: year,
-      Quarter: quarter,
-      Category: category,
-      Amount: amount,
-      Type: section, // Section passed from parent (e.g., 'Current_Liabilities', 'NonCurrent_Liabilities', 'Equity')
+    Quarter: parseInt(quarter), // Ensure Quarter is an integer
+    Amount: parseFloat(amount), // Ensure Amount is a number
+    Type: type, // Section will be passed from the parent, e.g., "Operating"
+    Category: category,
+    "In/Out": section === '' ? 'in' : 'out',// Section passed from parent (e.g., 'Current_Liabilities', 'NonCurrent_Liabilities', 'Equity')
     };
 
     // Call the onAdd method passed from the parent with the newItem data
