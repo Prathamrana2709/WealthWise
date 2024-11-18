@@ -8,16 +8,18 @@ import '../styles/liabilities.css';
 
 const Assets = () => {
   const [data, setData] = useState([]);
-  
   const [filteredData, setFilteredData] = useState({});
   const [selectedYear, setSelectedYear] = useState('');
   const [availableYears, setAvailableYears] = useState([]);
-  const [selectedSection, setSelectedSection] = useState('');
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationType, setConfirmationType] = useState('');
+  const [currentItem, setCurrentItem] = useState(null);
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false); // Add state for Add Modal
+  const [selectedSection, setSelectedSection] = useState(''); // Section for Adding New Item
+  
+  const [showUpdateModal, setShowUpdateModal] = useState(false); // State for Update Modal
 
   const fetchData = async () => {
     try {
@@ -81,12 +83,19 @@ const Assets = () => {
   };
   const confirmAction = async () => {
     setShowConfirmation(false);
-    if (confirmationType === 'delete') {
-      await deleteItem();
+    try {
+      if (confirmationType === 'delete') {
+        await deleteItems();
+        fetchData(); // Refresh data after deletion
+      } else if (confirmationType === 'update') {
+        await updateItem(currentItem);
+      }
+    } catch (error) {
+      console.error('Error during action:', error);
     }
   };
 
-  const deleteItem = async () => {
+  const deleteItems = async () => {
     try {
       const response = await fetch(`http://127.0.0.1:5001/api/assets/delete/${currentItem._id}`, {
         method: 'DELETE',
@@ -94,12 +103,12 @@ const Assets = () => {
           'Content-Type': 'application/json',
         },
       });
-
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-
-      setData(data.filter(item => item._id !== currentItem._id));
+      setSelectedItems([]);
+      setDeleteMode(false);
+      fetchData(); // Refresh data after deletion
     } catch (error) {
       console.error('Error deleting item:', error);
     }
@@ -142,7 +151,7 @@ const Assets = () => {
       }
 
       await fetchData();
-      setSelectedYear(updatedItem.Year);
+      setSelectedYear(updatedItem['Year']);
     } catch (error) {
       console.error('Error updating item:', error);
     }
@@ -202,6 +211,7 @@ const Assets = () => {
       {showUpdateModal && (
         <UpdateAssets
           item={currentItem}
+          section={selectedSection}
           onUpdate={updateItem}
           onCancel={() => setShowUpdateModal(false)}
         />

@@ -29,8 +29,8 @@ const Login = () => {
         sessionStorage.setItem('Role', data.role);
         sessionStorage.setItem('Name', data.name);
         sessionStorage.setItem('Email_id', data.Email_id);
-        // console.log('Role:', sessionStorage.getItem('Role'));
         navigate('/dashboard');
+        window.location.reload(); // Force a reload
         
         // Navigate to Dashboard
         // navigate('/dashboard');

@@ -225,8 +225,9 @@ def update_cashflow(id):
 
 @app.route('/api/cashflow/delete/<string:id>', methods=['DELETE'])
 def remove_cashflow(id):
-    # Call the delete function from cashflow_api.py
+    print(f"DELETE request received for ID: {id}")
     response, status_code = cashflow_api.remove_cashflow(id)    
+    print(f"Response: {response}, Status Code: {status_code}")
     return jsonify(response), status_code
 
 @app.route('/api/cashflow/getAll', methods=['GET'])

@@ -1,6 +1,6 @@
 /* Main container for the analysis page */
 .analysis-container {
-  height: 90vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -24,6 +24,7 @@
   justify-content: center;
   gap: 20px;
   margin-bottom: 30px;
+  align-items: baseline;
   
 }
 .year-filter {

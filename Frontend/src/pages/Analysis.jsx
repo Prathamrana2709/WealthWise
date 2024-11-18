@@ -123,6 +123,8 @@ function Analysis() {
       {/* Filters for PieChart */}
       <div className="filters">
         {/* Pie Chart Year Filter */}
+        <h1 className="title-1">Analysis</h1>
+        <label htmlFor="yearFilter">Filter by Year:</label>
         <select value={pieYearFilter} onChange={(e) => setPieYearFilter(e.target.value)}>
           {distinctYears.map((year) => (
             <option key={year} value={year}>
@@ -132,6 +134,7 @@ function Analysis() {
         </select>
 
         {/* Pie Chart Quarter Filter */}
+        <label htmlFor="yearFilter">Filter by Quarter:</label>
         <select value={pieQuarterFilter} onChange={(e) => setPieQuarterFilter(e.target.value)}>
           {distinctQuarters.map((quarter) => (
             <option key={quarter} value={quarter}>
@@ -192,6 +195,7 @@ function Analysis() {
       {/* Filters for LineChart */}
       <div className="filters">
         {/* Line Chart Year Filter */}
+        <label htmlFor="yearFilter">Filter by Year:</label>
         <select value={lineYearFilter} onChange={(e) => setLineYearFilter(e.target.value)}>
           {distinctYears.map((year) => (
             <option key={year} value={year}>

@@ -13,7 +13,7 @@ import Nonexpense from './Nonexpense';
 import AnalysisPage from './Analysis';
 import AssetsAndLiabilitiesPage from './AssetsAndLiabilities';
 import PredictPage from './Predict';
-import DashboardPage from './dashboardPage';
+// import DashboardPage from './dashboardPage';
 import Cost from './Cost';
 import Revenue from './Revenue';
 import Nonrevenue from './Nonrevenue';
@@ -66,8 +66,8 @@ function Dashboard() {
       }
     } else {
       switch (selectedSection) {
-        case 'Dashboard':
-          return <DashboardPage />;
+        // case 'Dashboard':
+        //   return <DashboardPage />;
         case 'AssetsAndLiabilities':
           return <AssetsAndLiabilitiesPage />;
         case 'Analysis':
@@ -89,7 +89,7 @@ function Dashboard() {
   };
 
   const sections = {
-    Dashboard: { allowedRoles: ['HR', 'Finance Manager', 'Data Analyst/Scientist', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'], subItems: [] },
+   // Dashboard: { allowedRoles: ['HR', 'Finance Manager', 'Data Analyst/Scientist', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'], subItems: [] },
     Analysis: { allowedRoles: ['HR', 'Financial Controller', 'Finance Manager', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Compliance Officer', 'Financial Analyst/Advisor', 'Budget Analyst', 'Compliance Auditor', 'Customer Support Lead'], subItems: ['Cost', 'Revenue'] },
     Predict: { allowedRoles: ['HR', 'Finance Manager', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Financial Analyst/Advisor'], subItems: [] },
     AssetsAndLiabilities: { allowedRoles: ['HR', 'Finance Manager', 'Financial Controller', 'Chief Financial Officer (CFO)', 'Compliance Officer', 'Financial Analyst/Advisor', 'Treasury Manager', 'Customer Support Lead', 'Compliance Auditor'], subItems: ['Assets', 'Liabilities'] },
@@ -131,9 +131,11 @@ function Dashboard() {
       </div>
       <div className="main-content">
         <div className="top-navbar">
-          <Link to="/AddNewMember">
-            <button className="new-btn">Users</button>
-          </Link>
+        {role === 'HR' && (
+            <Link to="/AddNewMember">
+              <button className="new-btn">Users</button>
+            </Link>
+          )}
           <button onClick={handleLogout} className="logout-btn">Logout</button>
           <div className="profile">
             <strong>{name}</strong>

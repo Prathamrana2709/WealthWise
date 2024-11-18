@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Modal.css'; // Ensure you have a CSS file for styling the modal
 
-const Addnewassets = ({ section, onAdd, onCancel }) => {
-  const [category, setCategory] = useState('');
-  const [amount, setAmount] = useState('');
-  const [year, setYear] = useState('');
-  const [quarter, setQuarter] = useState('');
-  const [type,setType]= useState('') ; 
- console.log('section:', section);
+const Addcashflow= ({ item, section, onUpdate, onCancel }) => {
+  const [category, setCategory] = useState(item['Category'] || '');
+  const [amount, setAmount] = useState(item['Amount'] || '');
+  const [year, setYear] = useState(item['Year'] || '');
+  const [quarter, setQuarter] = useState(item['Quarter'] || '');
+  const [type,setType]= useState(item['Type'] || '') ; 
+  console.log('section:', section);
 
-
-  // Define categories based on section type
+  // Categories mapped based on the selected type
   const categoryOptions = {
     in: [
       'Net gain on disposal of property, plant and equipment',
@@ -39,8 +38,10 @@ const Addnewassets = ({ section, onAdd, onCancel }) => {
       'Payment for purchase of intangible assets',
     ],
   };
+// const categoryOptions = categoryOptionsMap[item.Type] || [];
 
-  // Generate year options in "YYYY-YY" format dynamically
+
+  // Dynamically generate year options
   const generateYearOptions = () => {
     const currentYear = new Date().getFullYear();
     const yearOptions = [];
@@ -50,50 +51,38 @@ const Addnewassets = ({ section, onAdd, onCancel }) => {
     return yearOptions;
   };
 
-  // Calculate the current financial year and quarter
-  useEffect(() => {
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // JS months are 0-indexed
-    let currentYear = currentDate.getFullYear();
-    let currentQuarter = 1;
+  // Get the current year dynamically
+  const currentYear = new Date().getFullYear();
 
-    // Determine the quarter based on the current month
-    if (currentMonth >= 4 && currentMonth <= 6) {
-      currentQuarter = 1;
-    } else if (currentMonth >= 7 && currentMonth <= 9) {
-      currentQuarter = 2;
-    } else if (currentMonth >= 10 && currentMonth <= 12) {
-      currentQuarter = 3;
-    } else {
-      currentQuarter = 4;
-      currentYear -= 1; // The financial year ends in March
-    }
+  // Generate years in "YYYY-YY" format starting from "2004-05" up to the current year
+  const yearOptions = [];
+  for (let i = 2004; i <= currentYear; i++) {
+    yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
+  }
 
-    const nextYear = (currentYear + 1).toString().slice(-2); // Last two digits of the next year
-    setYear(`${currentYear}-${nextYear}`);
-    setQuarter(currentQuarter);
+  // Quarters options
+  const quarterOptions = [1, 2, 3, 4];
 
-  }, []);
-
+  
   const handleSubmit = () => {
-   
-    const newItem = {
+    const updatedItem = {
+      _id: item._id,
       Year: year,
-    Quarter: parseInt(quarter), // Ensure Quarter is an integer
-    Amount: parseFloat(amount), // Ensure Amount is a number
-    Type: type, // Section will be passed from the parent, e.g., "Operating"
-    Category: category,
-    "In/Out": section === '' ? 'in' : 'out',// Section passed from parent (e.g., 'Current_Liabilities', 'NonCurrent_Liabilities', 'Equity')
+      Quarter: parseInt(quarter), // Ensure Quarter is an integer
+      Amount: parseFloat(amount), // Ensure Amount is a number
+      Type: type, // Section will be passed from the parent, e.g., "Operating"
+      Category: category,
+      "In/Out": section, // Use the section value directly
     };
 
-    // Call the onAdd method passed from the parent with the newItem data
-    onAdd(newItem);
+    // Call the onUpdate method passed from the parent with the updated item data
+    onUpdate(updatedItem);
   };
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Add New {section.replace('_', ' ').toUpperCase()}</h2>
+      <h2>Update {section?.replace('_', ' ').toUpperCase() || 'cashflow'}</h2>
 
         <div className="form-group">
           <label>Category</label>
@@ -102,7 +91,7 @@ const Addnewassets = ({ section, onAdd, onCancel }) => {
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Select category"
           >
-            <option value="" disabled>Select category</option>
+            <option value="" >Select category</option>
             {categoryOptions[section]?.map((option, index) => (
               <option key={index} value={option}>{option}</option>
             ))}
@@ -153,4 +142,4 @@ const Addnewassets = ({ section, onAdd, onCancel }) => {
   );
 };
 
-export default Addnewassets;
+export default Addcashflow;

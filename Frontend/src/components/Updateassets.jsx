@@ -2,10 +2,21 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Modal.css'; // Ensure you have a CSS file for styling the modal
 
 const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
-  const [category, setCategory] = useState(item['Category'] || '');
-  const [amount, setAmount] = useState(item['Amount'] || '');
-  const [year, setYear] = useState(item['Year'] || '');
-  const [quarter, setQuarter] = useState(item['Quarter'] || '');
+  const [category, setCategory] = useState(item.Category || '');
+  const [amount, setAmount] = useState(item.Amount || '');
+  const [year, setYear] = useState(item.Year || '');
+  const [quarter, setQuarter] = useState(item.Quarter || '');
+  const [type, setType] = useState(item.Type || '');
+  const currentYear = new Date().getFullYear();
+
+  // Generate years in "YYYY-YY" format starting from "2004-05" up to the current year
+  const yearOptions = [];
+  for (let i = 2004; i <= currentYear; i++) {
+    yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
+  }
+
+  // Quarters options
+  const quarterOptions = [1, 2, 3, 4];
 
   // Categories mapped based on the selected type
   const categoryOptions = {
@@ -37,32 +48,7 @@ const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
       'Other intangible assets',
     ],
   };
-// const categoryOptions = categoryOptionsMap[item.Type] || [];
 
-
-  // Dynamically generate year options
-  const generateYearOptions = () => {
-    const currentYear = new Date().getFullYear();
-    const yearOptions = [];
-    for (let i = 2004; i <= currentYear; i++) {
-      yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
-    }
-    return yearOptions;
-  };
-
-  // Get the current year dynamically
-  const currentYear = new Date().getFullYear();
-
-  // Generate years in "YYYY-YY" format starting from "2004-05" up to the current year
-  const yearOptions = [];
-  for (let i = 2004; i <= currentYear; i++) {
-    yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
-  }
-
-  // Quarters options
-  const quarterOptions = [1, 2, 3, 4];
-
-  
   const handleSubmit = () => {
     const updatedItem = {
       _id: item._id, // Retain the original _id
@@ -70,7 +56,7 @@ const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
       Quarter: quarter,
       Category: category,
       Amount: amount,
-      Type: section,
+      Type: type,
     };
 
     // Call the onUpdate method passed from the parent with the updated item data
@@ -80,7 +66,11 @@ const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Update {section ? section.replace('_', ' ').toUpperCase() : 'Asset'}</h2>
+      <h2>Update {section.replace('_', ' ').toUpperCase()}</h2>
+      <div className="form-group">
+          <label>Type</label>
+          <h3>{type.replace('_', ' ')}</h3> {/* Display the type */}
+        </div>
 
         <div className="form-group">
           <label>Category</label>
@@ -90,11 +80,12 @@ const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
             placeholder="Select category"
           >
             <option value="" >Select category</option>
-            {categoryOptions[section]?.map((option, index) => (
+            {categoryOptions[type]?.map((option, index) => (
               <option key={index} value={option}>{option}</option>
             ))}
           </select>
         </div>
+
 
         <div className="form-group">
           <label>Amount (in Millions)</label>
@@ -111,8 +102,10 @@ const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
           <select
             value={year}
             onChange={(e) => setYear(e.target.value)}
+            placeholder="Select year"
           >
-            {generateYearOptions().map((yearOption, index) => (
+             <option value="" disabled>Select year</option>
+            {yearOptions.map((yearOption, index) => (
               <option key={index} value={yearOption}>{yearOption}</option>
             ))}
           </select>
@@ -123,11 +116,12 @@ const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
           <select
             value={quarter}
             onChange={(e) => setQuarter(e.target.value)}
-          >
-            <option value="1">Q1</option>
-            <option value="2">Q2</option>
-            <option value="3">Q3</option>
-            <option value="4">Q4</option>
+            placeholder="Select quarter"
+            >
+              <option value="" disabled>Select quarter</option>
+              {quarterOptions.map((q, index) => (
+                <option key={index} value={q}>{q}</option>
+              ))}
           </select>
         </div>
 

@@ -67,6 +67,7 @@ function Analysis() {
     <div className='analysis-container'>
       {/* Line Chart Year Filter */}
       <div className="filters">
+      <h1 className="title-1">Cost</h1>
         <label htmlFor="yearFilter">Filter by Year:</label>
         <select className="year-filter" id="yearFilter" value={lineYearFilter} onChange={(e) => setLineYearFilter(e.target.value)}>
           {distinctYears.map((year) => (

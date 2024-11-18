@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import DataBox from '../components/DataBox';
 import ConfirmationDialog from '../components/ConfirmationDialog';
-import AddNewAssets from '../components/Addcashflow'; // Match casing exactly
+import Addcashflow from '../components/Addcashflow'; // Match casing exactly
  // Updated Add modal for Assets
-import UpdateAssets from '../components/Updatecashflow'; // Updated Update modal for Assets
+import Updatecashflow from '../components/Updatecashflow'; // Updated Update modal for Assets
 import '../styles/liabilities.css';
 
 const cashflow = () => {
@@ -47,7 +47,7 @@ const cashflow = () => {
   useEffect(() => {
     const filtered = data.reduce((acc, item) => {
       if (item.Year === selectedYear) {
-        const normalizedType = item.Type === 'Operating' ? 'in' : 'out'; 
+        const normalizedType = item["In/Out"]; 
         acc[normalizedType] = acc[normalizedType] ? [...acc[normalizedType], item] : [item];
       }
       return acc;
@@ -66,6 +66,7 @@ const cashflow = () => {
 
 
   const handleAdd = (section) => {
+    console.log('Adding to section:', section); 
     setSelectedSection(section);
     setShowAddModal(true);
   };
@@ -87,6 +88,7 @@ const cashflow = () => {
   };
 
   const deleteItem = async () => {
+    console.log('delete item to backend:'); 
     try {
       const response = await fetch(`http://127.0.0.1:5001/api/cashflow/delete/${currentItem._id}`, {
         method: 'DELETE',
@@ -106,7 +108,9 @@ const cashflow = () => {
   };
 
   const addNewItem = async (newItem) => {
+    console.log('Sending new item to backend:', newItem); 
     try {
+      
       const response = await fetch('http://127.0.0.1:5001/api/cashflow/add', {
         method: 'POST',
         headers: {
@@ -173,7 +177,9 @@ const cashflow = () => {
           <div key={section} className="section">
             <div className="section-header">
               <h2 className="title-1">{section.replace('_', ' ').toUpperCase()}</h2>
-              <button onClick={() => handleAdd(section)}>Add New {section.replace('_', ' ')}</button>
+              <button
+              
+               onClick={() => handleAdd(section)}>Add New</button>
             </div>
             
             {filteredData[section] && (
@@ -192,7 +198,7 @@ const cashflow = () => {
       </div>
 
       {showAddModal && (
-        <AddNewAssets
+        <Addcashflow
           section={selectedSection}
           onAdd={addNewItem}
           onCancel={() => setShowAddModal(false)}
@@ -200,8 +206,9 @@ const cashflow = () => {
       )}
 
       {showUpdateModal && (
-        <UpdateAssets
+        <Updatecashflow
           item={currentItem}
+         
           onUpdate={updateItem}
           onCancel={() => setShowUpdateModal(false)}
         />

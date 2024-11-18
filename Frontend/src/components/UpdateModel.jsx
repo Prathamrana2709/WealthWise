@@ -2,27 +2,28 @@ import React, { useState, useEffect } from 'react';
 import '../styles/Modal.css'; // Ensure you have a CSS file for styling the modal
 
 const UpdateModal = ({ item, section, onUpdate, onCancel }) => {
-  const [category, setCategory] = useState(item['Category'] || '');
-  const [amount, setAmount] = useState(item['Amount'] || '');
-  const [year, setYear] = useState(item['Year'] || '');
-  const [quarter, setQuarter] = useState(item['Quarter'] || '');
-  const [type, setType] = useState(item['Type'] || '');
+  const [category, setCategory] = useState(item.Category || '');
+  const [amount, setAmount] = useState(item.Amount || '');
+  const [year, setYear] = useState(item.Year || '');
+  const [quarter, setQuarter] = useState(item.Quarter || '');
+  const [type, setType] = useState(item.Type || '');
 
   // Get the current year dynamically
-const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
-// Generate years in "YYYY-YY" format starting from "2004-05" up to the current year
-const yearOptions = [];
-for (let i = 2004; i <= currentYear; i++) {
-  yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
-}
+  // Generate years in "YYYY-YY" format starting from "2004-05" up to the current year
+  const yearOptions = [];
+  for (let i = 2004; i <= currentYear; i++) {
+    yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
+  }
 
   // Quarters options
   const quarterOptions = [1, 2, 3, 4];
 
   // Categories mapped based on the selected type
-  const categoryOptionsMap = {
-    Current_Liability: [
+  const categoryOptions = {
+    equity: ['Other equity', 'Share Capital'],
+    current_liability: [
       'Provisions',
       'Unearned and deferred revenue',
       'Lease Liabilities',
@@ -32,19 +33,22 @@ for (let i = 2004; i <= currentYear; i++) {
       'Trade payables',
       'Other liabilities',
     ],
-    Non_Current_Liability: [
+    non_current_liability: [
       'Lease Liabilities',
       'Deferred tax liabilities',
       'Unearned and deferred revenue',
       'Other financial liabilities',
       'Employee benefit obligations',
     ],
-    Equity: ['Other equity', 'Share Capital'],
+    
   };
 
-  // Dynamically update category options based on the type selected
-  const categoryOptions = categoryOptionsMap[item.Type] || [];
-  console.log(item.Type);
+  // const [categoryOptions, setCategoryOptions] = useState([]);
+
+  // // Dynamically update category options when `type` changes
+  // useEffect(() => {
+  //   setCategoryOptions(categoryOptionsMap[type] || []);
+  // }, [type]);
 
   const handleSubmit = () => {
     const updatedItem = {
@@ -55,7 +59,7 @@ for (let i = 2004; i <= currentYear; i++) {
       Amount: amount,
       Type: type,
     };
-  
+
     // Call the onUpdate method passed from the parent with the updated item data
     onUpdate(updatedItem);
   };
@@ -63,7 +67,7 @@ for (let i = 2004; i <= currentYear; i++) {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Update {section.replace('_', ' ').toUpperCase()}</h2>
+<h2>Update {section.replace('_', ' ').toUpperCase()}</h2>
 
         <div className="form-group">
           <label>Type</label>
@@ -77,8 +81,8 @@ for (let i = 2004; i <= currentYear; i++) {
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Select category"
           >
-            <option value="" disabled>Select category</option>
-            {categoryOptions.map((option, index) => (
+            <option value="" >Select category</option>
+            {categoryOptions[type]?.map((option, index) => (
               <option key={index} value={option}>{option}</option>
             ))}
           </select>

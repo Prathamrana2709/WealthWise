@@ -47,18 +47,21 @@ def update_cashflow(id, updated_data):
     except Exception as e:
         return jsonify({'error': str(e)}), 500  
     
-# Delete an 
 def remove_cashflow(id):
+    print(f"Received ID for deletion: {id}")  # Debug log
     if not ObjectId.is_valid(id):
-        return jsonify({'error': 'Invalid ObjectId format'}), 400
+        return {'error': 'Invalid ObjectId format'}, 400
     try:
         result = cashflow_collection.delete_one({'_id': ObjectId(id)})
         if result.deleted_count == 1:
-            return jsonify({'message': 'Liability deleted successfully'}), 200
+            return {'message': 'Cashflow deleted successfully'}, 200
         else:
-            return jsonify({'error': 'Liability not found'}), 404
+            return {'error': 'Cashflow not found'}, 404
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        # Log the error for debugging
+        print(f"Error removing cashflow: {str(e)}")
+        return {'error': 'An internal server error occurred'}, 500
+
     
 # Get all revenue
 def get_all_cashflows():

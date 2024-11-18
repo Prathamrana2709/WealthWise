@@ -126,6 +126,7 @@ const Expense = () => {
 
       {/* Year Filter Dropdown */}
       <div className="filter-section">
+      <h1 className="title-1">Expense</h1>
         <label htmlFor="yearFilter">Filter by Year:</label>
         <select
           id="yearFilter"
@@ -143,7 +144,9 @@ const Expense = () => {
 
       {/* Display Expenses by Quarter */}
       <div className="sections-container">
-        <button onClick={() => handleAdd('expense')}>Add New Expense</button>
+        <button 
+        
+        style={{ width: '200px' }} onClick={() => handleAdd('expense')}>Add New Expense</button>
         {['1', '2', '3', '4'].map(quarter => (
           filteredData[quarter] && (
             <div key={quarter} className="section">

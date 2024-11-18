@@ -1,53 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Modal.css'; // Ensure you have a CSS file for styling the modal
 
-const UpdateModal = ({ item, section, onUpdate, onCancel }) => {
+const Updatecashflow= ({ item, section, onUpdate, onCancel }) => {
   const [category, setCategory] = useState(item['Category'] || '');
   const [amount, setAmount] = useState(item['Amount'] || '');
   const [year, setYear] = useState(item['Year'] || '');
   const [quarter, setQuarter] = useState(item['Quarter'] || '');
-  const [type, setType] = useState(item['Type'] || '');
+  const [type,setType]= useState(item['Type'] || '') ; 
+  console.log('section:', section);
+
+  // Categories mapped based on the selected type
+  const categoryOptions = {
+    in: [
+      'Net gain on disposal of property, plant and equipment',
+      'Unrealised foreign exchange gain',
+      'Net gain on disposal / fair valuation of investments',
+      'Interest income',
+      'Dividend Income',
+      'Bank Deposits placed',
+      'Purchase of investments',
+      'Proceeds from bank deposits',
+      'Proceeds from inter-corporate deposits',
+   'Proceeds from disposal / redemption of investments',
+   'Proceeds from sub-lease receivable',
+   'Proceeds from disposal of property, plant and equipment',
+   'Interest received',
+   'Dividend received',
+   
+     ],
+     out: [
+       'Depreciation and Amortisation Cost',
+      'Bad Debts and advances',
+      'Tax Expense',
+      'Finance Costs',
+      'Payment for purchase of property , plant and equipment',
+      'Payment including advances for acquiring right-of-use assets',
+      'Payment for purchase of intangible assets',
+    ],
+  };
+// const categoryOptions = categoryOptionsMap[item.Type] || [];
+
+
+  // Dynamically generate year options
+  const generateYearOptions = () => {
+    const currentYear = new Date().getFullYear();
+    const yearOptions = [];
+    for (let i = 2004; i <= currentYear; i++) {
+      yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
+    }
+    return yearOptions;
+  };
 
   // Get the current year dynamically
-const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
-// Generate years in "YYYY-YY" format starting from "2004-05" up to the current year
-const yearOptions = [];
-for (let i = 2004; i <= currentYear; i++) {
-  yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
-}
+  // Generate years in "YYYY-YY" format starting from "2004-05" up to the current year
+  const yearOptions = [];
+  for (let i = 2004; i <= currentYear; i++) {
+    yearOptions.push(`${i}-${(i + 1).toString().slice(-2)}`);
+  }
 
   // Quarters options
   const quarterOptions = [1, 2, 3, 4];
 
-  // Categories mapped based on the selected type
-  const categoryOptionsMap = {
-    operating: [
-        'Bad Debts and advances', 'Tax Expense', 'Interest income', 'Depreciation and Amortisation Cost',
-      ],
-      investing: [
-        'Proceeds from disposal / redemption of investments', 'Dividend received', 'Payment for purchase of intangible assets',
-      ],
-      financing: [
-        'Dividend paid', 'Proceeds from borrowings', 'Repayment of borrowings',
-      ],
-    };
   
-
-  // Dynamically update category options based on the type selected
-  const categoryOptions = categoryOptionsMap[item.Type] || [];
-  console.log(item.Type);
-
   const handleSubmit = () => {
     const updatedItem = {
-      _id: item._id, // Retain the original _id
+      _id: item._id,
       Year: year,
-      Quarter: quarter,
+      Quarter: parseInt(quarter), // Ensure Quarter is an integer
+      Amount: parseFloat(amount), // Ensure Amount is a number
+      Type: type, // Section will be passed from the parent, e.g., "Operating"
       Category: category,
-      Amount: amount,
-      Type: type,
+      "In/Out": section, // Use the section value directly
     };
-  
+
     // Call the onUpdate method passed from the parent with the updated item data
     onUpdate(updatedItem);
   };
@@ -55,12 +82,7 @@ for (let i = 2004; i <= currentYear; i++) {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>Update {section.replace('_', ' ').toUpperCase()}</h2>
-
-        <div className="form-group">
-          <label>Type</label>
-          <h3>{type.replace('_', ' ')}</h3> {/* Display the type */}
-        </div>
+      <h2>Update {section?.replace('_', ' ').toUpperCase() || 'cashflow'}</h2>
 
         <div className="form-group">
           <label>Category</label>
@@ -69,8 +91,8 @@ for (let i = 2004; i <= currentYear; i++) {
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Select category"
           >
-            <option value="" disabled>Select category</option>
-            {categoryOptions.map((option, index) => (
+            <option value="" >Select category</option>
+            {categoryOptions[section]?.map((option, index) => (
               <option key={index} value={option}>{option}</option>
             ))}
           </select>
@@ -91,10 +113,8 @@ for (let i = 2004; i <= currentYear; i++) {
           <select
             value={year}
             onChange={(e) => setYear(e.target.value)}
-            placeholder="Select year"
           >
-            <option value="" disabled>Select year</option>
-            {yearOptions.map((yearOption, index) => (
+            {generateYearOptions().map((yearOption, index) => (
               <option key={index} value={yearOption}>{yearOption}</option>
             ))}
           </select>
@@ -105,12 +125,11 @@ for (let i = 2004; i <= currentYear; i++) {
           <select
             value={quarter}
             onChange={(e) => setQuarter(e.target.value)}
-            placeholder="Select quarter"
           >
-            <option value="" disabled>Select quarter</option>
-            {quarterOptions.map((q, index) => (
-              <option key={index} value={q}>{q}</option>
-            ))}
+            <option value="1">Q1</option>
+            <option value="2">Q2</option>
+            <option value="3">Q3</option>
+            <option value="4">Q4</option>
           </select>
         </div>
 
@@ -123,4 +142,4 @@ for (let i = 2004; i <= currentYear; i++) {
   );
 };
 
-export default UpdateModal;
+export default Updatecashflow;

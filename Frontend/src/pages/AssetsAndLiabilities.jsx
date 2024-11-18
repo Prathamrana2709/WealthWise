@@ -1,5 +1,5 @@
-import React from 'react'
-
+import React, { useState, useEffect } from 'react';
+import '../styles/Analysis.css';
 function AssetsAndLiabilities() {
   return (
     <div>
@@ -8,4 +8,4 @@ function AssetsAndLiabilities() {
   )
 }
 
-export default AssetsAndLiabilities
+export default AssetsAndLiabilities;
