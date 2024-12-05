@@ -47,21 +47,18 @@ def update_cashflow(id, updated_data):
     except Exception as e:
         return jsonify({'error': str(e)}), 500  
     
+# Delete an 
 def remove_cashflow(id):
-    print(f"Received ID for deletion: {id}")  # Debug log
     if not ObjectId.is_valid(id):
-        return {'error': 'Invalid ObjectId format'}, 400
+        return jsonify({'error': 'Invalid ObjectId format'}), 400
     try:
         result = cashflow_collection.delete_one({'_id': ObjectId(id)})
         if result.deleted_count == 1:
-            return {'message': 'Cashflow deleted successfully'}, 200
+            return jsonify({'message': 'Liability deleted successfully'}), 200
         else:
-            return {'error': 'Cashflow not found'}, 404
+            return jsonify({'error': 'Liability not found'}), 404
     except Exception as e:
-        # Log the error for debugging
-        print(f"Error removing cashflow: {str(e)}")
-        return {'error': 'An internal server error occurred'}, 500
-
+        return jsonify({'error': str(e)}), 500
     
 # Get all revenue
 def get_all_cashflows():
@@ -72,3 +69,43 @@ def get_all_cashflows():
         cashflow['_id'] = str(cashflow['_id'])
     
     return cashflows, 200
+def get_cashflows_by_year(year):
+    try:
+        # Ensure 'year' is a string
+        year = str(year)
+
+        # Build the query filter for the year (no quarter filter)
+        query_filter = {'Year': year}
+
+        # Fetch the matching documents
+        matching_documents = list(cashflow_collection.find(query_filter))
+
+        # Initialize variables to store the sum for "in" and "out"
+        total_in = 0
+        total_out = 0
+
+        # Loop through the documents and accumulate the amounts for "in" and "out"
+        for document in matching_documents:
+            amount = document.get('Amount', 0)
+            in_out = document.get('In/Out', '').lower()
+
+            if in_out == 'in':
+                total_in += amount
+            elif in_out == 'out':
+                total_out += amount
+
+        # Prepare the response with the total amounts for "in" and "out"
+        response = {
+            'Year': year,
+            'Totals': {
+                'In': total_in,
+                'Out': total_out
+            }
+        }
+
+        return jsonify(response), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+

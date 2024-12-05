@@ -20,7 +20,7 @@ const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
 
   // Categories mapped based on the selected type
   const categoryOptions = {
-    current_asset: [
+    Current_Asset : [
       'Other balances with banks',
       'Investments',
       'Billed trade receivables',
@@ -32,7 +32,7 @@ const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
       'Income tax assets',
       'Unbilled trade receivables',
     ],
-    noncurrent_asset: [
+    NonCurrent_Asset: [
       'Goodwill',
       'Property, plant and equipment',
       'Unbilled trade receivables',
@@ -58,14 +58,14 @@ const UpdateAssets = ({ item, section, onUpdate, onCancel }) => {
       Amount: amount,
       Type: type,
     };
-
+    console.log(updatedItem);
     // Call the onUpdate method passed from the parent with the updated item data
     onUpdate(updatedItem);
   };
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content1">
       <h2>Update {section.replace('_', ' ').toUpperCase()}</h2>
       <div className="form-group">
           <label>Type</label>

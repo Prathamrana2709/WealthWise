@@ -225,9 +225,8 @@ def update_cashflow(id):
 
 @app.route('/api/cashflow/delete/<string:id>', methods=['DELETE'])
 def remove_cashflow(id):
-    print(f"DELETE request received for ID: {id}")
+    # Call the delete function from cashflow_api.py
     response, status_code = cashflow_api.remove_cashflow(id)    
-    print(f"Response: {response}, Status Code: {status_code}")
     return jsonify(response), status_code
 
 @app.route('/api/cashflow/getAll', methods=['GET'])
@@ -236,6 +235,73 @@ def fetch_all_cashflows():
     response, status_code = cashflow_api.get_all_cashflows()
     
     return jsonify(response), status_code
+
+@app.route('/api/cashflow/total', methods=['GET'])
+def cashflows_by_year():
+    # Get year from query parameters
+    year = request.args.get('year')
+
+    if not year:
+        return jsonify({'error': 'Year is required'}), 400
+
+    try:
+        # Call the function to fetch cashflows based on year
+        return cashflow_api.get_cashflows_by_year(year)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# Endpoint to get total assets for a specific year
+@app.route('/api/assets/total', methods=['GET'])
+def total_assets():
+    year = request.args.get('year')  # Get the year from the request query params
+
+    if not year:
+        return jsonify({'error': 'Year is required'}), 400
+
+    try:
+        # Assuming you have a function in assets_api.py to get total assets for a year
+        response = assets_api.get_total_assets_by_year(year)
+        return jsonify(response)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# Endpoint to get total liabilities for a specific year
+@app.route('/api/liabilities/total', methods=['GET'])
+def total_liabilities():
+    year = request.args.get('year')  # Get the year from the request query params
+
+    if not year:
+        return jsonify({'error': 'Year is required'}), 400
+
+    try:
+        # Assuming you have a function in liabilities_api.py to get total liabilities for a year
+        response = liabilities_api.get_total_liabilities_by_year(year)
+        return jsonify(response)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+    
+@app.route('/equity/total', methods=['GET'])
+def equity_by_year():
+    # Get year from query parameters
+    year = request.args.get('year')
+
+    if not year:
+        return jsonify({'error': 'Year is required'}), 400
+
+    try:
+        # Call the function to fetch equity based on year
+        return liabilities_api.get_equity_by_year(year)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+
 
 # Run the Flask app
 if __name__ == '__main__':

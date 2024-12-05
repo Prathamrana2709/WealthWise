@@ -130,3 +130,65 @@ def filter_liabilities(filters):
         liability['_id'] = str(liability['_id'])
     
     return liabilities, 200
+def get_total_liabilities_by_year(year):
+    try:
+        # Ensure year is a string
+        year = str(year)
+
+        # Build the query filter for the year (no quarter filter)
+        query_filter = {'Year': year, 'Type': {'$in': ['Current_Liability', 'NonCurrent_Liability']}}
+
+        # Fetch the matching documents for liabilities
+        matching_documents = list(liabilities_collection.find(query_filter))
+
+        # Initialize a variable to store the sum for liabilities
+        total_liabilities = 0
+
+        # Loop through the documents and accumulate the amounts for liabilities
+        for document in matching_documents:
+            amount = document.get('Amount', 0)
+            total_liabilities += amount
+
+        # Prepare the response with the total liabilities
+        response = {
+            'Year': year,
+            'TotalLiabilities': total_liabilities
+        }
+
+        # Ensure you're returning a proper JSON response
+        return jsonify(response), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500 
+    
+def get_equity_by_year(year):
+    try:
+        # Ensure 'year' is a string
+        year = str(year)
+
+        # Build the query filter for equity
+        query_filter = {'Year': year, 'Type': 'Equity'}
+
+        # Fetch the matching documents for equity
+        matching_documents = list(liabilities_collection.find(query_filter))
+
+        # Initialize a variable to store the sum for equity
+        total_equity = 0
+
+        # Loop through the documents and accumulate the amounts for equity
+        for document in matching_documents:
+            amount = document.get('Amount', 0)
+
+            total_equity += amount
+
+        # Prepare the response with the total equity
+        response = {
+            'Year': year,
+            'TotalEquity': total_equity
+        }
+
+        return jsonify(response), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+

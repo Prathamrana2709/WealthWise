@@ -95,6 +95,7 @@ function Analysis() {
       return <p>No data available for the selected filters.</p>;
     }
 
+
     return (
       <ResponsiveContainer width="100%" height={400}>
         <PieChart className='color-pie'>
@@ -210,7 +211,7 @@ function Analysis() {
         <LineChart data={lineData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis label={{ value: "(Millions)", angle:0, position: "insideBottom", offset: 15 }} width={80} />
           <Tooltip />
           <Legend />
           <Line type="monotone" dataKey="TotalRevenue" stroke="#8884d8" activeDot={{ r: 8 }} />
