@@ -7,17 +7,23 @@
 }
 body {
     min-height: 100vh;
-    background: linear-gradient(to bottom right, rgb(193, 219, 243),white);
-    overflow:scroll;
-    -ms-overflow-style: none;
+    background: linear-gradient(to bottom right, rgb(193, 219, 243), white);
+    overflow: hidden; /* Enable scrolling */
+    -ms-overflow-style: none; /* For Internet Explorer */
+    scrollbar-width: none; /* For Firefox */
 }
 
 body::-webkit-scrollbar {
-    display: none;  /* Chrome, Safari, and Opera */
+    display:flex;  /* Chrome, Safari, Opera */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: #333;
 }
 
 .wrapper{
-    position:relative;
+    position: relative;
     z-index:1;
   }
 

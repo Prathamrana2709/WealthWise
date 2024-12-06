@@ -82,7 +82,7 @@ def get_total_assets_by_year(year):
 
         # Build the query filter for the year (no quarter filter)
         query_filter = {'Year': year, 'Type': {'$in': ['Current_Asset', 'NonCurrent_Asset']}}
-        print(f"Year: {year} Query Filter: {query_filter}")
+        
         # Fetch the matching documents for assets
         matching_documents = list(assets_collection.find(query_filter))
 

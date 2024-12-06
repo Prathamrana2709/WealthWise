@@ -87,7 +87,7 @@ function Analysis() {
   const lineData = revenues.map(rev => ({
     name: `Q${rev["Quarter"]}`,
     TotalRevenue: rev['Total Revenue']
-  }));
+  })).sort((a, b) => parseInt(a.name.split('Q')[1]) - parseInt(b.name.split('Q')[1]));
 
   // Conditionally render PieChart
   const renderPieChart = () => {

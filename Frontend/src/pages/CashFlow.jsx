@@ -19,6 +19,9 @@ const cashflow = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationType, setConfirmationType] = useState('');
 
+  const role = sessionStorage.getItem('Role');
+  const name = sessionStorage.getItem('Name');
+
   const fetchData = async () => {
     try {
       const response = await fetch('http://127.0.0.1:5001/api/cashflow/getAll', {
@@ -65,8 +68,23 @@ const cashflow = () => {
   };
 
 
+  const addLogs = async (action) => {
+    const logData = {
+      username: name,
+      role: role,
+      action: action,
+    };
+    await fetch('http://127.0.0.1:5001/api/add-log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(logData),
+    })
+    .then(response => response.json())
+    .then(data => console.log('Log success:', data))
+    .catch(error => console.error('Log error:', error));
+  };
+
   const handleAdd = (section) => {
-    console.log('Adding to section:', section); 
     setSelectedSection(section);
     setShowAddModal(true);
   };
@@ -100,7 +118,7 @@ const cashflow = () => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-
+      await addLogs(`Deleted CashFlow`);
       setData(data.filter(item => item._id !== currentItem._id));
     } catch (error) {
       console.error('Error deleting item:', error);
@@ -122,7 +140,7 @@ const cashflow = () => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-
+      await addLogs(`Added CashFlow`);
       await fetchData();
       setSelectedYear(newItem.Year);
     } catch (error) {
@@ -144,7 +162,7 @@ const cashflow = () => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
-
+      await addLogs(`Updated CashFlow`);
       await fetchData();
       setSelectedYear(updatedItem.Year);
     } catch (error) {

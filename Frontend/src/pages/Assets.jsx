@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import DataBox from '../components/DataBox';
 import ConfirmationDialog from '../components/ConfirmationDialog';
-import AddNewAssets from '../components/Addnewassets'; // Match casing exactly
- // Updated Add modal for Assets
-import UpdateAssets from '../components/Updateassets'; // Updated Update modal for Assets
+import AddNewAssets from '../components/Addnewassets';
+import UpdateAssets from '../components/Updateassets';
 import '../styles/liabilities.css';
 
 const Assets = () => {
@@ -11,15 +10,20 @@ const Assets = () => {
   const [filteredData, setFilteredData] = useState({});
   const [selectedYear, setSelectedYear] = useState('');
   const [availableYears, setAvailableYears] = useState([]);
+  const [selectedQuarter, setSelectedQuarter] = useState('');
+  const [availableQuarters, setAvailableQuarters] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationType, setConfirmationType] = useState('');
   const [currentItem, setCurrentItem] = useState(null);
   const [deleteMode, setDeleteMode] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false); // Add state for Add Modal
-  const [selectedSection, setSelectedSection] = useState(''); // Section for Adding New Item
-  
-  const [showUpdateModal, setShowUpdateModal] = useState(false); // State for Update Modal
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedSection, setSelectedSection] = useState('');
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+
+  // Assuming these values come from user context or props
+  const role = sessionStorage.getItem('Role');
+  const name = sessionStorage.getItem('Name');
 
   const fetchData = async () => {
     try {
@@ -47,8 +51,17 @@ const Assets = () => {
   }, []);
 
   useEffect(() => {
+    if (selectedYear) {
+      // Get available quarters for the selected year
+      const quarters = [1, 2, 3, 4];
+      setAvailableQuarters(quarters);
+      setSelectedQuarter(quarters[quarters.length - 1]); // Default to the last quarter
+    }
+  }, [selectedYear]);
+
+  useEffect(() => {
     const filtered = data.reduce((acc, item) => {
-      if (item.Year === selectedYear) {
+      if (item.Year === selectedYear && item.Quarter === selectedQuarter) {
         const normalizedType = item.Type.toLowerCase();
         acc[normalizedType] = acc[normalizedType] ? [...acc[normalizedType], item] : [item];
       }
@@ -56,7 +69,7 @@ const Assets = () => {
     }, {});
     console.log("Filtered Data:", filtered);
     setFilteredData(filtered);
-  }, [data, selectedYear]);
+  }, [data, selectedYear, selectedQuarter]);
 
   const handleCheckboxChange = (item) => {
     setSelectedItems((prevSelected) =>
@@ -65,7 +78,6 @@ const Assets = () => {
         : [...prevSelected, item]
     );
   };
-
 
   const handleAdd = (section) => {
     setSelectedSection(section);
@@ -76,17 +88,19 @@ const Assets = () => {
     setCurrentItem(item);
     setShowUpdateModal(true);
   };
+
   const handleDelete = (item) => {
-    setCurrentItem(item); // Set the item to be deleted
+    setCurrentItem(item);
     setConfirmationType('delete');
-    setShowConfirmation(true); // Show the confirmation dialog
+    setShowConfirmation(true);
   };
+
   const confirmAction = async () => {
     setShowConfirmation(false);
     try {
       if (confirmationType === 'delete') {
         await deleteItems();
-        fetchData(); // Refresh data after deletion
+        fetchData();
       } else if (confirmationType === 'update') {
         await updateItem(currentItem);
       }
@@ -106,9 +120,10 @@ const Assets = () => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
       }
+      await logAction('delete');  // Log delete action
       setSelectedItems([]);
       setDeleteMode(false);
-      fetchData(); // Refresh data after deletion
+      fetchData();  // Refresh data after deletion
     } catch (error) {
       console.error('Error deleting item:', error);
     }
@@ -130,6 +145,8 @@ const Assets = () => {
 
       await fetchData();
       setSelectedYear(newItem.Year);
+      setSelectedQuarter(newItem.Quarter);
+      await logAction('add');  // Log add action
     } catch (error) {
       console.error('Error adding item:', error);
     }
@@ -152,30 +169,75 @@ const Assets = () => {
 
       await fetchData();
       setSelectedYear(updatedItem['Year']);
+      setSelectedQuarter(updatedItem['Quarter']);
+      await logAction('update');  // Log update action
     } catch (error) {
       console.error('Error updating item:', error);
     }
     setShowUpdateModal(false);
   };
 
+  // Function to log actions (add, delete, update)
+  const logAction = async (action) => {
+    const logData = {
+      username: name,
+      role: role,
+      action: action,
+    };
+
+    try {
+      const response = await fetch('http://127.0.0.1:5001/api/add-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(logData),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Log success:', data);
+      } else {
+        console.error('Log failed:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Log error:', error);
+    }
+  };
+
   return (
     <div className="liabilities-container">
-    <div className="filter-section">
-      <h1 className="title-1">Assets</h1>
-      <label htmlFor="yearFilter">Filter by Year:</label>
-      <select
-        id="yearFilter"
-        className="year-filter"
-        value={selectedYear}
-        onChange={(e) => setSelectedYear(e.target.value)}
-      >
-        {availableYears.map((year) => (
-          <option key={year} value={year}>
-            {year}
-          </option>
-        ))}
-      </select>
-    </div>
+      <div className="filter-section">
+        <h1 className="title-1">Assets</h1>
+        <label htmlFor="yearFilter">Filter by Year:</label>
+        <select
+          id="yearFilter"
+          className="year-filter"
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(e.target.value)}
+        >
+          {availableYears.map((year) => (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          ))}
+        </select>
+
+        {selectedYear && (
+          <>
+            <label htmlFor="quarterFilter">Filter by Quarter:</label>
+            <select
+              id="quarterFilter"
+              className="quarter-filter"
+              value={selectedQuarter}
+              onChange={(e) => setSelectedQuarter(e.target.value)}
+            >
+              {availableQuarters.map((quarter) => (
+                <option key={quarter} value={quarter}>
+                  Q{quarter}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
+      </div>
 
       <div className="sections-container">
         {['current_asset', 'noncurrent_asset'].map((section) => (
@@ -184,11 +246,9 @@ const Assets = () => {
               <h2 className="title-1">{section.replace('_', ' ').toUpperCase()}</h2>
               <button onClick={() => handleAdd(section)}>Add New {section.replace('_', ' ')}</button>
             </div>
-            
             {filteredData[section] && (
-             
-             <DataBox
-             data={filteredData[section]} // Make sure filteredData is properly structured
+              <DataBox
+                data={filteredData[section]}
                 hideYear={true}
                 deleteMode={false}
                 onCheckboxChange={handleCheckboxChange}
@@ -200,28 +260,13 @@ const Assets = () => {
         ))}
       </div>
 
-      {showAddModal && (
-        <AddNewAssets
-          section={selectedSection}
-          onAdd={addNewItem}
-          onCancel={() => setShowAddModal(false)}
-        />
-      )}
-
-      {showUpdateModal && (
-        <UpdateAssets
-          item={currentItem}
-          section={selectedSection}
-          onUpdate={updateItem}
-          onCancel={() => setShowUpdateModal(false)}
-        />
-      )}
-
+      {showAddModal && <AddNewAssets onClose={() => setShowAddModal(false)} onSave={addNewItem} />}
+      {showUpdateModal && <UpdateAssets item={currentItem} onClose={() => setShowUpdateModal(false)} onSave={updateItem} />}
       {showConfirmation && (
         <ConfirmationDialog
-          message={`Are you sure you want to ${confirmationType}?`}
+          onClose={() => setShowConfirmation(false)}
           onConfirm={confirmAction}
-          onCancel={() => setShowConfirmation(false)}
+          type={confirmationType}
         />
       )}
     </div>

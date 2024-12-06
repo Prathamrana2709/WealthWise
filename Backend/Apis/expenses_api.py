@@ -20,7 +20,7 @@ def add_new_expense(new_expense):
         'Total Expenses', 'Current Tax', 'Deferred Tax','Fringe benefit tax','MAT credit entitlement', 'Total Tax Expense'
     ]
     
-    for field in required_fields:   
+    for field in required_fields:
         if field not in new_expense:
             return {'error': f'Missing required field: {field}'}, 400
         

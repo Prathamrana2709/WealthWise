@@ -20,6 +20,9 @@ function AddNewMember() {
   const [notification, setNotification] = useState(null);
   const navigate = useNavigate();
 
+  const role = sessionStorage.getItem('Role');
+  const name = sessionStorage.getItem('Name');
+  
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -49,6 +52,22 @@ function AddNewMember() {
     if (!/\d/.test(password)) errors.push("Must contain at least one number");
     if (!/[!@_]/.test(password)) errors.push("Must contain either '@' or '_' as a special character");
     return errors;
+  };
+
+  const addLogs = async (action) => {
+    try {
+      await fetch('http://127.0.0.1:5001/api/add-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: name,
+          role: role,
+          action: action,
+        }),
+      });
+    } catch (error) {
+      console.error('Error adding logs:', error);
+    }
   };
 
   const handleChange = (e) => {
@@ -90,6 +109,7 @@ function AddNewMember() {
           setNotification({ type: 'error', message: data.error });
         }
         resetForm();
+        addLogs(editingUserId ? 'Updated User' : 'Added New User');
       })
       .catch((error) => {
         setNotification({ type: 'error', message: 'Error updating user: ' + error });
@@ -116,6 +136,7 @@ function AddNewMember() {
         setNotification({ type: 'success', message: data.message });
         fetchUsers();
       })
+      addLogs('Deleted User')
       .catch((error) => {
         setNotification({ type: 'error', message: 'Error deleting user: ' + error });
       });

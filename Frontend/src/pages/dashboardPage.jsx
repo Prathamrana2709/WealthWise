@@ -9,7 +9,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { CircularProgressbar } from "react-circular-progressbar"; 
 import "react-circular-progressbar/dist/styles.css"; 
 import "../styles/dashboardPage.css";
 
@@ -55,8 +54,6 @@ function Analysis() {
   const fetchCashflowTotals = async (year) => {
     try {
       const response = await fetch("http://127.0.0.1:5001/api/cashflow/total?year=2023-24");
-
-  
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -66,6 +63,7 @@ function Analysis() {
       if (data && data.Totals) {
         setCashIn(data.Totals.In || 0);
         setCashOut(data.Totals.Out || 0);
+        console.log(data);
       } else {
         console.error("Unexpected API response:", data);
       }
@@ -105,9 +103,7 @@ const fetchTotalLiabilities = async (year) => {
   } catch (err) {
     setError(`Error fetching total liabilities: ${err.message}`);
   }
-};
-
-  
+};  
 
   const processCombinedData = (revenues, expenses) => {
     const dataByYear = {};

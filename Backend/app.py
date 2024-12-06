@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
-from Apis import login, liabilities_api, assets_api, expenses_api, revenues_api , cashflow_api
+from Apis import login, liabilities_api, assets_api, expenses_api, revenues_api , cashflow_api, logs_api
 import os
 
 # Create the Flask application
@@ -255,7 +255,7 @@ def cashflows_by_year():
 @app.route('/api/assets/total', methods=['GET'])
 def total_assets():
     year = request.args.get('year')  # Get the year from the request query params
-    print(f"Year: {year}")
+
     if not year:
         return jsonify({'error': 'Year is required'}), 400
 
@@ -295,6 +295,26 @@ def equity_by_year():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+@app.route('/api/add-log', methods=['POST'])
+def route_add_log():
+    data = request.get_json()
+    user_agent = request.headers.get('User-Agent')
+    response, status_code = logs_api.add_log(data, user_agent)
+    return jsonify(response), status_code
+
+# Route to fetch all logs
+@app.route('/api/get-logs', methods=['GET'])
+def route_get_all_logs():
+    response, status_code = logs_api.get_all_logs()
+    return jsonify(response), status_code
+
+# Route to fetch logs by user_id
+@app.route('/api/get-logs/<user_id>', methods=['GET'])
+def route_get_logs_by_user(user_id):
+    response, status_code = logs_api.get_logs_by_user(user_id)
+    return jsonify(response), status_code
+
 
 # Run the Flask app
 if __name__ == '__main__':

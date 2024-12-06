@@ -13,7 +13,7 @@ import Nonexpense from './Nonexpense';
 import AnalysisPage from './Analysis';
 import AssetsAndLiabilitiesPage from './AssetsAndLiabilities';
 import PredictPage from './Predict';
- import DashboardPage from './dashboardPage';
+import DashboardPage from './dashboardPage';
 import Cost from './Cost';
 import Revenue from './Revenue';
 import Nonrevenue from './Nonrevenue';
@@ -26,16 +26,32 @@ function Dashboard() {
   const role = sessionStorage.getItem('Role');
   const name = sessionStorage.getItem('Name');
 
-  useEffect(() => {
-    console.log('Role in Dashboard:', role);
-  }, [role]);
+  useEffect(() => {}, [role]);
+
+  // Logging utility
+  const logAction = async (action) => {
+    const logData = {
+      username: name,
+      role: role,
+      action: action,
+    };
+    await fetch('http://127.0.0.1:5001/api/add-log', {  // Changed port to 5000
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(logData),
+    })
+    .then(response => response.json())
+    .then(data => console.log('Log success:', data))
+    .catch(error => console.error('Log error:', error));
+  };
 
   const handleLogout = () => {
     if (window.confirm('Are you sure you want to log out?')) {
       sessionStorage.clear();
+      logAction('Logged out');
       navigate('/login');
     }
-  };  
+  };
 
   const handleSectionClick = (section) => {
     setSelectedSubItem('');
@@ -50,26 +66,26 @@ function Dashboard() {
     if (selectedSubItem) {
       switch (selectedSubItem) {
         case 'Liabilities':
-          return ['HR', 'Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'].includes(role) 
-            ? <Nonliabilities /> 
+          return ['HR', 'Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'].includes(role)
+            ? <Nonliabilities />
             : <Liabilities />;
         case 'Assets':
-          return ['HR', 'Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'].includes(role) 
-            ? <Nonassets /> 
+          return ['HR', 'Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'].includes(role)
+            ? <Nonassets />
             : <Assets />;
         case 'Cost':
           return <Cost />;
         case 'Revenue':
-          return ['HR', 'Compliance Officer', 'Chief Financial Officer (CFO)', 'Compliance Auditor', 'Customer Support Lead'].includes(role) 
-            ? <Nonrevenue /> 
+          return ['HR', 'Compliance Officer', 'Chief Financial Officer (CFO)', 'Compliance Auditor', 'Customer Support Lead'].includes(role)
+            ? <Nonrevenue />
             : <Revenue />;
         default:
           return <p>No component available for this sub-item</p>;
       }
     } else {
       switch (selectedSection) {
-         case 'Dashboard':
-         return <DashboardPage />;
+        case 'Dashboard':
+          return <DashboardPage />;
         case 'Assets And Liabilities':
           return <AssetsAndLiabilitiesPage />;
         case 'Analysis':
@@ -77,12 +93,12 @@ function Dashboard() {
         case 'Predict':
           return <PredictPage />;
         case 'Expenses':
-          return ['HR', 'Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Compliance Auditor'].includes(role) 
-            ? <Nonexpense /> 
+          return ['HR', 'Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Compliance Auditor'].includes(role)
+            ? <Nonexpense />
             : <Expenses />;
         case 'Cash Flow':
-          return ['HR', 'Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'].includes(role) 
-            ? <Noncashflow /> 
+          return ['HR', 'Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'].includes(role)
+            ? <Noncashflow />
             : <CashFlow />;
         default:
           return <p>No component available for this section</p>;
@@ -91,7 +107,7 @@ function Dashboard() {
   };
 
   const sections = {
-   Dashboard: { allowedRoles: ['HR', 'Finance Manager', 'Data Analyst/Scientist', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'], subItems: [] },
+    Dashboard: { allowedRoles: ['HR', 'Finance Manager', 'Data Analyst/Scientist', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'], subItems: [] },
     Analysis: { allowedRoles: ['HR', 'Financial Controller', 'Finance Manager', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Compliance Officer', 'Financial Analyst/Advisor', 'Budget Analyst', 'Compliance Auditor', 'Customer Support Lead'], subItems: ['Cost', 'Revenue'] },
     Predict: { allowedRoles: ['HR', 'Finance Manager', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Financial Analyst/Advisor'], subItems: [] },
     'Assets And Liabilities': { allowedRoles: ['HR', 'Finance Manager', 'Financial Controller', 'Chief Financial Officer (CFO)', 'Compliance Officer', 'Financial Analyst/Advisor', 'Treasury Manager', 'Customer Support Lead', 'Compliance Auditor'], subItems: ['Assets', 'Liabilities'] },
@@ -133,7 +149,7 @@ function Dashboard() {
       </div>
       <div className="main-content">
         <div className="top-navbar">
-        {role === 'HR' && (
+          {role === 'HR' && (
             <Link to="/AddNewMember">
               <button className="new-btn">Users</button>
             </Link>

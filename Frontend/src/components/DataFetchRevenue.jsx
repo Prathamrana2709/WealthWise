@@ -31,21 +31,10 @@ const DataFetchRevenue = ({ data, hideYear, deleteMode, onCheckboxChange, onUpda
               {Object.keys(item).map((key, i) => (
                !['_id', 'Year', 'Revenue from operations', 'Other Income', 'Operating Income', 'Other Expense', 'Quarter', 'Non controlling Interest', 'Earnings per share', 'Total Assets','Total Liabilities','Budget','Net Cash','Total Revenue'].includes(key) && (
                   <tr key={i}>
-                    {deleteMode && (
-                      <td>
-                        <input
-                          type="checkbox"
-                          onChange={() => handleCheckboxChange(item)}
-                          checked={selectedItems.includes(item)} // Checkbox for item selection
-                        />
-                      </td>
-                    )}
+                    
                     {!hideYear && <td>{item.Year}</td>}
                     <td>{key}</td>
                     <td>{item[key]}</td>
-                    <td>
-                     
-                    </td>
                   </tr>
                 )
               ))}

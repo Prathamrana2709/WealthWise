@@ -12,6 +12,23 @@ const Login = () => {
   const handleEmailChange = (event) => setEmail(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
 
+  const addLogs = async (data) => {
+    try {
+      await fetch('http://127.0.0.1:5001/add-log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: data.user_id, // Use unique ID for the user, adjust as needed
+          username: data.name,
+          role: data.role,
+          action: 'Login Successful',
+        }),
+      });
+    } catch (error) {
+      console.error('Error adding logs:', error);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -29,11 +46,9 @@ const Login = () => {
         sessionStorage.setItem('Role', data.role);
         sessionStorage.setItem('Name', data.name);
         sessionStorage.setItem('Email_id', data.Email_id);
+        addLogs(data);
         navigate('/dashboard');
-        window.location.reload(); // Force a reload
-        
-        // Navigate to Dashboard
-        // navigate('/dashboard');
+        window.location.reload(); // Force a reload to update the navigation bar
       } else {
         setError(data.error);
       }

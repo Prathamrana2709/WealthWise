@@ -6,7 +6,6 @@ import ConfirmationDialog from '../components/ConfirmationDialog';
 import AddNewExpense from '../components/Addnewexpense';
 import UpdateExpense from '../components/Updateexpense';
 
-
 const Expense = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState({});
@@ -63,21 +62,46 @@ const Expense = () => {
     setShowUpdateModal(true);
   };
 
-  //popupmessage for 
+  // Popup message for duplicate entry
   const popupMessage = (message) => {
     alert(message);
   };
 
+  const logAction = async (action) => {
+    const role = sessionStorage.getItem('Role');
+    const name = sessionStorage.getItem('Name');
+    const logData = {
+      username: name,
+      role: role,
+      action: action,
+    };
+
+    try {
+      const response = await fetch('http://127.0.0.1:5001/api/add-log', {  // Changed port to 5000
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(logData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Log success:', data);
+      } else {
+        console.error('Log error:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Log error:', error);
+    }
+  };
+
   const addNewItem = async (newItem) => {
-    // Check for duplicate entries before making the fetch request
     const duplicate = data.find(
       (item) => item['Year'] === newItem['Year'] && item['Quarter'] === newItem['Quarter']
     );
 
     if (duplicate) {
-      // Show popup message for duplicate entry
       popupMessage('Expense already exists for the selected year and quarter. Please update the existing entry.');
-      return; // Exit the function if duplicate found
+      return;
     }
 
     try {
@@ -86,19 +110,18 @@ const Expense = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newItem),
       });
-      if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`)
+      if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`);
       setShowAddModal(false);
-
-      await fetchData(); // Refresh the data after adding the new item
+      await fetchData();
       setSelectedYear(newItem.Year); // Set the selected year to the new item's year
 
+      // Log the action
+      logAction('Added Expense');
     } catch (error) {
       console.error('Error adding item:', error);
     }
-
-    setShowAddModal(false); // Close the add modal after processing
+    setShowAddModal(false);
   };
-
 
   const updateItem = async (updatedItem) => {
     try {
@@ -110,14 +133,50 @@ const Expense = () => {
       if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`);
       await fetchData();
       setSelectedYear(updatedItem.Year);
+
+      // Log the action
+      logAction('Updated Expense');
     } catch (error) {
       console.error('Error updating item:', error);
     }
     setShowUpdateModal(false);
   };
 
+  const deleteItem = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5001/api/expenses/delete/${currentItem._id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      if (!response.ok) throw new Error(`Error: ${response.status} ${response.statusText}`);
+      setData(data.filter(item => item._id !== currentItem._id));
+
+      // Log the action
+      logAction('Deleted Expense');
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+    setShowConfirmation(false);
+  };
+
   const confirmAction = () => {
     if (confirmationType === 'delete') deleteItem();
+  };
+
+  const addLogs = async (data) => {
+    try {
+      await fetch('http://127.0.0.1:5001/api/add-log', {  // Update the URL here
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: data.name,
+          role: data.role,
+          action: 'Added/Updated Expense', 
+        }),
+      });
+    } catch (error) {
+      console.error('Error adding logs:', error);
+    }
   };
 
   return (
@@ -126,7 +185,7 @@ const Expense = () => {
 
       {/* Year Filter Dropdown */}
       <div className="filter-section">
-      <h1 className="title-1">Expense</h1>
+        <h1 className="title-1">Expense</h1>
         <label htmlFor="yearFilter">Filter by Year:</label>
         <select
           id="yearFilter"
@@ -145,8 +204,11 @@ const Expense = () => {
       {/* Display Expenses by Quarter */}
       <div className="sections-container">
         <button 
-        
-        style={{ width: '200px' }} onClick={() => handleAdd('expense')}>Add New Expense</button>
+          style={{ width: '200px' }}
+          onClick={() => handleAdd('expense')}
+        >
+          Add New Expense
+        </button>
         {['1', '2', '3', '4'].map(quarter => (
           filteredData[quarter] && (
             <div key={quarter} className="section">
@@ -189,7 +251,6 @@ const Expense = () => {
           onCancel={() => setShowUpdateModal(false)}
         />
       )}
-
     </div>
   );
 };
