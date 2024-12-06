@@ -156,7 +156,7 @@ def get_total_liabilities_by_year(year):
         }
 
         # Ensure you're returning a proper JSON response
-        return jsonify(response), 200
+        return response
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500 
@@ -187,7 +187,7 @@ def get_equity_by_year(year):
             'TotalEquity': total_equity
         }
 
-        return jsonify(response), 200
+        return response, 200
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500

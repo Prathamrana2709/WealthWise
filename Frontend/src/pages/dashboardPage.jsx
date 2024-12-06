@@ -75,39 +75,36 @@ function Analysis() {
   };
 
  
-  // Function to fetch total assets
-  const fetchTotalAssets = async () => {
-    try {
-        // Example year, adjust accordingly
-        const response = await fetch("http://127.0.0.1:5001/api/assets/total?year=2023-24");
-        
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to fetch total assets');
-        }
-
-        const data = await response.json();
-        fetchTotalAssets(data.TotalAssets);  // Assuming you're storing this in a state
-    } catch (err) {
-        setError(`Error fetching total assets: ${err.message}`);
+  // Corrected fetchTotalAssets function
+const fetchTotalAssets = async (year) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:5001/api/assets/total?year=${year}`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to fetch total assets");
     }
+    const data = await response.json();
+    setAssets(data.TotalAssets || 0); // Update state correctly
+    console.log(data);
+  } catch (err) {
+    setError(`Error fetching total assets: ${err.message}`);
+  }
 };
 
-const fetchTotalLiabilities = async () => {
-    try {
-          // Example year, adjust accordingly
-        const response = await fetch("http://127.0.0.1:5001/api/liabilities/total?year=2023-24");
-        
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to fetch total liabilities');
-        }
-
-        const data = await response.json();
-        fetchTotalLiabilities(data.TotalLiabilities);  // Assuming you're storing this in a state
-    } catch (err) {
-        setError(`Error fetching total liabilities: ${err.message}`);
+// Corrected fetchTotalLiabilities function
+const fetchTotalLiabilities = async (year) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:5001/api/liabilities/total?year=${year}`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to fetch total liabilities");
     }
+    const data = await response.json();
+    setLiabilities(data.TotalLiabilities || 0); // Update state correctly
+    console.log(data);
+  } catch (err) {
+    setError(`Error fetching total liabilities: ${err.message}`);
+  }
 };
 
   

@@ -68,7 +68,7 @@ const Expense = () => {
 
   return (
     <div className="expense-container">
-      <h1>Expenses by Year and Quarter</h1>
+     <h1>Revenue by Year and Quarter</h1>
 
       {/* Year Filter Dropdown */}
       <div className="filter-section">

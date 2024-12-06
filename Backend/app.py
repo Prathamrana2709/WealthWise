@@ -238,9 +238,9 @@ def fetch_all_cashflows():
 
 @app.route('/api/cashflow/total', methods=['GET'])
 def cashflows_by_year():
+    
     # Get year from query parameters
     year = request.args.get('year')
-
     if not year:
         return jsonify({'error': 'Year is required'}), 400
 
@@ -251,12 +251,11 @@ def cashflows_by_year():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
 # Endpoint to get total assets for a specific year
 @app.route('/api/assets/total', methods=['GET'])
 def total_assets():
     year = request.args.get('year')  # Get the year from the request query params
-
+    print(f"Year: {year}")
     if not year:
         return jsonify({'error': 'Year is required'}), 400
 
@@ -266,7 +265,6 @@ def total_assets():
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 
 # Endpoint to get total liabilities for a specific year
 @app.route('/api/liabilities/total', methods=['GET'])
@@ -282,7 +280,6 @@ def total_liabilities():
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
     
 @app.route('/equity/total', methods=['GET'])
 def equity_by_year():
@@ -298,10 +295,6 @@ def equity_by_year():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-
-
-
 
 # Run the Flask app
 if __name__ == '__main__':
