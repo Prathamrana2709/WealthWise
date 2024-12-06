@@ -11,7 +11,7 @@ const DataFetchRevenueCRUD = ({ data, hideYear, onUpdate, onDelete }) => {
           <tr>
             {!hideYear && <th>Year</th>}
             <th>Category</th>
-            <th>Amount (In Millions)</th>
+            <th>Amount ₹ (In Millions)</th>
             {/* <th className='action'>Actions</th> */}
           </tr>
         </thead>

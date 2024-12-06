@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
-from Apis import login, liabilities_api, assets_api, expenses_api, revenues_api , cashflow_api
+from Apis import login, liabilities_api, assets_api, expenses_api, revenues_api , cashflow_api , forecast_api
 import os
 
 # Create the Flask application
@@ -235,6 +235,37 @@ def fetch_all_cashflows():
     response, status_code = cashflow_api.get_all_cashflows()
     
     return jsonify(response), status_code
+
+@app.route('/api/forecast/getprediction', methods=['GET'])
+def fetch_forecast():
+    # Call the function to get all assets
+    response, status_code = forecast_api.get_forecast()
+    
+    return jsonify(response), status_code
+
+@app.route('/api/forecast/getaccuracy', methods=['GET'])
+def fetch_accuracy():
+    # Call the function to get all assets
+    response, status_code = forecast_api.get_accuracy()
+    
+    return jsonify(response), status_code
+
+@app.route('/api/forecast/flog', methods=['POST'])
+def add_forecastlog():
+    try:
+        new_flog = request.get_json()  
+        response, status_code = forecast_api.log_predictions(new_flog)  # Call the log_predictions function
+        return response, status_code  # Serialize response as JSON
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/forecast/getlogs', methods=['GET'])
+def fetch_forecastlogs():
+    # Call the function to get all assets
+    response, status_code = forecast_api.get_forecastlogs()
+    
+    return jsonify(response), status_code
+
 
 # Run the Flask app
 if __name__ == '__main__':

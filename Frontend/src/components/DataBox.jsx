@@ -21,7 +21,7 @@ const DataBox = ({ data, hideYear, deleteMode, onCheckboxChange, onUpdate, onDel
           {!hideYear && <th>Year</th>}
           <th>Quarter</th>
           <th>Category</th>
-          <th>Amount (In Millions)</th>
+          <th>Amount ₹ (In Millions)</th>
           <th className='action'>Actions</th>
         </tr>
       </thead>
@@ -55,3 +55,4 @@ const DataBox = ({ data, hideYear, deleteMode, onCheckboxChange, onUpdate, onDel
 };
 
 export default DataBox;
+// added ₹ symbol 

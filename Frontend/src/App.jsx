@@ -6,6 +6,7 @@ import Home from './pages/home';
 import Login from './pages/login';
 import Dashboard from './pages/dashboard';
 import AddNewMember from './pages/AddNewMember'; // Assuming this component exists for adding new users
+import Predict from './pages/Predict';
 
 function App() {
   // Check if the user is logged in by checking for a stored role in session storage
@@ -34,6 +35,8 @@ function App() {
 
       {/* Redirect any other routes to login */}
       <Route path="*" element={<Navigate to="/login" replace />} />
+
+      {/* <Route path="/predict" element={<Predict />} /> */}
     </Routes>
   </Router>
   );

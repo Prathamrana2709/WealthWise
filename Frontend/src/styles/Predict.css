@@ -1,0 +1,14 @@
+.recharts-tooltip-wrapper {
+    color: black !important; /* Force text to be visible */
+    font-size: 14px;
+  }
+  
+  .recharts-default-tooltip {
+    background-color: #ffffff !important; /* Set background color */
+    border: 1px solid #ccc !important;   /* Add a border */
+    padding: 8px !important;
+    border-radius: 5px !important;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1) !important;
+    color: black !important;
+  }
+  

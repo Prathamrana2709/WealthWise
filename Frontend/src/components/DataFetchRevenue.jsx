@@ -21,7 +21,7 @@ const DataFetchRevenue = ({ data, hideYear, deleteMode, onCheckboxChange, onUpda
             {deleteMode && <th>Select</th>}
             {!hideYear && <th>Year</th>}
             <th>Category</th>
-            <th>Amount (In Millions)</th>
+            <th>Amount ₹ (In Millions)</th>
             
           </tr>
         </thead>
@@ -29,7 +29,8 @@ const DataFetchRevenue = ({ data, hideYear, deleteMode, onCheckboxChange, onUpda
           {data.map((item, index) => (
             <React.Fragment key={index}>
               {Object.keys(item).map((key, i) => (
-               !['_id', 'Year', 'Revenue from operations', 'Other Income', 'Operating Income', 'Other Expense', 'Quarter', 'Non controlling Interest', 'Earnings per share', 'Total Assets','Total Liabilities','Budget','Net Cash','Total Revenue'].includes(key) && (
+                // removed fields from here to show it on frontend
+               !['_id', 'Year', 'Other Income', 'Operating Income', 'Other Expense', 'Quarter', 'Total Assets','Total Liabilities','Budget','Net Cash','Total Revenue'].includes(key) && (
                   <tr key={i}>
                     {deleteMode && (
                       <td>
@@ -43,9 +44,6 @@ const DataFetchRevenue = ({ data, hideYear, deleteMode, onCheckboxChange, onUpda
                     {!hideYear && <td>{item.Year}</td>}
                     <td>{key}</td>
                     <td>{item[key]}</td>
-                    <td>
-                     
-                    </td>
                   </tr>
                 )
               ))}
