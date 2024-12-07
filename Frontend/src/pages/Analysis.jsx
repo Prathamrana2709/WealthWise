@@ -423,10 +423,10 @@ function Analysis() {
     );
   };
 
-  const lineData = revenues.map(rev => ({
-    name: `Q${rev["Quarter"]}`,
-    TotalRevenue: rev['Total Revenue']
-  }));
+  // const lineData = revenues.map(rev => ({
+  //   name: `Q${rev["Quarter"]}`,
+  //   TotalRevenue: rev['Total Revenue']
+  // }));
 
   return (
     <div className="analysis-container">
