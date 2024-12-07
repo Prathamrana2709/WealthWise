@@ -93,7 +93,6 @@ function Analysis() {
       <div><h2>Individual Expense Category Analysis over the Quarters</h2></div>
       {/* Line Chart Year Filter */}
       <div className="filters">
-      <h1 className="title-1">Cost</h1>
         <label htmlFor="yearFilter">Filter by Year:</label>
         <select className="year-filter" id="yearFilter" value={lineYearFilter} onChange={(e) => setLineYearFilter(e.target.value)}>
           {distinctYears.map((year) => (

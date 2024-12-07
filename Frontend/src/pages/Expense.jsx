@@ -171,7 +171,7 @@ const Expense = () => {
         body: JSON.stringify({
           username: data.name,
           role: data.role,
-          action: 'Added/Updated Expense', 
+          action: 'Added/Updated Expense',
         }),
       });
     } catch (error) {
@@ -180,77 +180,79 @@ const Expense = () => {
   };
 
   return (
-    <div className="expense-container">
-      <h1>Expenses by Year and Quarter</h1>
+    <div>
+      <h3 className='title-1'>Expenses by Year and Quarter</h3>
+      <div className="expense-container">
+        {/* Year Filter Dropdown */}
+        <div className="filter-section">
+          <label htmlFor="yearFilter">Filter by Year:</label>
+          <select
+            id="yearFilter"
+            className="year-filter"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+          >
+            {availableYears.map(year => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Year Filter Dropdown */}
-      <div className="filter-section">
-        <h1 className="title-1">Expense</h1>
-        <label htmlFor="yearFilter">Filter by Year:</label>
-        <select
-          id="yearFilter"
-          className="year-filter"
-          value={selectedYear}
-          onChange={(e) => setSelectedYear(e.target.value)}
-        >
-          {availableYears.map(year => (
-            <option key={year} value={year}>
-              {year}
-            </option>
+        {/* Display Expenses by Quarter */}
+        <div className="sections-container">
+          <div>
+          <button
+            style={{ width: '200px' }}
+            onClick={() => handleAdd('expense')}
+          >
+            Add New Expense
+          </button>
+          </div>
+          {['1', '2', '3', '4'].map(quarter => (
+            filteredData[quarter] && (
+              <div key={quarter} className="section">
+                <h2>Quarter {quarter}</h2>
+                <DataFetchExpense
+                  data={filteredData[quarter]}
+                  hideYear={true}
+                  onUpdate={handleUpdate}
+                />
+              </div>
+            )
           ))}
-        </select>
+        </div>
+
+        {/* Add Expense Modal */}
+        {showAddModal && (
+          <AddNewExpense
+            section={selectedSection}
+            onAdd={addNewItem}
+            onCancel={() => setShowAddModal(false)}
+            existingEntries={data} // Pass the existing data to check for duplicates
+          />
+        )}
+
+        {/* Confirmation Dialog */}
+        {showConfirmation && (
+          <ConfirmationDialog
+            message={`Are you sure you want to ${confirmationType}?`}
+            onConfirm={confirmAction}
+            onCancel={() => setShowConfirmation(false)}
+          />
+        )}
+
+        {/* Update Expense Modal */}
+        {showUpdateModal && (
+          <UpdateExpense
+            item={currentItem}
+            section={selectedSection}
+            onUpdate={updateItem}
+            onCancel={() => setShowUpdateModal(false)}
+          />
+        )}
       </div>
-
-      {/* Display Expenses by Quarter */}
-      <div className="sections-container">
-        <button 
-          style={{ width: '200px' }}
-          onClick={() => handleAdd('expense')}
-        >
-          Add New Expense
-        </button>
-        {['1', '2', '3', '4'].map(quarter => (
-          filteredData[quarter] && (
-            <div key={quarter} className="section">
-              <h2>Quarter {quarter}</h2>
-              <DataFetchExpense
-                data={filteredData[quarter]}
-                hideYear={true}
-                onUpdate={handleUpdate}
-              />
-            </div>
-          )
-        ))}
-      </div>
-
-      {/* Add Expense Modal */}
-      {showAddModal && (
-        <AddNewExpense
-          section={selectedSection}
-          onAdd={addNewItem}
-          onCancel={() => setShowAddModal(false)}
-          existingEntries={data} // Pass the existing data to check for duplicates
-        />
-      )}
-
-      {/* Confirmation Dialog */}
-      {showConfirmation && (
-        <ConfirmationDialog
-          message={`Are you sure you want to ${confirmationType}?`}
-          onConfirm={confirmAction}
-          onCancel={() => setShowConfirmation(false)}
-        />
-      )}
-
-      {/* Update Expense Modal */}
-      {showUpdateModal && (
-        <UpdateExpense
-          item={currentItem}
-          section={selectedSection}
-          onUpdate={updateItem}
-          onCancel={() => setShowUpdateModal(false)}
-        />
-      )}
     </div>
   );
 };

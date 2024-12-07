@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+  }
+  
+  .logs-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+    margin-top: 2rem;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  .search-bar {
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .logs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .logs-table th, .logs-table td {
+    text-align: left;
+    padding: 12px;
+    border: 1px solid #ddd;
+  }
+  
+  .logs-table th {
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .logs-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .logs-table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .logs-table .user-agent {
+    word-wrap: break-word;
+    max-width: 300px;
+  }
+  
+  .loading, .error, .no-logs {
+    text-align: center;
+    margin-top: 5rem;
+    font-size: 1.5rem;
+    color: #666;
+  }
+  

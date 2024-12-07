@@ -82,13 +82,13 @@ const Addcashflow= ({ item, section, onUpdate, onCancel }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-      <h2>Update {section?.replace('_', ' ').toUpperCase() || 'cashflow'}</h2>
+      <h2>Add {section?.replace('_', ' ').toUpperCase() || 'cashflow'}</h2>
 
         <div className="form-group">
           <label>Category</label>
           <select
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            // onChange={(e) => setCategory(e.target.value)}
             placeholder="Select category"
           >
             <option value="" >Select category</option>

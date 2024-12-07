@@ -172,9 +172,11 @@ const cashflow = () => {
   };
 
   return (
+    <div>
+      <h1 className='title-1'>CashFlow</h1>
     <div className="liabilities-container">
     <div className="filter-section">
-      <h1 className="title-1">CashFlow</h1>
+      
       <label htmlFor="yearFilter">Filter by Year:</label>
       <select
         id="yearFilter"
@@ -217,6 +219,7 @@ const cashflow = () => {
 
       {showAddModal && (
         <Addcashflow
+          item={{}}
           section={selectedSection}
           onAdd={addNewItem}
           onCancel={() => setShowAddModal(false)}
@@ -239,6 +242,7 @@ const cashflow = () => {
           onCancel={() => setShowConfirmation(false)}
         />
       )}
+    </div>
     </div>
   );
 };

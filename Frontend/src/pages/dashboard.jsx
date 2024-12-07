@@ -20,6 +20,7 @@ import Prediction from './Prediction';
 import Revenue from './Revenue';
 import Nonrevenue from './Nonrevenue';
 import ForecastLogs from './ForecastLogs';
+import Logs from './Logs';
 
 function Dashboard() {
   const [selectedSection, setSelectedSection] = useState('Dashboard');
@@ -87,8 +88,7 @@ function Dashboard() {
         case 'Make Predictions':
           return  <Prediction /> 
         case 'Forecast Logs':
-          return  <ForecastLogs /> 
-            
+          return  <ForecastLogs />     
         default:
           return <p>No component available for this sub-item</p>;
       }
@@ -110,6 +110,8 @@ function Dashboard() {
           return ['HR', 'Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'].includes(role)
             ? <Noncashflow />
             : <CashFlow />;
+        case 'Logs':
+          return <Logs/>;
         default:
           return <p>No component available for this section</p>;
       }
@@ -123,6 +125,7 @@ function Dashboard() {
     'Assets and Liabilities': { allowedRoles: ['HR', 'Finance Manager', 'Financial Controller', 'Chief Financial Officer (CFO)', 'Compliance Officer', 'Financial Analyst/Advisor', 'Treasury Manager', 'Customer Support Lead', 'Compliance Auditor'], subItems: ['Assets', 'Liabilities'] },
     'Cash Flow': { allowedRoles: ['HR', 'Finance Manager', 'Financial Controller', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Compliance Officer', 'Financial Analyst/Advisor', 'Treasury Manager', 'Customer Support Lead', 'Compliance Auditor'], subItems: [] },
     Expenses: { allowedRoles: ['HR', 'Finance Manager', 'Financial Controller', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Compliance Officer', 'Financial Analyst/Advisor', 'Budget Analyst', 'Compliance Auditor'], subItems: [] },
+    Logs: { allowedRoles: ['HR', 'Finance Manager', 'Financial Controller', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Compliance Officer', 'Financial Analyst/Advisor', 'Budget Analyst', 'Compliance Auditor'], subItems: [] },
   };
 
   return (

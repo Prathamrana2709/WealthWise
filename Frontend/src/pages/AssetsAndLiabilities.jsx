@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-// import '../styles/AssetsAndLiabilities.css';
+import '../styles/AssetsAndLiabilities.css';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF'];
 
@@ -13,6 +13,7 @@ function AssetsAndLiabilities() {
   const [selectedQuarter, setSelectedQuarter] = useState('1');
   const [filteredAssetsData, setFilteredAssetsData] = useState([]);
   const [filteredLiabilitiesData, setFilteredLiabilitiesData] = useState([]);
+  const [financialCondition, setFinancialCondition] = useState('');
 
   // Fetch data from API
   useEffect(() => {
@@ -60,6 +61,38 @@ function AssetsAndLiabilities() {
     setFilteredLiabilitiesData(filteredLiabilities);
   }, [assetsData, liabilitiesData, selectedYear, selectedQuarter]);
 
+  useEffect(() => {
+    const filteredAssets = assetsData.filter(item => item.Year === selectedYear && item.Quarter === parseInt(selectedQuarter));
+    const filteredLiabilities = liabilitiesData.filter(item => item.Year === selectedYear && item.Quarter === parseInt(selectedQuarter));
+    setFilteredAssetsData(filteredAssets);
+    setFilteredLiabilitiesData(filteredLiabilities);
+  }, [assetsData, liabilitiesData, selectedYear, selectedQuarter]);
+
+  // Calculate financial condition
+  useEffect(() => {
+    const totalAssets = filteredAssetsData.reduce((sum, item) => sum + item.Amount, 0);
+    const totalLiabilities = filteredLiabilitiesData.reduce((sum, item) => sum + item.Amount, 0);
+
+    if (totalLiabilities > 0) {
+      const ratio = totalAssets / totalLiabilities;
+      let condition = '';
+
+      if (ratio > 2) {
+        condition = 'Excellent Financial Health';
+      } else if (ratio > 1) {
+        condition = 'Good Financial Health';
+      } else if (ratio === 1) {
+        condition = 'Balanced Financial Health';
+      } else {
+        condition = 'Poor Financial Health';
+      }
+
+      setFinancialCondition(`Assets-to-Liabilities Ratio: ${ratio.toFixed(2)} (${condition})`);
+    } else {
+      setFinancialCondition('Insufficient data to calculate financial condition.');
+    }
+  }, [filteredAssetsData, filteredLiabilitiesData]);
+
   const preparePieData = (data) => {
     return data.reduce((acc, item) => {
       const normalizedType = item.Type.toLowerCase();
@@ -80,8 +113,8 @@ function AssetsAndLiabilities() {
 
   return (
     <div className="assets-liabilities-container">
+        <h1>Assets and Liabilities</h1>
       <div className="filter-section">
-        <h1 className="title-1">Assets and Liabilities</h1>
         <label htmlFor="yearFilter">Filter by Year:</label>
         <select
           id="yearFilter"
@@ -115,6 +148,9 @@ function AssetsAndLiabilities() {
         <p>Loading...</p>
       ) : (
         <>
+        <p style={{ textAlign: 'center', marginBottom: '2em', fontStyle: 'italic' }}>
+        (All values are in millions)
+      </p>
           <h2>Assets</h2>
           <ResponsiveContainer width="100%" height={400}>
             <PieChart>
@@ -131,7 +167,7 @@ function AssetsAndLiabilities() {
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip contentStyle={{ color: 'black' }} />
+              {/* <Tooltip content={{ color: 'black' }} /> */}
             </PieChart>
           </ResponsiveContainer>
           <div className="color-description">
@@ -175,6 +211,9 @@ function AssetsAndLiabilities() {
                 </li>
               ))}
             </ul>
+          </div>
+          <div className="financial-condition">
+            <h3>{financialCondition}</h3>
           </div>
         </>
       )}

@@ -161,13 +161,15 @@ const fetchTotalLiabilities = async (year) => {
   <div className="total-box">
     
     <h3>Total Cash-In</h3>
-    <p>{`${cashIn.toLocaleString()}`}</p>
+    <p>₹{`${cashIn.toLocaleString()}`}</p>
+    <h5>(in Millions)</h5>
     
   </div>
   <div className="total-box">
     
        <h3>Total Cash-Out</h3>
-    <p>{`${cashOut.toLocaleString()}`}</p>
+    <p>₹{`${cashOut.toLocaleString()}`}</p>
+    <h5>(in Millions)</h5>
    
   </div>
 </div>
@@ -177,16 +179,19 @@ const fetchTotalLiabilities = async (year) => {
       <div className="financial-summary">
   <div className="financial-box">
     <h3>Total Assets</h3>
-    <p>{`${assets.toLocaleString()}`}</p>
+    <p>₹{`${assets.toLocaleString()}`}</p>
+    <h5>(in Millions)</h5>
   </div>
   <div className="financial-box">
     <h3>Total Liabilities</h3>
    
-    <p>{`${liabilities.toLocaleString()}`}</p>
+    <p>₹{`${liabilities.toLocaleString()}`}</p>
+    <h5>(in Millions)</h5>
   </div>
   <div className="financial-box">
     <h3>Total Equity</h3>
-    <p>{`${equity.toLocaleString()}`}</p>
+    <p>₹{`${equity.toLocaleString()}`}</p>
+    <h5>(in Millions)</h5>
   </div>
 </div>
 

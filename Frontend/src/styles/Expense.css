@@ -13,6 +13,8 @@
   .filter-section {
     margin-bottom: 20px;
   }
+
+  
   
   .year-filter {
     padding: 5px;
@@ -57,6 +59,10 @@
   
   .expense-table strong {
     font-weight: bold;
+  }
+
+  .title-1{
+    margin-top: 1rem;
   }
   
   /* Responsive */

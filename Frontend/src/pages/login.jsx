@@ -63,8 +63,8 @@ const Login = () => {
         <div className='main-div'>
           <img src={logo} alt="logo" className='logo-image' />
           <h1 className="h1">WealthWise</h1>
-          <h3>Financial Analysis and Prediction</h3>
-          <p>This platform revolutionized how we approach financial planning!</p>
+          <h3  className="ai">Financial Analysis and Prediction</h3>
+          <p  className="ai">This platform revolutionized how we approach financial planning!</p>
           <Link to="/" className="back-link">Back</Link>
         </div>
       </div>
