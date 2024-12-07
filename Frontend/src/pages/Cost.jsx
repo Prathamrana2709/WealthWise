@@ -60,11 +60,37 @@ function Analysis() {
     Equipment: exp['Cost of Equipment and software Licences'] || exp['Cost of Equipment and Software Licences'],
     Finance: exp['Finance Costs'],
     Depreciation: exp['Depreciation and Amortisation Costs'],
-    Other: exp['Other Expenses']
+    Other: exp['Other Expenses'],
+    Total: exp['Total Expenses']
   }));
+
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          style={{
+            backgroundColor: '#fff',
+            border: '1px solid #ccc',
+            padding: '10px',
+            borderRadius: '5px',
+            color: 'black',
+          }}
+        >
+          {payload.map((item, index) => (
+            <div key={index}>
+              <p style={{ margin: 0, fontWeight: 'bold' }}>{item.name}</p>
+              <p style={{ margin: 0 }}>Value: ₹{item.value.toLocaleString()}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <div className='analysis-container'>
+      <div><h2>Individual Expense Category Analysis over the Quarters</h2></div>
       {/* Line Chart Year Filter */}
       <div className="filters">
       <h1 className="title-1">Cost</h1>
@@ -79,63 +105,76 @@ function Analysis() {
       </div>
 
       {/* LineCharts for Each Expense Category */}
-      <h3>Employee Benefit Expenses</h3>
+
+      <div style={{marginTop:'15px'}}><h4>Employee Benefit Expenses</h4></div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={lineData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip/>}/>
           <Legend />
           <Line type="monotone" dataKey="EmployeeBenefit" stroke="#8884d8" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
 
-      <h3>Equipment Costs</h3>
+      <div style={{marginTop:'15px'}}><h4>Cost of Equipment and Software Licences</h4></div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={lineData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip/>}/>
           <Legend />
           <Line type="monotone" dataKey="Equipment" stroke="#82ca9d" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
 
-      <h3>Finance Costs</h3>
+      <div style={{marginTop:'15px'}}><h4>Finance Costs</h4></div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={lineData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip/>}/>
           <Legend />
           <Line type="monotone" dataKey="Finance" stroke="#ffc658" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
 
-      <h3>Depreciation and Amortisation Costs</h3>
+      <div style={{marginTop:'15px'}}><h4>Depreciation and Amortisation Expense</h4></div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={lineData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip/>}/>
           <Legend />
           <Line type="monotone" dataKey="Depreciation" stroke="#FF8042" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
 
-      <h3>Other Expenses</h3>
+      <div style={{marginTop:'15px'}}><h4>Other Expenses</h4></div>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={lineData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip/>}/>
           <Legend />
           <Line type="monotone" dataKey="Other" stroke="#AF19FF" activeDot={{ r: 8 }} />
+        </LineChart>
+      </ResponsiveContainer>
+
+      <div style={{marginTop:'15px'}}><h4>Total Expenses</h4></div>
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart data={lineData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip content={<CustomTooltip/>}/>
+          <Legend />
+          <Line type="monotone" dataKey="Total" stroke="#AF19FF" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -143,3 +182,4 @@ function Analysis() {
 }
 
 export default Analysis;
+// Sakshi made changes to graph and tooltip , also added total expense , headings

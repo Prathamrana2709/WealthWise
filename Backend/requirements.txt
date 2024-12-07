@@ -1,0 +1,12 @@
+flask
+flask-cors
+pymongo
+pmdarima
+python-dotenv
+certifi
+flask_mail
+scikit-learn
+pandas 
+numpy
+itsdangerous
+bcrypt

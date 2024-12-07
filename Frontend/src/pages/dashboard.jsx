@@ -12,11 +12,14 @@ import Expenses from './Expense';
 import Nonexpense from './Nonexpense';
 import AnalysisPage from './Analysis';
 import AssetsAndLiabilitiesPage from './AssetsAndLiabilities';
-import PredictPage from './Predict';
+import Predict from './Predict';
 import DashboardPage from './dashboardPage';
 import Cost from './Cost';
+import Accuracy from './Accuracy';
+import Prediction from './Prediction';
 import Revenue from './Revenue';
 import Nonrevenue from './Nonrevenue';
+import ForecastLogs from './ForecastLogs';
 
 function Dashboard() {
   const [selectedSection, setSelectedSection] = useState('Dashboard');
@@ -79,6 +82,13 @@ function Dashboard() {
           return ['HR', 'Compliance Officer', 'Chief Financial Officer (CFO)', 'Compliance Auditor', 'Customer Support Lead'].includes(role)
             ? <Nonrevenue />
             : <Revenue />;
+        case 'Algorithm Accuracy':
+          return  <Accuracy />
+        case 'Make Predictions':
+          return  <Prediction /> 
+        case 'Forecast Logs':
+          return  <ForecastLogs /> 
+            
         default:
           return <p>No component available for this sub-item</p>;
       }
@@ -86,12 +96,12 @@ function Dashboard() {
       switch (selectedSection) {
         case 'Dashboard':
           return <DashboardPage />;
-        case 'Assets And Liabilities':
+        case 'Assets and Liabilities':
           return <AssetsAndLiabilitiesPage />;
         case 'Analysis':
           return <AnalysisPage />;
         case 'Predict':
-          return <PredictPage />;
+          return <Predict />;
         case 'Expenses':
           return ['HR', 'Compliance Officer', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Compliance Auditor'].includes(role)
             ? <Nonexpense />
@@ -109,8 +119,8 @@ function Dashboard() {
   const sections = {
     Dashboard: { allowedRoles: ['HR', 'Finance Manager', 'Data Analyst/Scientist', 'Financial Analyst/Advisor', 'Chief Financial Officer (CFO)', 'Customer Support Lead', 'Compliance Auditor'], subItems: [] },
     Analysis: { allowedRoles: ['HR', 'Financial Controller', 'Finance Manager', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Compliance Officer', 'Financial Analyst/Advisor', 'Budget Analyst', 'Compliance Auditor', 'Customer Support Lead'], subItems: ['Cost', 'Revenue'] },
-    Predict: { allowedRoles: ['HR', 'Finance Manager', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Financial Analyst/Advisor'], subItems: [] },
-    'Assets And Liabilities': { allowedRoles: ['HR', 'Finance Manager', 'Financial Controller', 'Chief Financial Officer (CFO)', 'Compliance Officer', 'Financial Analyst/Advisor', 'Treasury Manager', 'Customer Support Lead', 'Compliance Auditor'], subItems: ['Assets', 'Liabilities'] },
+    Predict: { allowedRoles: ['HR', 'Finance Manager', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Financial Analyst/Advisor'], subItems: ['Make Predictions','Algorithm Accuracy','Forecast Logs'] },
+    ''Assets  and  Liabilities'': { allowedRoles: ['HR', 'Finance Manager', 'Financial Controller', 'Chief Financial Officer (CFO)', 'Compliance Officer', 'Financial Analyst/Advisor', 'Treasury Manager', 'Customer Support Lead', 'Compliance Auditor'], subItems: ['Assets', 'Liabilities'] },
     'Cash Flow': { allowedRoles: ['HR', 'Finance Manager', 'Financial Controller', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Compliance Officer', 'Financial Analyst/Advisor', 'Treasury Manager', 'Customer Support Lead', 'Compliance Auditor'], subItems: [] },
     Expenses: { allowedRoles: ['HR', 'Finance Manager', 'Financial Controller', 'Chief Financial Officer (CFO)', 'Data Analyst/Scientist', 'Compliance Officer', 'Financial Analyst/Advisor', 'Budget Analyst', 'Compliance Auditor'], subItems: [] },
   };

@@ -10,7 +10,7 @@ const Databoxsimple = ({ data, hideYear, deleteMode, onCheckboxChange }) => {
           {!hideYear && <th>Year</th>}
           <th>Quarter</th>
           <th>Category</th>
-          <th>Amount (In Millions)</th>
+          <th>Amount ₹ (In Millions)</th>
         </tr>
       </thead>
       <tbody>
@@ -36,3 +36,4 @@ const Databoxsimple = ({ data, hideYear, deleteMode, onCheckboxChange }) => {
 };
 
 export default Databoxsimple;
+// added ₹ symbol 

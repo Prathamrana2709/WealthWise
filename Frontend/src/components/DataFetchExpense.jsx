@@ -21,7 +21,7 @@ const DataFetchExpense = ({ data, hideYear, deleteMode, onCheckboxChange, onUpda
             {deleteMode && <th>Select</th>}
             {!hideYear && <th>Year</th>}
             <th>Category</th>
-            <th>Amount (In Millions)</th>
+            <th>Amount ₹ (In Millions)</th>
            </tr>
         </thead>
         <tbody>

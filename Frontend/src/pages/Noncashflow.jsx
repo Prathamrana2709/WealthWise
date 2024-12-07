@@ -96,7 +96,7 @@
 import React, { useState, useEffect } from 'react';
 import DataBox from '../components/Databoxsimple';
 // Match casing exactly
-import '../styles/liabilities.css';
+import '../styles/Liabilities.css';
 
 const CashFlow = () => {
   const [data, setData] = useState([]);

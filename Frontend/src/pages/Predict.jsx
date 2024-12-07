@@ -1,10 +1,8 @@
 import React from 'react'
 
-function Predict() {
+const Predict = () => {
   return (
-    <div>
-      <h1>Predict</h1>
-    </div>
+    <p style={{ marginTop: "10rem" , fontSize:'30px' }}>Make Predictions for the upcoming fiscal year.....</p>
   )
 }
 
